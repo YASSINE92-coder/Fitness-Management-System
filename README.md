@@ -3,8 +3,8 @@ Development
 👨‍💻 Developer 1 – Core & Auth
 Setup Node.js  Express project structure.
 MongoDB connection & Mongoose setup.
-Authentication system JWT, bcrypt).
-Role-based middleware Athlete, Coach, Admin).
+Authentication system JWT, bcrypt.
+Role-based middleware Athlete, Coach, Admin.
 Refresh tokens & security (rate limiting, helmet, CORS.
 Unit tests for auth routes.
 👩‍💻 Developer 2 – Users & Programs
@@ -25,7 +25,7 @@ Notifications (new athlete joined, new program assigned).Team Task Split  Bac
 👩‍💻 Developer 4 – Admin, E-Commerce & Payments
 Product catalog CRUD (supplements, gear, etc.).
 Cart & order APIs.
-Payment gateway integration Stripe/PayPal sandbox).
+Payment gateway integration Stripe/PayPal sandbox.
 Order history & status updates.
 Admin dashboard APIs (stats: users, revenue, sales).
 Subscription management endpoints.
@@ -38,4 +38,4 @@ Feature branches: feature/auth , feature/programs , etc.
 Pull requests Each dev raises PR  reviewed by at least 1 teammate.
 API Documentation Swagger/Postman collection updated with every route.
 Common utilities Shared helpers (error handler, response format)
-maintained by Dev 1 to avoid duplication.Team Task Split  Backend Development2
+maintained by Dev 1 to avoid duplication.Team Task Split  Backend Development2.
