@@ -38,4 +38,4 @@ Feature branches: feature/auth , feature/programs , etc.
 Pull requests Each dev raises PR  reviewed by at least 1 teammate.
 API Documentation Swagger/Postman collection updated with every route.
 Common utilities Shared helpers (error handler, response format)
-maintained by Dev 1 to avoid duplication.Team Task Split  Backend Development2.
+maintained by Dev 1 to avoid duplication.Team Task Split  Backend Development2
