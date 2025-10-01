@@ -17,6 +17,10 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend 🚀" });
 });
+app.get("/show-body", (req, res) => {
+
+  res.json(req.body);
+});
 
 // Start server
 app.listen(PORT, () => {

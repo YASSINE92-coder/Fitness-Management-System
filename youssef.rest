@@ -1,0 +1,9 @@
+### test
+@baseUrl = http://localhost:3000
+GET {{baseUrl}}
+Content-Type: application/json
+
+{
+    "email": "user@example.com",
+    "password": "password123"
+}
