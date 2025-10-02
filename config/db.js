@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
+import {config} from "dotenv"
+config()
 
-const MONGODB_URI = "mongodb://localhost:27017/Fitness_management_system";
-
+const MONGODB_URI = process.env.DATABASE_URL;
+if(!MONGODB_URI) throw new Error("database url not valide")
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGODB_URI);
