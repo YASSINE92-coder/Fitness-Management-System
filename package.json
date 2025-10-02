@@ -1,7 +1,7 @@
 {
   "name": "fitness-management-system",
   "version": "1.0.0",
-  "description": "team project ( yassine - saad -  Nada - abdssamad) \r let's goooo",
+  "description": "team project ( yassine - saad -  Nada - youssef) \r let's goooo",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",

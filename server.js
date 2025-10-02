@@ -23,12 +23,16 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend!" });
 });
 
+// ✅ Gym routes
+import gymRoutes from "./routes/gyms.routes.js";
+app.use("/api/gyms", gymRoutes);
+
 // Handle 404 for undefined routes
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// Global error handler (optional but useful)
+// Global error handler
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ message: "Something went wrong!" });
@@ -38,4 +42,3 @@ app.use((err, req, res, next) => {
 const server = app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
-
