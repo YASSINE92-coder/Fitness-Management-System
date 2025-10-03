@@ -2,6 +2,34 @@
 import mongoose from 'mongoose';
 
 const gymSchema = new mongoose.Schema({
+
+    location: {
+        type: String,
+        required: true
+    },
+    equipements: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Equipment'
+    }],
+    coach: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }],
+      is_approved: {
+      type: Boolean,
+      default: false,
+    },
+    schedule: {
+        type: String,
+        required: true
+    },
+    mix: {
+        type: Boolean,
+        default: true
+    },
+    avtivities: [{
+        type: String
+    }]
   // Nom de la salle (implicite dans le cahier : "fiche détaillée d’un gym")
   name: {
     type: String,
