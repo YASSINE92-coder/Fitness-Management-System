@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import certificateSchema from "./Certificate";
-import profileDataSchema from "./ProfileData";
+import certificateSchema from "./Certificate.js";
+import profileDataSchema from "./ProfileData.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -67,6 +67,10 @@ const userSchema = new mongoose.Schema(
     years_of_experience: {
       type: Number,
     },
+    isActive: {
+       type: Boolean, 
+       default: true ,
+      },
     is_approved: {
       type: Boolean,
       default: false,
@@ -80,7 +84,8 @@ const userSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
+ 
 );
 
 // Add validation for coach-specific fields

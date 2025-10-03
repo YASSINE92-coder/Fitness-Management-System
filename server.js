@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
+import adminRoutes from "./routes/admin.route.js";
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +23,9 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend!" });
 });
+//admin route
+app.use("/api/admin", adminRoutes);
+
 
 // Handle 404 for undefined routes
 app.use((req, res) => {

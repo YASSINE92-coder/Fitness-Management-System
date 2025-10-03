@@ -12,6 +12,10 @@ const gymSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
+      is_approved: {
+      type: Boolean,
+      default: false,
+    },
     schedule: {
         type: String,
         required: true

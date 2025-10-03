@@ -1,20 +1,23 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const certificateSchema = new mongoose.Schema({
+const certificateSchema = new mongoose.Schema(
+  {
     title: {
-        type: String,
-        required: true
+      type: String,
+      required: false,
     },
     assigned_by: {
-        type: String,
-        required: true
+      type: String,
+      required: false,
     },
     issued_at: {
-        type: Date,
-        required: true
-    }
-}, {
-    timestamps: true
-});
+      type: Date,
+      required: false,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-export default  certificateSchema ;
+export default certificateSchema;
