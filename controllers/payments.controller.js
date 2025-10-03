@@ -34,7 +34,7 @@ const paymentsController = {
 
   buyProgram: async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById("68e01c883499a70bb3c8043a");
+    const user = await User.findById(req.user.id);
     if (!user) throw new AppError("user does not exist", 404);
     user.bought_programs.push(id);
     await user.save();
