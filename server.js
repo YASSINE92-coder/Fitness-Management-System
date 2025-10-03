@@ -37,6 +37,8 @@ app.use(limiter);
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend!" });
 });
+//admin route
+app.use("/api/admin", adminRoutes);
 
 //payment route
 app.use("/api", paymentRouter);
