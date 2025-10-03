@@ -27,6 +27,10 @@ app.get("/", (req, res) => {
 import gymRoutes from "./routes/gyms.routes.js";
 app.use("/api/gyms", gymRoutes);
 
+// Coach routes
+import coachRoutes from './routes/coaches.routes.js';
+app.use('/api/coaches', coachRoutes);
+
 // Handle 404 for undefined routes
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
