@@ -8,6 +8,7 @@ import AppError from "./errors/AppError.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import gloabalErrorHandler from "./errors/globalErrorHandler.js";
 import paymentRouter from "./routes/payments.route.js";
+import morgan from "morgan";
 
 // Load environment variables
 dotenv.config();
@@ -22,12 +23,12 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(helmet());
 app.use(express.json());
+app.use(morgan("dev"));
 app.use(globalTryCatch);
 
 // Routes
 
 app.get("/", (req, res) => {
-  throw new AppError("test", 404, { name: "youssef" });
   res.json({ message: "Welcome to my Express backend!" });
 });
 app.use("/api", paymentRouter);
