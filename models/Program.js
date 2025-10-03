@@ -7,7 +7,7 @@ const programSchema = new mongoose.Schema({
         required: true
     },
     creator: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,    
         ref: 'User',
         required: true
     },
@@ -21,6 +21,11 @@ const programSchema = new mongoose.Schema({
     period: {
         type: Date,
         required: true
+    },
+     status: {
+        type: String,
+        enum: ["pending", "approved", "rejected"],
+        default: "pending"
     }
 }, {
     timestamps: true

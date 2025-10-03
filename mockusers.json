@@ -1,0 +1,77 @@
+[
+  {
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "password": "hashedpassword123",
+    "role": "user",
+    "gender": "female",
+    "height": 165,
+    "weight": 60,
+    "fitness_level": "beginner",
+    "alergies": ["nuts"],
+    "activity_frequency": "moderate",
+    "profile": {
+      "bio": "Love running and outdoor workouts",
+      "age": 28,
+      "phone": "1234567890"
+    },
+    "goals": "weight_loss",
+    "bought_programs": []
+  },
+  {
+    "name": "Mohammed El Amrani",
+    "email": "mohammed.coach@example.com",
+    "password": "hashedpassword456",
+    "role": "coach",
+    "id":112233,
+    "gender": "male",
+    "height": 178,
+    "weight": 75,
+    "fitness_level": "advanced",
+    "alergies": [],
+    "activity_frequency": "active",
+    "profile": {
+      "bio": "Certified fitness coach specialized in muscle gain",
+      "age": 35,
+      "phone": "212600123456"
+    },
+    "goals": "muscle_gain",
+    "cin": "CIN123456",
+    "certificats": [
+      {
+        "title": "Personal Trainer Certificate",
+        "issued_by": "ACE",
+        "year": 2018
+      },
+      {
+        "title": "Nutrition Specialist",
+        "issued_by": "NASM",
+        "year": 2020
+      }
+    ],
+    "years_of_experience": 10,
+    "isActive": false,
+    "is_approved": true,
+    "programs": []
+  },
+  {
+    "name": "Sara Benali",
+    "email": "sara.admin@example.com",
+    "password": "hashedpassword789",
+    "role": "admin",
+    "gender": "female",
+    "height": 170,
+    "weight": 65,
+    "fitness_level": "intermediate",
+    "alergies": ["gluten"],
+    "activity_frequency": "sedentary",
+    "profile": {
+      "bio": "Admin of the platform",
+      "age": 30,
+      "phone": "212612345678"
+    },
+    "goals": "general",
+    "isActive": true,
+    "is_approved": true
+  }
+]

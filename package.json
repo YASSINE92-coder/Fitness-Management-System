@@ -1,7 +1,7 @@
 {
   "name": "fitness-management-system",
   "version": "1.0.0",
-  "description": "team project ( yassine - saad -  Nada - abdssamad) \r let's goooo",
+  "description": "team project ( yassine - saad -  Nada - youssef) \r let's goooo",
   "main": "index.js",
   "scripts": {
     "start": "node server.js",
@@ -22,10 +22,14 @@
   "homepage": "https://github.com/YASSINE92-coder/Fitness-Management-System#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
+
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.1.0",
+    "express-validator": "^7.2.1",
     "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.3",
     "morgan": "^1.10.1",
     "stripe": "^19.0.0"
