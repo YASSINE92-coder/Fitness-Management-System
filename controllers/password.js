@@ -32,7 +32,6 @@ export const updateUserById = async (req, res) => {
     if (updates.password) {
       updates.password = await hashPassword(updates.password);
     }
-    // Prevent changing email to an existing one
     if (updates.email) {
       const other = await User.findOne({ email: updates.email, _id: { $ne: req.params.id } });
       if (other) return res.status(400).json({ message: "Email already in use" });
@@ -56,6 +55,5 @@ export const deleteUserById = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 
 
