@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import certificateSchema from "./Certificate";
-import profileDataSchema from "./ProfileData";
+import certificateSchema from "./Certificate.js";
+import profileDataSchema from "./ProfileData.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ["user", "coach", "admin"],
-      default: "user",
+      enum: ["athlete", "coach", "admin"],
+      default: "athlete ",
     },
     gender: {
       type: String,
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["beginner", "intermediate", "advanced"],
     },
-    alergies: [
+    allergies: [
       {
         type: String,
       },
