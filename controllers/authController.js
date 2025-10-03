@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 
 const JWT_SECRET = process.env.JWT_SECRET || "supersecretjwt";
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "15m";

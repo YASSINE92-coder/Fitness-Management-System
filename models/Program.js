@@ -30,5 +30,5 @@ const programSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-
-export default mongoose.model('Program', programSchema);
+const Program = mongoose.model('Program', programSchema)
+export default Program;
