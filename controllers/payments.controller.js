@@ -5,22 +5,25 @@ import User from "../models/User.js";
 
 const paymentsController = {
   checkoutProgram: async (req, res) => {
-    const { id } = req.body || {};
+    const { id } = req.params;
     const program = await Program.findById(id);
-    if (!program) throw AppError("this program is no longuer available", 404);
-
+    if (!program)
+      throw new AppError("this program is no longuer available", 404);
+    console.log(process.env.SERVER_URL + process.env.PORT);
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
-      success_url: `${process.env.SERVER_URL}/api/program/${id}/buy`,
+      success_url: `${
+        process.env.SERVER_URL + process.env.PORT
+      }/api/programs/${id}/buy`,
       cancel_url: `${process.env.CLIENT_URL}/payment/canceled`,
       line_items: [
         {
           price_data: {
             currency: "usd",
             product_data: {
-              name: "program_demo",
+              name: program.title,
             },
-            unit_amount: 4000,
+            unit_amount: Math.ceil(program.price),
           },
           quantity: 1,
         },
@@ -31,7 +34,7 @@ const paymentsController = {
 
   buyProgram: async (req, res) => {
     const { id } = req.params;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById("68e01c883499a70bb3c8043a");
     if (!user) throw new AppError("user does not exist", 404);
     user.bought_programs.push(id);
     await user.save();

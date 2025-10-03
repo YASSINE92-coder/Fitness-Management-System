@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   throw new AppError("test", 404, { name: "youssef" });
   res.json({ message: "Welcome to my Express backend!" });
 });
-app.use("/api/programs", paymentRouter);
+app.use("/api", paymentRouter);
 
 // Error Handler
 app.use(gloabalErrorHandler);
