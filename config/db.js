@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import {config} from "dotenv"
-config()
+import { config } from "dotenv";
+config();
 
 const MONGODB_URI = process.env.DATABASE_URL;
-if(!MONGODB_URI) throw new Error("database url not valide")
+if (!MONGODB_URI) throw new Error("database url not valide");
 const connectDB = async () => {
   try {
     await mongoose.connect(MONGODB_URI);
@@ -14,4 +14,4 @@ const connectDB = async () => {
   }
 };
 
-export default connectDB;   
+export default connectDB;

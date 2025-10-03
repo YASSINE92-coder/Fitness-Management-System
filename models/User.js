@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-import certificateSchema from "./Certificate";
-import profileDataSchema from "./ProfileData";
+import certificateSchema from "./Certificate.js";
+import profileDataSchema from "./ProfileData.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -95,5 +95,5 @@ userSchema.pre("save", function (next) {
   }
   next();
 });
-
-export default mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+export default User;
