@@ -11,7 +11,7 @@ const gloabalErrorHandler = (err, req, res, next) => {
     res.status(500).json({ message });
     throw err;
   }
-  res.status(500).jsont({
+  res.status(500).json({
     message: "something went wrong please try again later!",
   });
 };
