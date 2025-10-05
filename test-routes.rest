@@ -1,0 +1,511 @@
+### ========================================
+### FITNESS MANAGEMENT SYSTEM - API TESTING
+### ========================================
+### Base URL Configuration
+@baseUrl = http://localhost:3000
+@apiUrl = {{baseUrl}}/api
+### Token Variables (to be set after login)
+
+@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
+@coachToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
+@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
+@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
+
+### ========================================
+### AUTHENTICATION & AUTHORIZATION
+### ========================================
+
+### 1. Get All Available Roles (Public)
+GET {{apiUrl}}/roles
+Content-Type: application/json
+
+### 2. Get Role Permissions (Public)
+GET {{apiUrl}}/roles/athlete/permissions
+Content-Type: application/json
+
+### 3. Get Coach Role Permissions
+GET {{apiUrl}}/roles/coach/permissions
+Content-Type: application/json
+
+### 4. Get Gym Role Permissions
+GET {{apiUrl}}/roles/gym/permissions
+Content-Type: application/json
+
+### 5. Get Admin Role Permissions
+GET {{apiUrl}}/roles/admin/permissions
+Content-Type: application/json
+
+### ========================================
+### USER REGISTRATION (SIGNUP)
+### ========================================
+
+### 6. Register Athlete
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "John Athlete",
+  "email": "athletehamza@test.com",
+  "password": "AthletePass123!",
+  "role": "athlete",
+  "gender": "male",
+  "height": 180,
+  "weight": 75,
+  "fitness_level": "intermediate",
+  "goals": "muscle_gain"
+}
+
+### 7. Register Coach  
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Coach Smith",
+  "email": "coach@test.com",
+  "password": "CoachPass123!",
+  "role": "coach",
+  "gender": "male",
+  "cin": "BB229924",
+  "years_of_experience": 10
+  }
+
+### 8. Register Gym
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Fitness Center marena",
+  "email": "gymboxemarena@test.com",
+  "password": "GymPass123!",
+  "role": "gym",
+  "gender": "male"
+}
+
+### 9. Register Admin
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Admin User",
+  "email": "adminsaad@test.com",
+  "password": "AdminPass123!",
+  "role": "admin",
+  "gender": "male"
+}
+
+### 10. Login as Athlete
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "athleteJohn@test.com",
+  "password": "AthletePass123!"
+}
+
+### 11. Login as Coach
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "coach@test.com",
+  "password": "CoachPass123!"
+}
+
+
+
+
+### 12. Login as Gym
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "gym@test.com",
+  "password": "GymPass123!"
+}
+
+
+
+### 13. Login as Admin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "AdminPass123!"
+}
+
+# After you run the request above, uncomment the following line to capture the token from the response:
+
+### 13. Login as Admin
+POST {{apiUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@test.com",
+  "password": "AdminPass123!"
+}
+
+# After you run the request above, uncomment the following line to capture the token from the response:
+//@adminToken = {{response.body.accessToken}}
+
+
+### ========================================
+### TOKEN MANAGEMENT
+### ========================================
+
+### 14. Refresh Token 
+POST {{apiUrl}}/auth/refresh
+Content-Type: application/json
+Cookie: refreshToken=your_refresh_token_here
+
+### 15. Logout
+POST {{apiUrl}}/auth/logout
+Content-Type: application/json
+Authorization: Bearer {{athleteToken}}
+Cookie: refreshToken=your_refresh_token_here
+
+### ========================================
+### ROLE-BASED PROTECTED ROUTES
+### ========================================
+
+### 16. Admin Dashboard (Admin Only)
+GET {{apiUrl}}/admin/dashboard
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+
+### 17. Coach Athletes (Coach Only)
+GET {{apiUrl}}/coach/athletes
+Authorization: Bearer {{coachToken}}
+Content-Type: application/json
+
+### 18. Coach Programs (Coach Only)
+GET {{apiUrl}}/coach/programs
+Authorization: Bearer {{coachToken}}
+Content-Type: application/json
+
+### 19. Gym Events (Gym Only)
+GET {{apiUrl}}/gym/events
+Authorization: Bearer {{gymToken}}
+Content-Type: application/json
+
+### 20. Gym Members (Gym Only)
+GET {{apiUrl}}/gym/members
+Authorization: Bearer {{gymToken}}
+Content-Type: application/json
+
+Content-Type: application/json
+
+### 21. Gym Equipment (Gym Only)
+GET {{apiUrl}}/gym/equipment
+Authorization: Bearer {{gymToken}}
+Content-Type: application/json
+
+### 22. Athlete Profile (Athlete Only)
+GET {{apiUrl}}/athlete/profile
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+
+### 23. Athlete Programs (Athlete Only)
+GET {{apiUrl}}/athlete/programs
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+Content-Type: application/json
+
+### 24. Athlete Progress (Athlete Only)
+GET {{apiUrl}}/athlete/progress
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+Content-Type: application/json
+
+### ========================================
+### PERMISSION-BASED ROUTES
+### ========================================
+
+### 25. Workouts (Permission: view_own_workouts)
+GET {{apiUrl}}/workouts
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+
+### 26. Statistics (Role: gym or higher)
+GET {{apiUrl}}/statistics
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+Content-Type: application/json
+
+### ========================================
+### USER MANAGEMENT
+### ========================================
+
+### 27. Create User (Public)
+POST {{apiUrl}}/users
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "testuseryassine@test.com",
+  "password": "TestPass123!",
+  "gender": "female"
+}
+
+### 28. Get User by ID (Owner or Admin/Coach/Gym)
+GET {{apiUrl}}/users/68e16e310a01ca2fec4d7cde
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+
+### 29. Update User (Owner or Admin)
+PUT {{apiUrl}}/users/68e16e310a01ca2fec4d7cde
+Authorization: Bearer {{athleteToken}}  
+Content-Type: application/json
+
+{
+  "name": "Updated Name",
+  "height": 185
+}
+
+### 30. Delete User (Admin Only)
+DELETE {{apiUrl}}/users/68e16e310a01ca2fec4d7cde
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+
+### ========================================
+### ROLE MANAGEMENT (ADMIN ONLY)
+### =======================================
+
+### 31. Get Users by Role
+GET {{apiUrl}}/roles/athlete/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 32. Get Users by Coach Role
+GET {{apiUrl}}/roles/coach/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 33. Get Users by Gym Role
+GET {{apiUrl}}/roles/gym/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 34. Get Users by Admin Role
+GET {{apiUrl}}/roles/admin/users
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 35. Get Role Statistics
+GET {{apiUrl}}/roles/statistics
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 36. Update User Role
+PUT {{apiUrl}}/users/USER_ID_HERE/role
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "newRole": "coach"
+}
+
+### 37. Approve User
+PUT {{apiUrl}}/users/USER_ID_HERE/approve
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{
+  "approved": true
+}
+
+### 38. Toggle User Status
+PUT {{apiUrl}}/users/USER_ID_HERE/status
+Authorization: Bearer {{adminToken}}  
+Content-Type: application/json
+
+### ========================================
+### PERMISSION CHECKING
+### ========================================
+
+### 39. Check User Permissions
+POST {{apiUrl}}/users/USER_ID_HERE/permissions
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+
+{
+  "permissions": ["view_athletes", "create_programs", "manage_equipment"]
+}
+
+### ========================================
+### COACH ROUTES
+### ========================================
+
+### 40. Create Coach
+POST {{apiUrl}}/coaches
+Content-Type: application/json
+
+{
+  "name": "New Coach",
+  "email": "newcoach@test.com",
+  "password": "CoachPass123!",
+  "gender": "female",
+  "cin": "87654321",
+  "years_of_experience": 3
+}
+
+### 41. Get All Coaches
+GET {{apiUrl}}/coaches
+Content-Type: application/json
+
+### 42. Get Coach by ID
+GET {{apiUrl}}/coaches/COACH_ID_HERE
+Content-Type: application/json
+
+### 43. Update Coach
+PATCH {{apiUrl}}/coaches/COACH_ID_HERE
+Content-Type: application/json
+
+{
+  "name": "Updated Coach Name",
+  "years_of_experience": 6
+}
+
+### 44. Delete Coach
+DELETE {{apiUrl}}/coaches/COACH_ID_HERE
+Content-Type: application/json
+
+### ========================================
+### GYM ROUTES
+### ========================================
+
+### 45. Create Gym
+POST {{apiUrl}}/gyms
+Content-Type: application/json
+
+{
+  "name": "New Gym",
+  "email": "newgym@test.com",
+  "password": "GymPass123!",
+  "gender": "male"
+}
+
+### 46. Get All Gyms
+GET {{apiUrl}}/gyms
+Content-Type: application/json
+
+### 47. Get Gym by ID
+GET {{apiUrl}}/gyms/GYM_ID_HERE
+Content-Type: application/json
+
+### 48. Update Gym
+PATCH {{apiUrl}}/gyms/GYM_ID_HERE
+Content-Type: application/json
+
+{
+  "name": "Updated Gym Name"
+}
+
+### 49. Delete Gym
+DELETE {{apiUrl}}/gyms/GYM_ID_HERE
+Content-Type: application/json
+
+### ========================================
+### ADMIN ROUTES
+### ========================================
+
+### 50. Get All Users (Admin)
+GET {{apiUrl}}/admin/users
+Content-Type: application/json
+
+### 51. Activate User
+PATCH {{apiUrl}}/admin/users/USER_ID_HERE/activate
+Content-Type: application/json
+
+### 52. Deactivate User
+PATCH {{apiUrl}}/admin/users/USER_ID_HERE/deactivate
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 53. Delete User (Admin)
+DELETE {{apiUrl}}/admin/users/USER_ID_HERE
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 54. Get Admin Stats
+GET {{apiUrl}}/admin/stats
+Content-Type: application/json
+
+### 55. Get All Programs (Admin)
+GET {{apiUrl}}/admin/programs
+Content-Type: application/json
+
+### 56. Approve Program
+PUT {{apiUrl}}/admin/programs/PROGRAM_ID_HERE/approve
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 57. Reject Program
+PATCH {{apiUrl}}/admin/programs/PROGRAM_ID_HERE/reject
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+Content-Type: application/json
+
+### 58. Get Program Stats
+GET {{apiUrl}}/admin/programs/stats
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### ========================================
+### PAYMENT ROUTES
+### ========================================
+
+### 59. Program Checkout
+GET {{apiUrl}}/programs/PROGRAM_ID_HERE/checkout
+Content-Type: application/json
+
+### 60. Buy Program
+GET {{apiUrl}}/programs/PROGRAM_ID_HERE/buy
+Content-Type: application/json
+
+### ========================================
+### ERROR TESTING
+### ========================================
+
+### 61. Test Invalid Role (Should Fail)
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Test User",
+  "email": "invalid@test.com",
+  "password": "TestPass123!",
+  "role": "invalid_role",
+  "gender": "male"
+}
+
+### 62. Test Missing Required Fields for Coach (Should Fail)
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Test Coach",
+  "email": "testcoach@test.com",
+  "password": "TestPass123!",
+  "role": "coach",
+  "gender": "male"
+}
+
+### 63. Test Unauthorized Access (Should Fail)
+GET {{apiUrl}}/admin/dashboard
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+### 64. Test Invalid Token (Should Fail)
+GET {{apiUrl}}/coach/athletes
+Authorization: Bearer {{athleteToken}}
+Content-Type: application/json
+
+### ========================================
+### SERVER HEALTH CHECK
+### ========================================
+
+### 65. Server Health Check
+GET {{baseUrl}}/
+Content-Type: application/json

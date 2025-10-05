@@ -6,12 +6,12 @@ import profileDataSchema from "./ProfileData.js";
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["user", "coach", "admin", "gym", "athlete"],
-      default: "user",
+      enum: ["athlete", "coach", "gym", "admin"],
+      default: "athlete",
     },
     gender: { type: String, enum: ["male", "female"], required: true },
     height: { type: Number },
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: ["beginner", "intermediate", "advanced"],
     },
-    alergies: [{ type: String }],
+    allergies: [{ type: String }],
     activity_frequency: {
       type: String,
       enum: ["active", "moderate", "sedentary"],
@@ -31,8 +31,8 @@ const userSchema = new mongoose.Schema(
       enum: ["weight_loss", "muscle_gain", "endurance", "general"],
     },
     bought_programs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Program" }],
-    cin: { type: String, sparse: true },
-    certificats: [certificateSchema],
+    cin: { type: String, sparse: true , unique: true}, // Coach Identification Number
+    certificates : [certificateSchema],
     years_of_experience: {
       type: Number,
     },
@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    is_approved: {
+    is_Approved: {
       type: Boolean,
       default: false,
     },
@@ -50,22 +50,28 @@ const userSchema = new mongoose.Schema(
         ref: "Program",
       },
     ],
-
-    years_of_experience: { type: Number },
-    is_approved: { type: Boolean, default: false },
-    programs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Program" }],
-    refreshTokens: [String],
+    refreshTokens: {
+  type: [String],
+  default: [],
+},
+    
   },
   { timestamps: true }
 );
 
 userSchema.pre("save", function (next) {
   if (this.role === "coach") {
-    if (!this.cin) throw new Error("CIN is required for coaches");
-    if (!this.years_of_experience)
-      throw new Error("Years of experience is required for coaches");
+    if (!this.cin || !this.years_of_experience) {
+      const error = new mongoose.Error.ValidationError(this);
+      if (!this.cin) error.addError("cin", new mongoose.Error.ValidatorError({ message: "CIN is required for coaches" }));
+      if (!this.years_of_experience) error.addError("years_of_experience", new mongoose.Error.ValidatorError({ message: "Years of experience is required for coaches" }));
+      return next(error);
+    }
   }
   next();
 });
-const User = mongoose.model("User", userSchema);
+userSchema.index({ email: 1 });
+userSchema.index({ cin: 1 });
+
+const User = mongoose.model("User", userSchema);  
 export default User;
