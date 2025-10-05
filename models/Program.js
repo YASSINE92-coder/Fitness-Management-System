@@ -19,7 +19,7 @@ const programSchema = new mongoose.Schema({
         required: true
     },
     period: {
-        type: Date,
+        type: Number,
         required: true
     },
      status: {

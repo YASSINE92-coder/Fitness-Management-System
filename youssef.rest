@@ -5,6 +5,22 @@ Content-Type: application/json
 
 
 ### payment checkout
-
 GET {{baseUrl}}/api/programs/68e03685fcedd282eeb7c320/checkout
 Content-Type: application/json
+
+
+### program create 
+POST {{baseUrl}}/api/programs
+Content-Type: application/json
+
+{
+  "title": "title for program",
+  "program_goals": [
+    "strenght",
+    "lwiza",
+    "lhmss"
+  ],
+  "price": "44",
+  "period": 50,
+  "status": "pending"
+}

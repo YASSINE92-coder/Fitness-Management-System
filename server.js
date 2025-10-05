@@ -7,13 +7,12 @@ import userRoutes from "./routes/userRoutes.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import stripe from "./config/plugins/stripe.js";
-import AppError from "./errors/AppError.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import gloabalErrorHandler from "./errors/globalErrorHandler.js";
 import paymentRouter from "./routes/payments.route.js";
 import morgan from "morgan";
 import adminRoutes from "./routes/admin.route.js";
+import programRouter from "./routes/programs.route.js";
 
 // Load environment variables
 dotenv.config();
@@ -22,6 +21,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 5000;
 const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
 
@@ -46,12 +46,13 @@ app.use("/api", paymentRouter);
 //admin route
 app.use("/api/admin", adminRoutes);
 
-
-// Auth routes 
+// Auth routes
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
 
+// program routes
+app.use("/api/programs", programRouter);
 
 app.use(gloabalErrorHandler);
 // Start server

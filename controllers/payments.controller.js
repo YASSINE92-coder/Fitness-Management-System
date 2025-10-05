@@ -3,7 +3,7 @@ import AppError from "../errors/AppError.js";
 import stripe from "../config/plugins/stripe.js";
 import User from "../models/User.js";
 
-const paymentsController = {
+const paymentController = {
   checkoutProgram: async (req, res) => {
     const { id } = req.params;
     const program = await Program.findById(id);
@@ -42,4 +42,4 @@ const paymentsController = {
   },
 };
 
-export default paymentsController;
+export default paymentController;
