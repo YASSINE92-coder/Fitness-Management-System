@@ -6,40 +6,31 @@ import {
   deactivateUser,
   deleteUser,
   getStats,
-  getAllPrograms,
-  approveProgram,
-  rejectProgram,
-  getProgramStats,
+ 
 } from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
 router.get(
-  "/users",
-  //  authenticate,
-  //   isAllowed,
+  "/users"
+  ,authenticate,
+  isAllowed,
   getAllUsers
 );
-router.patch(
-  "/users/:id/activate",
- 
-  // authenticate,
-  //  isAllowed,
-  activateUser
-);
+router.patch("/users/:id/activate",authenticate,isAllowed,activateUser);
 
-router.patch("/users/:id/deactivate", authenticate, isAllowed, deactivateUser);
-router.delete("/users/:id", authenticate, isAllowed, deleteUser);
+router.patch("/users/:id/deactivate",
+  authenticate, isAllowed,
+    deactivateUser);
+router.delete("/users/:id",
+   authenticate, isAllowed,
+    deleteUser);
 
 router.get(
   "/stats",
-  //  authenticate,
-  //  isAllowed,
+  authenticate,
+  isAllowed,
   getStats
 );
-router.get("/programs", getAllPrograms)
- 
-router.put("/programs/:id/approve", authenticate, isAllowed, approveProgram);
-router.patch("/programs/:id/reject", authenticate, isAllowed, rejectProgram);
-router.get("/programs/stats", authenticate, isAllowed, getProgramStats);
+
 export default router;

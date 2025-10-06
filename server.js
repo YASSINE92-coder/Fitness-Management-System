@@ -14,7 +14,7 @@ import gloabalErrorHandler from "./errors/globalErrorHandler.js";
 import paymentRouter from "./routes/payments.route.js";
 import morgan from "morgan";
 import adminRoutes from "./routes/admin.route.js";
-
+import adminProgramRoutes from "./routes/adminProgram.route.js"
 // Load environment variables
 dotenv.config();
 
@@ -23,15 +23,15 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
+const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 })
 
 // Middlewares
 app.use(cors({ origin: true, credentials: true }));
 app.use(helmet());
-app.use(express.json());
-app.use(morgan("dev"));
-app.use(globalTryCatch);
-app.use(limiter);
+app.use(express.json())
+app.use(morgan("dev"))
+app.use(globalTryCatch)
+app.use(limiter)
 
 // test
 app.get("/", (req, res) => {
@@ -43,9 +43,8 @@ app.use("/api/admin", adminRoutes);
 //payment route
 app.use("/api", paymentRouter);
 
-//admin route
-app.use("/api/admin", adminRoutes);
-
+//adminProgram route
+app.use("/admin/programs", adminProgramRoutes);
 
 // Auth routes 
 app.use("/api/auth", authRoutes);
