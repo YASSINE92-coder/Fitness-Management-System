@@ -91,3 +91,8 @@ Authorization: {{auth}}
 {
   "active": true
 }
+
+### delete program 
+DELETE {{baseUrl}}/api/programs/68e2945b1bbfe7be079d7bbd
+Content-Type: application/json
+Authorization: {{auth}}
