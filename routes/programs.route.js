@@ -4,10 +4,12 @@ import updateProgramValidator from "../validators/program/updateProgram.validato
 import programController from "../controllers/programs.controller.js";
 import { authRole } from "../middlewares/authRole.js";
 import getProgramValidator from "../validators/program/getProgram.validator.js";
+import { authenticate } from "../middlewares/Auth.js";
 const programRouter = express.Router();
 
 programRouter.get("/", getProgramValidator, programController.index);
 
+programRouter.use(authenticate);
 programRouter.delete(
   "/:id",
   authRole("admin", "coach"),

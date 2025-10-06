@@ -2,7 +2,7 @@ import express from "express";
 import { protect } from "../middlewares/auth.js";
 import { authRole } from "../middlewares/authRole.js";
 import { authorizeSelfOrRoles } from "../middlewares/authorize.js";
-import { createUser, getUserById, updateUserById, deleteUserById } from "../controllers/userController.js";
+import { createUser, getUserById, updateUserById, deleteUserById } from "../controllers/users.controller.js";
 import { body } from "express-validator";
 import { handleValidation } from "../middlewares/validation.js";
 

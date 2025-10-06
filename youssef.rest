@@ -1,6 +1,6 @@
 ### test
-@baseUrl = http://localhost:4000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTI5NDRjMWJiZmU3YmUwNzlkN2JiYSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTcwMjE1MiwiZXhwIjoxNzU5NzAzMDUyfQ._fHeToh3hZ_TuhCQLcoDhP8S4IzZHPTXHp-y1NV2CTc
+@baseUrl = http://localhost:3000
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTNmMWU3ZmI1YmM2YTU3ZGIxYzM1OSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTc2OTA2MywiZXhwIjoxNzU5NzY5OTYzfQ.jPOGVzM1Sq4Bx-V-c0c1iF1MTMJZLYDOM5jGPTkCEz4
 
 GET {{ baseUrl }}
 Content-Type: application/json
