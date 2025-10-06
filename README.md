@@ -169,3 +169,18 @@ Suivi personnalisé entre athlète et coach (Dév 3).
 Abonnements récurrents (Dév 4 + Dév 1).
 
 Réseau social interne (Dév 2 + Dév 1).
+
+## Seeding the database
+
+A small seeder is provided at `seeds/seed.js` to create sample documents for development.
+
+Requirements:
+- A running MongoDB instance and `DATABASE_URL` set in your `.env` (for example: `mongodb://localhost:27017/fitness-dev`).
+
+Run the seeder with:
+
+```
+npm run seed
+```
+
+The script clears certain collections and inserts sample users (coach + user), programs, a post, a gym and equipments.
