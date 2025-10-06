@@ -3,7 +3,8 @@
 GET {{baseUrl}}
 Content-Type: application/json
 
-{
-    "email": "user@example.com",
-    "password": "password123"
-}
+
+### payment checkout
+
+GET {{baseUrl}}/api/programs/68e03685fcedd282eeb7c320/checkout
+Content-Type: application/json
