@@ -52,6 +52,14 @@ app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
 
+// ✅ Gym routes
+import gymRoutes from "./routes/gyms.routes.js";
+app.use("/api/gyms", gymRoutes);
+
+// Coach routes
+import coachRoutes from './routes/coaches.routes.js';
+app.use('/api/coaches', coachRoutes);
+
 // ✅ Athlete consultation routes (kept from your branch)
 app.use("/api/athletes", athleteConsultationRoutes);
 
