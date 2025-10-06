@@ -29,7 +29,7 @@ const gymSchema = new mongoose.Schema({
     },
     avtivities: [{
         type: String
-    }]
+    }],
   // Nom de la salle (implicite dans le cahier : "fiche détaillée d’un gym")
   name: {
     type: String,

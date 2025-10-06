@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middlewares/auth.js";
-import { authRole, authPermission, authRoleOrHigher } from "../middlewares/authRole.js";
+import { authRole } from "../middlewares/authRole.js";
 import {
   getAllRoles,
   getRolePermissions,

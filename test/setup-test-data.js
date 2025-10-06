@@ -365,3 +365,4 @@ export {
 if (import.meta.url === `file://${process.argv[1]}`) {
   setupTestData().catch(console.error);
 }
+

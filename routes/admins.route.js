@@ -1,5 +1,7 @@
 import express from "express";
-import { authenticate, isAllowed } from "../middlewares/Auth.js";
+import { authRole } from "../middlewares/authRole.js";
+import { protect ,authenticate, isAllowed  } from "../middlewares/auth.js";
+
 import {
   getAllUsers,
   activateUser,
@@ -10,9 +12,18 @@ import {
   approveProgram,
   rejectProgram,
   getProgramStats,
-} from "../controllers/admin.controller.js";
+} from "../controllers/admins.controller.js";
 
 const router = express.Router();
+
+// ========================= ADMIN ROUTES =========================
+router.get("/dashboard", protect, authRole("admin"), (req, res) => {
+  res.json({ 
+    message: `Welcome admin ${req.user.name}`,
+    route: "/admin/dashboard",
+    permissions: ["All permissions"]
+  });
+});
 
 router.get(
   "/users",

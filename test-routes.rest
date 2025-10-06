@@ -6,10 +6,10 @@
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
 
-@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
-@coachToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
-@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
-@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NjYwNTc3LCJleHAiOjE3NTk2NjE0Nzd9.yxkVQ-6AQ4Ywm5gB1Abqi-LFR1mobEbqIJnY9i0bI0Y
+@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NzUxMDQxLCJleHAiOjE3NTk3NTQ1ODF9.lrhMG0slxMfsnDlpA-ee5ZjhBOJqdytUy9vKqFzLEfI
+@coachToken =eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDFiODVmZTI3NGMwYTUyZTYwOCIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTc1MTA4NywiZXhwIjoxNzU5NzU0NjI3fQ.cs6W1q5qfSIp1abr1-yurnF1X2jd3WQ_lBAdhgCoL3o
+@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTA1MGEwMWNhMmZlYzRkN2NkNyIsInJvbGUiOiJneW0iLCJpYXQiOjE3NTk3NTExMDksImV4cCI6MTc1OTc1NDY0OX0.c5udVfrGWUQwE6DyZTBSPmOSnMqEfPxHUzbTZvN-sUI
+@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTc1MTEzNywiZXhwIjoxNzU5NzU0Njc3fQ.FFOpewdrMed7ZApUnBVGbjQHeYLtFHL2PjLiW9aVSjg
 
 ### ========================================
 ### AUTHENTICATION & AUTHORIZATION
@@ -45,14 +45,10 @@ Content-Type: application/json
 
 {
   "name": "John Athlete",
-  "email": "athletehamza@test.com",
+  "email": "yassinechaanoune@test.com",
   "password": "AthletePass123!",
   "role": "athlete",
-  "gender": "male",
-  "height": 180,
-  "weight": 75,
-  "fitness_level": "intermediate",
-  "goals": "muscle_gain"
+  "gender": "male"
 }
 
 ### 7. Register Coach  
@@ -61,13 +57,13 @@ Content-Type: application/json
 
 {
   "name": "Coach Smith",
-  "email": "coach@test.com",
+  "email": "coachyassine@test.com",
   "password": "CoachPass123!",
   "role": "coach",
   "gender": "male",
   "cin": "BB229924",
   "years_of_experience": 10
-  }
+}
 
 ### 8. Register Gym
 POST {{apiUrl}}/auth/signup
@@ -75,7 +71,7 @@ Content-Type: application/json
 
 {
   "name": "Fitness Center marena",
-  "email": "gymboxemarena@test.com",
+  "email": "yassinegym@test.com",
   "password": "GymPass123!",
   "role": "gym",
   "gender": "male"
@@ -87,7 +83,7 @@ Content-Type: application/json
 
 {
   "name": "Admin User",
-  "email": "adminsaad@test.com",
+  "email": "adminyassine@test.com",
   "password": "AdminPass123!",
   "role": "admin",
   "gender": "male"
@@ -107,12 +103,9 @@ POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "coach@test.com",
+  "email": "coachyassine@test.com",
   "password": "CoachPass123!"
 }
-
-
-
 
 ### 12. Login as Gym
 POST {{apiUrl}}/auth/login
@@ -123,31 +116,16 @@ Content-Type: application/json
   "password": "GymPass123!"
 }
 
-
-
 ### 13. Login as Admin
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "admin@test.com",
+  "email": "adminyassine@test.com",
   "password": "AdminPass123!"
 }
 
 # After you run the request above, uncomment the following line to capture the token from the response:
-
-### 13. Login as Admin
-POST {{apiUrl}}/auth/login
-Content-Type: application/json
-
-{
-  "email": "admin@test.com",
-  "password": "AdminPass123!"
-}
-
-# After you run the request above, uncomment the following line to capture the token from the response:
-//@adminToken = {{response.body.accessToken}}
-
 
 ### ========================================
 ### TOKEN MANAGEMENT
@@ -156,13 +134,13 @@ Content-Type: application/json
 ### 14. Refresh Token 
 POST {{apiUrl}}/auth/refresh
 Content-Type: application/json
-Cookie: refreshToken=your_refresh_token_here
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTc0NzkwNywiZXhwIjoxNzYwMzUyNzA3fQ.acACe3HaIRWo9sza4zOx5D8xwAI8LHDI5DoPZZTLeFs
 
 ### 15. Logout
 POST {{apiUrl}}/auth/logout
 Content-Type: application/json
-Authorization: Bearer {{athleteToken}}
-Cookie: refreshToken=your_refresh_token_here
+Authorization: Bearer {{adminToken}}
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTc0NzkwNywiZXhwIjoxNzYwMzUyNzA3fQ.acACe3HaIRWo9sza4zOx5D8xwAI8LHDI5DoPZZTLeFs
 
 ### ========================================
 ### ROLE-BASED PROTECTED ROUTES
@@ -172,7 +150,6 @@ Cookie: refreshToken=your_refresh_token_here
 GET {{apiUrl}}/admin/dashboard
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
-
 
 ### 17. Coach Athletes (Coach Only)
 GET {{apiUrl}}/coach/athletes
@@ -194,7 +171,6 @@ GET {{apiUrl}}/gym/members
 Authorization: Bearer {{gymToken}}
 Content-Type: application/json
 
-Content-Type: application/json
 
 ### 21. Gym Equipment (Gym Only)
 GET {{apiUrl}}/gym/equipment
@@ -210,12 +186,10 @@ Content-Type: application/json
 GET {{apiUrl}}/athlete/programs
 Authorization: Bearer {{athleteToken}}
 Content-Type: application/json
-Content-Type: application/json
 
 ### 24. Athlete Progress (Athlete Only)
 GET {{apiUrl}}/athlete/progress
 Authorization: Bearer {{athleteToken}}
-Content-Type: application/json
 Content-Type: application/json
 
 ### ========================================
@@ -229,7 +203,7 @@ Content-Type: application/json
 
 ### 26. Statistics (Role: gym or higher)
 GET {{apiUrl}}/statistics
-Authorization: Bearer {{athleteToken}}
+Authorization: Bearer {{gymToken}}
 Content-Type: application/json
 Content-Type: application/json
 
@@ -243,29 +217,38 @@ Content-Type: application/json
 
 {
   "name": "Test User",
-  "email": "testuseryassine@test.com",
+  "email": "saaduser@test.com",
   "password": "TestPass123!",
   "gender": "female"
 }
 
+
+
 ### 28. Get User by ID (Owner or Admin/Coach/Gym)
-GET {{apiUrl}}/users/68e16e310a01ca2fec4d7cde
-Authorization: Bearer {{athleteToken}}
+GET {{apiUrl}}/users/68e3a1041801326ac6145879
+Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 29. Update User (Owner or Admin)
-PUT {{apiUrl}}/users/68e16e310a01ca2fec4d7cde
-Authorization: Bearer {{athleteToken}}  
+PUT {{apiUrl}}/users/68e3a1041801326ac6145879
+Authorization: Bearer {{adminToken}}  
 Content-Type: application/json
 
 {
   "name": "Updated Name",
-  "height": 185
+  "height": 185,
+  "weight": 90,
+  "certificates": 
+    {
+      "title": "Personal Trainer Certificate",
+      "issued_at": 2018,
+      "assigned_by": "ACE"
+    }
 }
 
 ### 30. Delete User (Admin Only)
-DELETE {{apiUrl}}/users/68e16e310a01ca2fec4d7cde
-Authorization: Bearer {{athleteToken}}
+DELETE {{apiUrl}}/users/68e396f085fe274c0a52e621
+Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### ========================================
@@ -509,3 +492,4 @@ Content-Type: application/json
 ### 65. Server Health Check
 GET {{baseUrl}}/
 Content-Type: application/json
+

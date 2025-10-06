@@ -1,6 +1,6 @@
 import User from "../models/User.js";
 import Program from "../models/Program.js";
-import { Admin } from "mongodb";
+//import { Admin } from "mongodb";
 // Lister tous les utilisateurs avec pagination
 export const getAllUsers = async (req, res) => {
   try {
