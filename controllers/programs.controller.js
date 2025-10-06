@@ -1,10 +1,24 @@
 import AppError from "../errors/AppError.js";
 import Program from "../models/Program.js";
 import User from "../models/User.js";
+import filterQuery, { ObjectId } from "../utils/filter.js";
+import paginate from "../utils/paginate.js";
 import validate from "../utils/validate.js";
-
 const programController = {
-  index: async (req, res) => {},
+  index: async (req, res) => {
+    const allowedFields = {
+      title: Number,
+      price: Number,
+      period: Number,
+      creator: ObjectId,
+    };
+    const searchableFields = ["title"];
+    const filters = filterQuery(req, allowedFields, searchableFields);
+    const { page = 1, limit = 10 } = req.query || {};
+    const data = await paginate(Program, page, limit, filters);
+    res.json(data);
+  },
+
   store: async (req, res) => {
     const data = validate(req);
     const userId = req.user.id || null;
@@ -31,6 +45,7 @@ const programController = {
 
     return res.json(updatedProgram);
   },
+
   delete: async (req, res) => {
     const programId = req.params?.id || null;
     const program = await Program.findById(programId);
