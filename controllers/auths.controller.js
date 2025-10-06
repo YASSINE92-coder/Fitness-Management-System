@@ -3,14 +3,14 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { ROLES, ROLE_VALIDATION } from "../utils/roles.js";
 
-const JWT_SECRET = process.env.JWT_SECRET || "supersecretjwt";
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || "15m";
-
-const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || "superrefreshjwt";
-const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || "7d";
-
 // Generate Access Token
 const generateAccessToken = (user) => {
+  const JWT_SECRET = process.env.JWT_SECRET;
+  const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN;
+  console.log(JWT_EXPIRES_IN);
+
+  if (!JWT_SECRET || !JWT_EXPIRES_IN)
+    throw new Error("JWT secrets are not configured");
   return jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
@@ -18,6 +18,10 @@ const generateAccessToken = (user) => {
 
 // Generate Refresh Token
 const generateRefreshToken = (user) => {
+  const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
+  const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN;
+  if (!JWT_REFRESH_SECRET || !JWT_REFRESH_EXPIRES_IN)
+    throw new Error("JWT secrets are not configured");
   return jwt.sign({ id: user._id }, JWT_REFRESH_SECRET, {
     expiresIn: JWT_REFRESH_EXPIRES_IN,
   });
@@ -104,7 +108,8 @@ export const login = async (req, res) => {
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
@@ -145,7 +150,8 @@ export const refresh = async (req, res) => {
   if (!refreshToken) return res.status(401).json({ message: "No refresh token provided" });
 
   try {
-    const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
     const user = await User.findById(decoded.id);
 
     if (!user || !user.refreshTokens.includes(refreshToken)) {
@@ -166,7 +172,8 @@ export const logout = async (req, res) => {
   
   if (refreshToken) {
     try {
-      const decoded = jwt.verify(refreshToken, JWT_REFRESH_SECRET);
+      const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
       const user = await User.findById(decoded.id);
 
       if (user) {

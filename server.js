@@ -8,6 +8,10 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 //importing files
 import connectDB from "./config/db.js";
+import globalTryCatch from "./errors/globalTryCatch.js";
+import paymentRouter from "./routes/payments.route.js";
+import adminRoutes from "./routes/admins.route.js";
+import programRouter from "./routes/programs.route.js";
 import authRoutes from "./routes/auths.route.js";
 import protectedRoutes from "./routes/access.route.js";
 import userRoutes from "./routes/users.route.js";
@@ -15,9 +19,6 @@ import roleRoutes from "./routes/roles.route.js";
 import athleteRoutes from "./routes/athletes.route.js";
 import coachRoutes from "./routes/coaches.route.js";
 import gymRoutes from "./routes/gyms.route.js";
-import paymentRouter from "./routes/payments.route.js";
-import adminRoutes from "./routes/admins.route.js";
-import globalTryCatch from "./errors/globalTryCatch.js";
 import globalErrorHandler from "./errors/globalErrorHandler.js";
 import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
 
@@ -30,6 +31,7 @@ dotenv.config();
 connectDB();
 
 const app = express();
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 5000;
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -67,6 +69,8 @@ app.use("/api", gymRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use('/api/coaches', coachRoutes);
 
+// program routes
+app.use("/api/programs", programRouter);
 //  Athlete consultation routes (kept from your branch)
 app.use("/api/athletes", athleteConsultationRoutes);
 
