@@ -1,6 +1,6 @@
 import AppError from "./AppError.js";
 
-const gloabalErrorHandler = (err, req, res, next) => {
+const globalErrorHandler = (err, req, res, next) => {
   if (err instanceof AppError) {
     const { message, statusCode, data } = err;
 
@@ -16,4 +16,4 @@ const gloabalErrorHandler = (err, req, res, next) => {
   });
 };
 
-export default gloabalErrorHandler;
+export default globalErrorHandler;

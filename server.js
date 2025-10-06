@@ -1,22 +1,27 @@
+//express libraries : 
 import express from "express";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
-import authRoutes from "./routes/authRoutes.js";
-import protectedRoutes from "./routes/protectedRoutes.js";
-import userRoutes from "./routes/userRoutes.js";
+import cookieParser from "cookie-parser";
+import morgan from "morgan";
 import helmet from "helmet";
 import dotenv from "dotenv";
+//importing files
 import connectDB from "./config/db.js";
-import stripe from "./config/plugins/stripe.js";
-import AppError from "./errors/AppError.js";
-import globalTryCatch from "./errors/globalTryCatch.js";
-import gloabalErrorHandler from "./errors/globalErrorHandler.js";
+import authRoutes from "./routes/auths.route.js";
+import protectedRoutes from "./routes/access.route.js";
+import userRoutes from "./routes/users.route.js";
+import roleRoutes from "./routes/roles.route.js";
+import athleteRoutes from "./routes/athletes.route.js";
+import coachRoutes from "./routes/coaches.route.js";
+import gymRoutes from "./routes/gyms.route.js";
 import paymentRouter from "./routes/payments.route.js";
-import morgan from "morgan";
-import adminRoutes from "./routes/admin.route.js";
-
-// ✅ Added missing import from your branch
+import adminRoutes from "./routes/admins.route.js";
+import globalTryCatch from "./errors/globalTryCatch.js";
+import globalErrorHandler from "./errors/globalErrorHandler.js";
 import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
+
+//  Added missing import from your branch
 
 // Load environment variables
 dotenv.config();
@@ -26,12 +31,16 @@ connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 100 });
-
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100,                 // limit each IP to 100 requests per windowMs
+});
 // Middlewares
 app.use(cors({ origin: true, credentials: true }));
+//allow access-control-allow-origin from all origins and allow headers like Content-Type, Authorization etc (JWT)  
 app.use(helmet());
 app.use(express.json());
+app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(globalTryCatch);
 app.use(limiter);
@@ -51,16 +60,14 @@ app.use("/api", paymentRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
-
-// ✅ Gym routes
-import gymRoutes from "./routes/gyms.routes.js";
+app.use("/api", roleRoutes);
+app.use("/api", athleteRoutes);
+app.use("/api", coachRoutes);
+app.use("/api", gymRoutes);
 app.use("/api/gyms", gymRoutes);
-
-// Coach routes
-import coachRoutes from './routes/coaches.routes.js';
 app.use('/api/coaches', coachRoutes);
 
-// ✅ Athlete consultation routes (kept from your branch)
+//  Athlete consultation routes (kept from your branch)
 app.use("/api/athletes", athleteConsultationRoutes);
 
 // Handle 404 for undefined routes
@@ -68,9 +75,8 @@ app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });
 });
 
-// Global error handler
-app.use(gloabalErrorHandler);
-
+// Global error handling middleware
+app.use(globalErrorHandler);
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
