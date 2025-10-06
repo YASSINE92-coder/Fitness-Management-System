@@ -15,6 +15,9 @@ import paymentRouter from "./routes/payments.route.js";
 import morgan from "morgan";
 import adminRoutes from "./routes/admin.route.js";
 
+// ✅ Added missing import from your branch
+import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
+
 // Load environment variables
 dotenv.config();
 
@@ -33,27 +36,33 @@ app.use(morgan("dev"));
 app.use(globalTryCatch);
 app.use(limiter);
 
-// test
+// Test route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend!" });
 });
-//admin route
+
+// Admin routes
 app.use("/api/admin", adminRoutes);
 
-//payment route
+// Payment routes
 app.use("/api", paymentRouter);
-
-//admin route
-app.use("/api/admin", adminRoutes);
-
 
 // Auth routes 
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
 
+// ✅ Athlete consultation routes (kept from your branch)
+app.use("/api/athletes", athleteConsultationRoutes);
 
+// Handle 404 for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
+
+// Global error handler
 app.use(gloabalErrorHandler);
+
 // Start server
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
