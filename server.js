@@ -19,6 +19,9 @@ import paymentRouter from "./routes/payments.route.js";
 import adminRoutes from "./routes/admins.route.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import globalErrorHandler from "./errors/globalErrorHandler.js";
+import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
+
+//  Added missing import from your branch
 
 // Load environment variables
 dotenv.config();
@@ -42,15 +45,15 @@ app.use(morgan("dev"));
 app.use(globalTryCatch);
 app.use(limiter);
 
-// test
+// Test route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend!" });
 });
 
-//admin route
+// Admin routes
 app.use("/api/admin", adminRoutes);
 
-//payment route
+// Payment routes
 app.use("/api", paymentRouter);
 
 // Auth routes 
@@ -61,10 +64,20 @@ app.use("/api", roleRoutes);
 app.use("/api", athleteRoutes);
 app.use("/api", coachRoutes);
 app.use("/api", gymRoutes);
+app.use("/api/gyms", gymRoutes);
+app.use('/api/coaches', coachRoutes);
+
+//  Athlete consultation routes (kept from your branch)
+app.use("/api/athletes", athleteConsultationRoutes);
+
+// Handle 404 for undefined routes
+app.use((req, res) => {
+  res.status(404).json({ message: "Route not found" });
+});
 
 // Global error handling middleware
 app.use(globalErrorHandler);
-// Start server 
+// Start server
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
