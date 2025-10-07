@@ -27,18 +27,18 @@ router.post("/users/:userId/permissions", protect, checkUserPermissions);
 
 // ========================= ADMIN ROUTES =========================
 // Get users by role (admin only)
-router.get("/roles/:role/users", protect, authRole("admin"), getUsersByRole);
+router.get("/role/:role/users", protect, authRole("admin"), getUsersByRole);
 
 // Get role statistics (admin only)
-router.get("/roles/statistics", protect, authRole("admin"), getRoleStatistics);
+router.get("/role:statistics", protect, authRole("admin"), getRoleStatistics);
 
 // Update user role (admin only)
-router.put("/users/:userId/role", protect, authRole("admin"), updateUserRole);
+router.put("/user/:userId/role", protect, authRole("admin"), updateUserRole);
 
 // Approve/reject user (admin only)
-router.put("/users/:userId/approve", protect, authRole("admin"), approveUser);
+router.put("/user/:userId/approve", protect, authRole("admin"), approveUser);
 
 // Toggle user active status (admin only)
-router.put("/users/:userId/status", protect, authRole("admin"), toggleUserStatus);
+router.put("/user/:userId/status", protect, authRole("admin"), toggleUserStatus);
 
 export default router;

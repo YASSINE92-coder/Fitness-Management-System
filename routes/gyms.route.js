@@ -11,22 +11,22 @@ import {
 
 const router = Router();
 
-router.get('/gyms', getAllGyms);          // inclut les filtres !
-router.get('/gyms/:id', getGymById);
+router.get('/', getAllGyms);          // inclut les filtres !
+router.get('/:id', getGymById);
 
-router.post('/gyms', createGym);
-router.patch('/gyms/:id', updateGym);
-router.delete('/gyms/:id', deleteGym);
+router.post('/', createGym);
+router.patch('/:id', updateGym);
+router.delete('/:id', deleteGym);
 // ========================= GYM ROUTES =========================
-router.get("/gym/events", protect, authRole("gym"), (req, res) => {
+router.get("/events", protect, authRole("gym"), (req, res) => {
   res.json({ 
     message: `Gym ${req.user.name} events`, 
-    route: "/gym/events",
+    route: "/events",
     permissions: ["²create_events", "update_events", "delete_events", "view_events"]
   });
 });
 
-router.get("/gym/members", protect, authRole("gym"), (req, res) => {
+router.get("/members", protect, authRole("gym"), (req, res) => {
   res.json({ 
     message: `Gym ${req.user.name} members`, 
     route: "/gym/members",
@@ -34,10 +34,10 @@ router.get("/gym/members", protect, authRole("gym"), (req, res) => {
   });
 });
 
-router.get("/gym/equipment", protect, authRole("gym"), (req, res) => {
+router.get("/equipment", protect, authRole("gym"), (req, res) => {
   res.json({ 
     message: `Gym ${req.user.name} equipment`, 
-    route: "/gym/equipment",
+    route: "/equipment",
     permissions: ["manage_equipment"]
   });
 });

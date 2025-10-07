@@ -4,7 +4,7 @@
 
 //Roles & Permissions: fetch roles (done), check permissions (done), assign roles (done), approve/toggle users (done).✅
 
-//Protected Routes: test access control for admin, coach, gym, athlete.
+//Protected Routes: test access control for admin, coach, gym, athlete ✅.
 
 //User CRUD: create, read, update, delete  ✅.
 
@@ -17,10 +17,10 @@ Security: invalid inputs, unauthorized access, invalid JWT.
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
 
-@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5ODMzMzYwLCJleHAiOjE3NTk4MzY5MDB9.nBRLx_neSBQNwLJbv12I38LiCbF3MiIjy1n4XXswJl8
-@coachToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlYmMyMGY5MjI3OWY2ODk2ODdiZSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTgzMzAyNiwiZXhwIjoxNzU5ODM2NTY2fQ.Vgc3tQwnk5qdQb3zopBb4PY4b9Ba8bB5km74jsJ2QF8
-@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlYmYwMGY5MjI3OWY2ODk2ODdjMSIsInJvbGUiOiJneW0iLCJpYXQiOjE3NTk4MzMwNzIsImV4cCI6MTc1OTgzNjYxMn0.GZeS_FCtbBUefvgLa06_yPqfp0XRHJTo-TPDmDrr3sQ
-@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTgzNjEyNiwiZXhwIjoxNzU5ODM5NjY2fQ.ObSOQ9PCS3E15t_FNPa9etwr2h4tPKWrYdLC6QHsPIw
+@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5ODQ5NzQyLCJleHAiOjE3NTk4NTMyODJ9.ReRqqfv23xpohEEZMqwUBi0k5wGmsYinI0ujwQrlPO8
+@coachToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDFiODVmZTI3NGMwYTUyZTYwOCIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTg0OTc2NywiZXhwIjoxNzU5ODUzMzA3fQ.W5nQ9FJZJik9uxR72cnGEF59bTfjKi5qRH9orbeZNuM
+@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTA1MGEwMWNhMmZlYzRkN2NkNyIsInJvbGUiOiJneW0iLCJpYXQiOjE3NTk4NDk3ODMsImV4cCI6MTc1OTg1MzMyM30.niD3Ic2cwWgYYPUrWhKavvZ31jnbp1l8FSMz8jZqlhI
+@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTg0OTc5OSwiZXhwIjoxNzU5ODUzMzM5fQ.Inv1c4_CLnLb7eTOTgeL34hqQWz_leXReDne0Zlkd8I
 
 ### ========================================
 ### AUTHENTICATION & AUTHORIZATION
@@ -56,7 +56,7 @@ Content-Type: application/json
 
 {
   "name": "yassine chaanoune",
-  "email": "yassineuser@test.com",
+  "email": "yassineuser1@test.com",
   "password": "BACC2023!a",
   "role": "athlete",
   "gender": "male"
@@ -68,7 +68,7 @@ Content-Type: application/json
 
 {
   "name": "saad hamdi",
-  "email": "saadhamdi@test.com",
+  "email": "saadhamdi2@test.com",
   "password": "CoachPass123!",
   "role": "coach",
   "gender": "male",
@@ -135,13 +135,13 @@ Content-Type: application/json
 ### 14. Refresh Token 
 POST {{apiUrl}}/auth/refresh
 Content-Type: application/json
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsImlhdCI6MTc1OTgzMzMzMSwiZXhwIjoxNzYwNDM4MTMxfQ.GjU6wFPkM-3kN-TAxUopnPeosVhk8gbd9AnWeY0ikJk
+Cookie: refreshToken=eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTg0OTc5OSwiZXhwIjoxNzYwNDU0NTk5fQ.uFSqBn_J1244X15J1ZLk8FuOqOG_ZfXSZMLmHGjHLfE
 
 ### 15. Logout
 POST {{apiUrl}}/auth/logout
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTgzMzQwOSwiZXhwIjoxNzYwNDM4MjA5fQ.QHWrpR8K0gH05odl-e08nmJPxamhygZTKwckrSWRhMs
+Cookie: refreshToken=eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTg0OTc5OSwiZXhwIjoxNzYwNDU0NTk5fQ.uFSqBn_J1244X15J1ZLk8FuOqOG_ZfXSZMLmHGjHLfE
 
 ### ========================================
 ### ROLE-BASED PROTECTED ROUTES
@@ -153,12 +153,12 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 17. Coach Athletes (Coach Only)
-GET {{apiUrl}}/coach/athletes
+GET {{apiUrl}}/coaches/athletes
 Authorization: Bearer {{coachToken}}
 Content-Type: application/json
 
 ### 18. Coach Programs (Coach Only)
-GET {{apiUrl}}/coach/programs
+GET {{apiUrl}}/coaches/programs
 Authorization: Bearer {{coachToken}}
 Content-Type: application/json
 
@@ -254,27 +254,27 @@ Content-Type: application/json
 ### =======================================
 
 ### 31. Get Users by Role
-GET {{apiUrl}}/roles/athlete/users
+GET {{apiUrl}}/athlete/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 32. Get Users by Coach Role
-GET {{apiUrl}}/roles/coach/users
+GET {{apiUrl}}/coach/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 33. Get Users by Gym Role
-GET {{apiUrl}}/roles/gym/users
+GET {{apiUrl}}/gym/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 34. Get Users by Admin Role
-GET {{apiUrl}}/roles/admin/users
+GET {{apiUrl}}/admin/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 35. Get Role Statistics
-GET {{apiUrl}}/roles/statistics
+GET {{apiUrl}}/statistics
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 

@@ -58,14 +58,14 @@ app.use("/api", paymentRouter);
 
 // Auth routes 
 app.use("/api/auth", authRoutes);
-app.use("/api", protectedRoutes);
-app.use("/api", userRoutes);
-app.use("/api", roleRoutes);
-app.use("/api", athleteRoutes);
-app.use("/api", coachRoutes);
-app.use("/api", gymRoutes);
-app.use("/api/gyms", gymRoutes);
-app.use('/api/coaches', coachRoutes);
+app.use("/api/protected", protectedRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/role", roleRoutes);
+app.use("/api/athlete", athleteRoutes);
+app.use("/api/coach", coachRoutes);
+app.use("/api/gym", gymRoutes);
+app.use('/api/admin', adminRoutes);
+
 
 //  Athlete consultation routes (kept from your branch)
 app.use("/api/athletes", athleteConsultationRoutes);

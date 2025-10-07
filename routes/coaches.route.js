@@ -20,15 +20,15 @@ router.patch('/coaches/:id', updateCoach);
 router.delete('/coaches/:id', deleteCoach);
 
 // ========================= COACH ROUTES =========================
-router.get("/coach/athletes", protect, authRole("coach"), (req, res) => {
+router.get("/coaches/athletes", protect, authRole("coach"), (req, res) => {
   res.json({ 
     message: `Coach ${req.user.name} athletes`, 
-    route: "/coach/athletes",
+    route: "/coaches/athletes",
     permissions: ["view_athletes", "view_athlete_progress"]
   });
 });
 
-router.get("/coach/programs", protect, authRole("coach"), (req, res) => {
+router.get("/coaches/programs", protect, authRole("coach"), (req, res) => {
   res.json({ 
     message: `Coach ${req.user.name} programs`, 
     route: "/coach/programs",
