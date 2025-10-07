@@ -10,6 +10,8 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import paymentRouter from "./routes/payments.route.js";
+import adminProgramRoutes from "./routes/adminProgram.route.js"
+
 import adminRoutes from "./routes/admins.route.js";
 import programRouter from "./routes/programs.route.js";
 import authRoutes from "./routes/auths.route.js";
@@ -68,6 +70,7 @@ app.use("/api", coachRoutes);
 app.use("/api", gymRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use('/api/coaches', coachRoutes);
+app.use('/api/admin/programs', adminProgramRoutes);
 
 // program routes
 app.use("/api/programs", programRouter);

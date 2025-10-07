@@ -1,5 +1,5 @@
 ### test
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:5000
 @auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTNmMWU3ZmI1YmM2YTU3ZGIxYzM1OSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTc2OTA2MywiZXhwIjoxNzU5NzY5OTYzfQ.jPOGVzM1Sq4Bx-V-c0c1iF1MTMJZLYDOM5jGPTkCEz4
 
 GET {{ baseUrl }}
