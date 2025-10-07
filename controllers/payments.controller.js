@@ -3,7 +3,7 @@ import AppError from "../errors/AppError.js";
 import stripe from "../config/plugins/stripe.js";
 import User from "../models/User.js";
 
-const paymentsController = {
+const paymentController = {
   checkoutProgram: async (req, res) => {
     const { id } = req.params;
     const program = await Program.findById(id);
@@ -34,12 +34,19 @@ const paymentsController = {
 
   buyProgram: async (req, res) => {
     const { id } = req.params;
+
+    const program = await Program.findById(id);
+    if (!program) throw new AppError("program does not exist", 404);
+
     const user = await User.findById(req.user.id);
     if (!user) throw new AppError("user does not exist", 404);
+
     user.bought_programs.push(id);
     await user.save();
+
+    program.bought_by.push(user._id);
     return res.redirect(`${process.env.CLIENT_URL}/payment/success`);
   },
 };
 
-export default paymentsController;
+export default paymentController;
