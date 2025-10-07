@@ -66,8 +66,6 @@ app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
 app.use("/api", roleRoutes);
 app.use("/api", athleteRoutes);
-app.use("/api", coachRoutes);
-app.use("/api", gymRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use('/api/coaches', coachRoutes);
 app.use('/api/admin/programs', adminProgramRoutes);
