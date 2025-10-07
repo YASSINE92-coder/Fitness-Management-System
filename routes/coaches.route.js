@@ -13,11 +13,11 @@ import {
 const router = Router();
 
 // Routes publiques (à sécuriser plus tard avec auth middleware)
-router.post('/', createCoach);
-router.get('/', getAllCoaches);
-router.get('/:id', getCoachById);
-router.patch('/:id', updateCoach);
-router.delete('/:id', deleteCoach);
+router.post('/coaches', createCoach);
+router.get('/coaches', getAllCoaches);
+router.get('/coaches/:id', getCoachById);
+router.patch('/coaches/:id', updateCoach);
+router.delete('/coaches/:id', deleteCoach);
 
 // ========================= COACH ROUTES =========================
 router.get("/coach/athletes", protect, authRole("coach"), (req, res) => {
