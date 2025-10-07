@@ -9,12 +9,11 @@ const paymentController = {
     const program = await Program.findById(id);
     if (!program)
       throw new AppError("this program is no longuer available", 404);
-    console.log(process.env.SERVER_URL + process.env.PORT);
-    const session = await stripe.checkout.sessions.create({
+     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       success_url: `${
         process.env.SERVER_URL + process.env.PORT
-      }/api/programs/${id}/buy`,
+      }/api/programs/${id}/buy?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.CLIENT_URL}/payment/canceled`,
       line_items: [
         {
@@ -23,7 +22,7 @@ const paymentController = {
             product_data: {
               name: program.title,
             },
-            unit_amount: Math.ceil(program.price),
+            unit_amount: Math.ceil(program.price) * 10,
           },
           quantity: 1,
         },
@@ -33,7 +32,27 @@ const paymentController = {
   },
 
   buyProgram: async (req, res) => {
-    const { id } = req.params;
+    const { id } = req.params || {};
+    const { session_id } = req.query || {};
+    if (!session_id)
+      throw new AppError("something went wrong please try later", 400);
+    const session = await stripe.checkout.sessions.retrieve(session_id);
+
+    if (!session)
+      throw new AppError("something went wrong please try later", 400);
+
+    const paymentIntentId = session.payment_intent;
+
+    if (!paymentIntentId)
+      throw new AppError("something went wrong please try later", 400);
+
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+    if (!paymentIntent)
+      throw new AppError("something went wrong please try later", 400);
+
+     if (paymentIntent.status !== "succeeded")
+      throw new AppError("something went wrong please try later", 400);
 
     const program = await Program.findById(id);
     if (!program) throw new AppError("program does not exist", 404);
