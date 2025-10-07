@@ -11,6 +11,10 @@ const programSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    bought_by: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref:'User'
+    }],
     program_goals: [{
         type: String
     }],
@@ -19,8 +23,12 @@ const programSchema = new mongoose.Schema({
         required: true
     },
     period: {
-        type: Date,
+        type: Number,
         required: true
+    },
+    active: {
+        type: Boolean,
+        default: true,
     },
      status: {
         type: String,

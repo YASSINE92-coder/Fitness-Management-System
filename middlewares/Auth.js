@@ -11,9 +11,8 @@ export const authenticate = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-
+    console.log(process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
     // Chercher l’utilisateur
     const user = await User.findById(decoded.id);
     if (!user) {
@@ -24,7 +23,7 @@ export const authenticate = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ message: "Token invalide ou expiré." });
+    return res.status(401).json({ message: error.message });
   }
 };
 //MIDDLEWARE D'AUTORISATION ADMIN
@@ -48,6 +47,7 @@ export const protect = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       req.user = await User.findById(decoded.id).select("-password");
+      req.user.id = req.user._id;
 
       if (!req.user) {
         return res.status(401).json({ message: "User not found" });

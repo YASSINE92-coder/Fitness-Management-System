@@ -22,7 +22,7 @@ export const attachCoachToGym = async (req, res) => {
       return res.status(404).json({ message: 'Gym not found' });
     }
 
-    // ✅ Utilise "coaches" (pluriel) partout
+    // Utilise "coaches" (pluriel) partout
     await Gym.updateMany(
       { coaches: id }, // ← ici
       { $pull: { coaches: id } } // ← ici
@@ -53,7 +53,7 @@ export const detachCoachFromGym = async (req, res) => {
       return res.status(404).json({ message: 'Coach not found' });
     }
 
-    // ✅ Utilise "coaches"
+    // Utilise "coaches"
     const result = await Gym.updateMany(
       { coaches: id }, // ← ici
       { $pull: { coaches: id } } // ← ici
@@ -82,7 +82,7 @@ export const getCoachesOfGym = async (req, res) => {
       return res.status(404).json({ message: 'Gym not found' });
     }
 
-    // ✅ Utilise "coaches"
+    // Utilise "coaches"
     const coaches = await User.find({
       _id: { $in: gym.coaches }, // ← ici
       role: 'coach'

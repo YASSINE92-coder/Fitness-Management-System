@@ -9,15 +9,20 @@ import {
   updateCoach,
   deleteCoach
 } from '../controllers/coaches.controller.js';
-
+import { attachCoachToGym, detachCoachFromGym, getCoachesOfGym } from '../controllers/coachGym.controller.js';
 const router = Router();
 
 // Routes publiques (à sécuriser plus tard avec auth middleware)
+
 router.post('/coaches', createCoach);
 router.get('/coaches', getAllCoaches);
 router.get('/coaches/:id', getCoachById);
 router.patch('/coaches/:id', updateCoach);
 router.delete('/coaches/:id', deleteCoach);
+router.patch('/:id/gym', attachCoachToGym);
+router.patch('/:id/gym/remove', detachCoachFromGym);
+router.get('/gyms/:id/coaches', getCoachesOfGym);
+
 
 // ========================= COACH ROUTES =========================
 router.get("/coach/athletes", protect, authRole("coach"), (req, res) => {
