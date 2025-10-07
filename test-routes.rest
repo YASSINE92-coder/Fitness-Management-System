@@ -1,3 +1,14 @@
+//Testing yassine endpoints :
+
+//Auth Flow: signup (done), login (done), logout (done), refresh token (done) ✅ .
+
+//Roles & Permissions: fetch roles (done), check permissions (done), assign roles (done), approve/toggle users (done).✅
+
+//Protected Routes: test access control for admin, coach, gym, athlete.
+
+//User CRUD: create, read, update, delete  ✅.
+
+Security: invalid inputs, unauthorized access, invalid JWT.
 ### ========================================
 ### FITNESS MANAGEMENT SYSTEM - API TESTING
 ### ========================================
@@ -6,10 +17,10 @@
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
 
-@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5NzUxMDQxLCJleHAiOjE3NTk3NTQ1ODF9.lrhMG0slxMfsnDlpA-ee5ZjhBOJqdytUy9vKqFzLEfI
-@coachToken =eeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDFiODVmZTI3NGMwYTUyZTYwOCIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTc1MTA4NywiZXhwIjoxNzU5NzU0NjI3fQ.cs6W1q5qfSIp1abr1-yurnF1X2jd3WQ_lBAdhgCoL3o
-@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTA1MGEwMWNhMmZlYzRkN2NkNyIsInJvbGUiOiJneW0iLCJpYXQiOjE3NTk3NTExMDksImV4cCI6MTc1OTc1NDY0OX0.c5udVfrGWUQwE6DyZTBSPmOSnMqEfPxHUzbTZvN-sUI
-@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTc1MTEzNywiZXhwIjoxNzU5NzU0Njc3fQ.FFOpewdrMed7ZApUnBVGbjQHeYLtFHL2PjLiW9aVSjg
+@athleteToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzU5ODMzMzYwLCJleHAiOjE3NTk4MzY5MDB9.nBRLx_neSBQNwLJbv12I38LiCbF3MiIjy1n4XXswJl8
+@coachToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlYmMyMGY5MjI3OWY2ODk2ODdiZSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTgzMzAyNiwiZXhwIjoxNzU5ODM2NTY2fQ.Vgc3tQwnk5qdQb3zopBb4PY4b9Ba8bB5km74jsJ2QF8
+@gymToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlYmYwMGY5MjI3OWY2ODk2ODdjMSIsInJvbGUiOiJneW0iLCJpYXQiOjE3NTk4MzMwNzIsImV4cCI6MTc1OTgzNjYxMn0.GZeS_FCtbBUefvgLa06_yPqfp0XRHJTo-TPDmDrr3sQ
+@adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTgzNjEyNiwiZXhwIjoxNzU5ODM5NjY2fQ.ObSOQ9PCS3E15t_FNPa9etwr2h4tPKWrYdLC6QHsPIw
 
 ### ========================================
 ### AUTHENTICATION & AUTHORIZATION
@@ -44,9 +55,9 @@ POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "name": "John Athlete",
-  "email": "charrod@test.com",
-  "password": "AthletePass123!",
+  "name": "yassine chaanoune",
+  "email": "yassineuser@test.com",
+  "password": "BACC2023!a",
   "role": "athlete",
   "gender": "male"
 }
@@ -56,8 +67,8 @@ POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "name": "Coach Smith",
-  "email": "coachyassine@test.com",
+  "name": "saad hamdi",
+  "email": "saadhamdi@test.com",
   "password": "CoachPass123!",
   "role": "coach",
   "gender": "male",
@@ -71,23 +82,13 @@ Content-Type: application/json
 
 {
   "name": "Fitness Center marena",
-  "email": "yassinegym@test.com",
+  "email": "hydrogym@test.com",
   "password": "GymPass123!",
   "role": "gym",
   "gender": "male"
 }
 
-### 9. Register Admin
-POST {{apiUrl}}/auth/signup
-Content-Type: application/json
-
-{
-  "name": "Admin User",
-  "email": "adminyassine@test.com",
-  "password": "AdminPass123!",
-  "role": "admin",
-  "gender": "male"
-}
+### 9. Register Admin not allowed !
 
 ### 10. Login as Athlete
 POST {{apiUrl}}/auth/login
@@ -134,13 +135,13 @@ Content-Type: application/json
 ### 14. Refresh Token 
 POST {{apiUrl}}/auth/refresh
 Content-Type: application/json
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTc0NzkwNywiZXhwIjoxNzYwMzUyNzA3fQ.acACe3HaIRWo9sza4zOx5D8xwAI8LHDI5DoPZZTLeFs
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsImlhdCI6MTc1OTgzMzMzMSwiZXhwIjoxNzYwNDM4MTMxfQ.GjU6wFPkM-3kN-TAxUopnPeosVhk8gbd9AnWeY0ikJk
 
 ### 15. Logout
 POST {{apiUrl}}/auth/logout
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTc0NzkwNywiZXhwIjoxNzYwMzUyNzA3fQ.acACe3HaIRWo9sza4zOx5D8xwAI8LHDI5DoPZZTLeFs
+Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTgzMzQwOSwiZXhwIjoxNzYwNDM4MjA5fQ.QHWrpR8K0gH05odl-e08nmJPxamhygZTKwckrSWRhMs
 
 ### ========================================
 ### ROLE-BASED PROTECTED ROUTES
@@ -221,11 +222,8 @@ Content-Type: application/json
   "password": "TestPass123!",
   "gender": "female"
 }
-
-
-
 ### 28. Get User by ID (Owner or Admin/Coach/Gym)
-GET {{apiUrl}}/users/68e3a1041801326ac6145879
+GET {{apiUrl}}/users/68e24511c4466502e7ec59a2
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
@@ -281,16 +279,16 @@ Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
 ### 36. Update User Role
-PUT {{apiUrl}}/users/USER_ID_HERE/role
+PUT {{apiUrl}}/users/68e24511c4466502e7ec59a2/role
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
-
+  
 {
-  "newRole": "coach"
+  "newRole": "admin"
 }
 
 ### 37. Approve User
-PUT {{apiUrl}}/users/USER_ID_HERE/approve
+PUT {{apiUrl}}/users/68e3941b85fe274c0a52e608/approve
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
@@ -299,7 +297,7 @@ Content-Type: application/json
 }
 
 ### 38. Toggle User Status
-PUT {{apiUrl}}/users/USER_ID_HERE/status
+PUT {{apiUrl}}/users/68e3a1041801326ac6145879/status
 Authorization: Bearer {{adminToken}}  
 Content-Type: application/json
 
@@ -326,9 +324,9 @@ Content-Type: application/json
 
 {
   "name": "New Coach",
-  "email": "newcoach@test.com",
+  "email": "soufianecoach@test.com",
   "password": "CoachPass123!",
-  "gender": "female",
+  "gender": "male",
   "cin": "87654321",
   "years_of_experience": 3
 }
@@ -338,20 +336,20 @@ GET {{apiUrl}}/coaches
 Content-Type: application/json
 
 ### 42. Get Coach by ID
-GET {{apiUrl}}/coaches/COACH_ID_HERE
+GET {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
 Content-Type: application/json
 
 ### 43. Update Coach
-PATCH {{apiUrl}}/coaches/COACH_ID_HERE
+PATCH {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
 Content-Type: application/json
 
 {
-  "name": "Updated Coach Name",
-  "years_of_experience": 6
+  "name": "amine heddad",
+  "years_of_experience": 2
 }
 
 ### 44. Delete Coach
-DELETE {{apiUrl}}/coaches/COACH_ID_HERE
+DELETE {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
 Content-Type: application/json
 
 ### ========================================
@@ -446,6 +444,10 @@ Content-Type: application/json
 ### 60. Buy Program
 GET {{apiUrl}}/programs/PROGRAM_ID_HERE/buy
 Content-Type: application/json
+
+
+
+
 
 ### ========================================
 ### ERROR TESTING

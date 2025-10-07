@@ -11,18 +11,18 @@ import {
 
 const router = Router();
 
-router.get('/', getAllGyms);          // inclut les filtres !
-router.get('/:id', getGymById);
+router.get('/gyms', getAllGyms);          // inclut les filtres !
+router.get('/gyms/:id', getGymById);
 
-router.post('/', createGym);
-router.patch('/:id', updateGym);
-router.delete('/:id', deleteGym);
+router.post('/gyms', createGym);
+router.patch('/gyms/:id', updateGym);
+router.delete('/gyms/:id', deleteGym);
 // ========================= GYM ROUTES =========================
 router.get("/gym/events", protect, authRole("gym"), (req, res) => {
   res.json({ 
     message: `Gym ${req.user.name} events`, 
     route: "/gym/events",
-    permissions: ["create_events", "update_events", "delete_events", "view_events"]
+    permissions: ["²create_events", "update_events", "delete_events", "view_events"]
   });
 });
 
