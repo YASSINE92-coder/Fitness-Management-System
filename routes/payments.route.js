@@ -4,7 +4,7 @@ import { authenticate } from "../middlewares/auth.js";
 
 const paymentRouter = express.Router();
 
-paymentRouter.use(authenticate);
+// paymentRouter.use(authenticate);
 paymentRouter.get("/programs/:id/checkout", paymentController.checkoutProgram);
 paymentRouter.get("/programs/:id/buy", paymentController.buyProgram);
 

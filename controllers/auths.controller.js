@@ -68,7 +68,7 @@ export const signup = async (req, res) => {
     });
 
     // Generate tokens
-    const accessToken = generateAccessToken(user);
+  
     const refreshToken = generateRefreshToken(user);
 
     // Save refresh token in DB
@@ -84,7 +84,6 @@ export const signup = async (req, res) => {
     });
 
     res.status(201).json({
-      accessToken,
       user: {
         id: user._id,
         name: user.name,
