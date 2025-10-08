@@ -2,7 +2,7 @@
 ### FITNESS MANAGEMENT SYSTEM - API TESTING
 ### ========================================
 ### Base URL Configuration
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:5000
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
 
@@ -83,10 +83,10 @@ Content-Type: application/json
 
 {
   "name": "Admin User",
-  "email": "adminyassine@test.com",
+  "email": "adminnyjjjjjousef@test.com",
   "password": "AdminPass123!",
   "role": "admin",
-  "gender": "male"
+  "gender": "female"
 }
 
 ### 10. Login as Athlete

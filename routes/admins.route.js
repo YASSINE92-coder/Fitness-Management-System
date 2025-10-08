@@ -7,7 +7,7 @@ import {
   activateUser,
   deactivateUser,
   deleteUser,
-  getStats
+  getStats,
 } from "../controllers/admins.controller.js";
 
 const router = express.Router();

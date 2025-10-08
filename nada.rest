@@ -1,9 +1,36 @@
 ### test
 @baseUrl = http://localhost:5000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlNDczMjM1NGM1Y2ZlMzA0MmQzYSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTgzMTIwMSwiZXhwIjoxNzU5ODMyMTAxfQ.gX8hEgWjZOUwQycHMlzFV2Vb0_s8sCErnEjJ-XEzsEw
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTY0Zjg0YzE3YTk3MjY1ZTFlZWY1ZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTkyNDEwMCwiZXhwIjoxNzU5OTI1MDAwfQ.YuxGEJ2iNMgC2GSKz6oyBE_m1C0N3w-j3B9iNNcYUIw
 
 GET {{ baseUrl }}/api/admin/programs
 Content-Type: application/json
 Authorization: {{auth}}
 
+###
+PUT {{baseUrl}}/api/admin/:id/status
+Content-Type: application/json
+Authorization: {{auth}}
 
+###get users
+GET {{baseUrl}}/api/admin/users
+Content-Type: application/json
+Authorization: {{auth}}
+
+###activate user
+PATCH {{baseUrl }}/api/admin/users/68e4ec06a14e061216b1dbf2/activate
+Content-Type: application/json
+Authorization: {{auth}}
+
+###deactivate account
+PATCH {{baseUrl }}/api/admin/users/68e4ec06a14e061216b1dbf2/deactivate
+Content-Type: application/json
+Authorization: {{auth}}
+
+###delete user
+DELETE  {{baseUrl}}/api/admin/users/68e4ec06a14e061216b1dbf2
+Authorization: {{auth}}
+
+###statistiques des users/activeUsers/inactiveUsers/coaches/gyms
+GET {{baseUrl}}/api/admin/stats
+Content-Type: application/json
+Authorization: {{auth}}
