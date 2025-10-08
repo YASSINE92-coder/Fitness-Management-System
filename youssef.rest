@@ -1,6 +1,6 @@
 ### test
 @baseUrl = http://localhost:3000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTNmMWU3ZmI1YmM2YTU3ZGIxYzM1OSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTgzODM1NywiZXhwIjoxNzU5ODM5MjU3fQ.Vuv-lf9vOECrS0e2mQrGHK0vWeTbSkCHblobGUgHsBM
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTUzMzBjMTFkNWU5M2VmNmQzMTFmNiIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTg1MTMxNSwiZXhwIjoxNzU5ODUyMjE1fQ.silD2QC4X9IaHYrFw6j6Faz93U1yEJTOd25QfkguazU
 
 GET {{ baseUrl }}
 Content-Type: application/json
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 ##################################### Payment #####################################
 ### payment checkout
-GET {{baseUrl}}/api/payments/programs/68e4f5d6ee04da12ac5fec65/checkout
+GET {{baseUrl}}/api/payments/programs/68e5334711d5e93ef6d311fb/checkout
 Content-Type: application/json
 
 
@@ -66,7 +66,7 @@ Authorization: {{auth}}
 
 
 ### program update 
-PUT {{baseUrl}}/api/programs/68e4ffae367cab91a76f3046
+PUT {{baseUrl}}/api/programs/68e531c711d5e93ef6d311da
 Content-Type: application/json
 Authorization: {{auth}}
 
@@ -84,7 +84,7 @@ Authorization: {{auth}}
 
 
 ### program update  (toggle active state)
-PUT {{baseUrl}}/api/programs/68e4ffae367cab91a76f3046
+PUT {{baseUrl}}/api/programs/68e531c711d5e93ef6d311da
 Content-Type: application/json
 Authorization: {{auth}}
 
@@ -93,6 +93,6 @@ Authorization: {{auth}}
 }
 
 ### delete program 
-DELETE {{baseUrl}}/api/programs/68dff4ae0f5646bf3269b8e7
+DELETE {{baseUrl}}/api/programs/68e531c711d5e93ef6d311da
 Content-Type: application/json
 Authorization: {{auth}}

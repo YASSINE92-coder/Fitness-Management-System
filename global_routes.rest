@@ -1,18 +1,8 @@
-//Testing yassine endpoints :
-
-//Auth Flow: signup (done), login (done), logout (done), refresh token (done) ✅ .
-
-//Roles & Permissions: fetch roles (done), check permissions (done), assign roles (done), approve/toggle users (done).✅
-
-//Protected Routes: test access control for admin, coach, gym, athlete.
-
-//User CRUD: create, read, update, delete  ✅.
-
-Security: invalid inputs, unauthorized access, invalid JWT.
 ### ========================================
 ### FITNESS MANAGEMENT SYSTEM - API TESTING
 ### ========================================
 ### Base URL Configuration
+
 @baseUrl = http://localhost:3000
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
@@ -23,25 +13,23 @@ Security: invalid inputs, unauthorized access, invalid JWT.
 @adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTY0MGU0NGFhMzM4NWJmZDBjNzQ3MyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTkyMTM4NSwiZXhwIjoxNzU5OTIyMjg1fQ.-pb10TQDCUARxkNxmmu78QzW_4Ck3PrMi1SCSVx06Ko
 
 
-
-
 ### ========================================
 ### USER REGISTRATION (SIGNUP)
 ### ========================================
 
-### 6. Register Athlete
+###  Register Athlet
 POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
 {
   "name": "yassine chaanoune",
-  "email": "yassineuser1@test.com",
+  "email": "yassineuser2@test.com",
   "password": "BACC2023!a",
   "role": "athlete",
   "gender": "male"
 }
 
-### 7. Register Coach  
+###  Register Coach  
 POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
@@ -55,7 +43,7 @@ Content-Type: application/json
   "years_of_experience": 10
 }
 
-### 7. Register Coach  
+###  Register Coach  
 POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
@@ -66,7 +54,7 @@ Content-Type: application/json
   "role": "admin",
   "gender": "male"
 }
-### 8. Register Gym
+###  Register Gym
 POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
@@ -79,7 +67,7 @@ Content-Type: application/json
 }
 
 
-### 10. Login as Athlete
+###  Login as Athlete
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -88,7 +76,7 @@ Content-Type: application/json
   "password": "BACC2023!a"
 }
 
-### 11. Login as Coach
+###  Login as Coach
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -97,7 +85,7 @@ Content-Type: application/json
   "password": "CoachPass123!"
 }
 
-### 12. Login as Gym
+###  Login as Gym
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -106,7 +94,7 @@ Content-Type: application/json
   "password": "GymPass123!"
 }
 
-### 13. Login as Admin
+###  Login as Admin
 POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
@@ -121,38 +109,23 @@ Content-Type: application/json
 ### TOKEN MANAGEMENT
 ### ========================================
 
-### 14. Refresh Token 
+###  Refresh Token 
 POST {{apiUrl}}/auth/refresh
 Content-Type: application/json
 Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTE2ZTMxMGEwMWNhMmZlYzRkN2NkZSIsImlhdCI6MTc1OTgzMzMzMSwiZXhwIjoxNzYwNDM4MTMxfQ.GjU6wFPkM-3kN-TAxUopnPeosVhk8gbd9AnWeY0ikJkeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTYzZDQ2NGFhMzM4NWJmZDBjNzQ1NiIsImlhdCI6MTc1OTkxOTg0NiwiZXhwIjoxNzYwNTI0NjQ2fQ.9Eo0A2IeAegTQdwuNlicBgSrSdZ7Lgnq297Lwm1ixls
 
-### 15. Logout
+###  Logout
 POST {{apiUrl}}/auth/logout
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
-Cookie: refreshToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTM5NDcxODVmZTI3NGMwYTUyZTYwZiIsImlhdCI6MTc1OTgzMzQwOSwiZXhwIjoxNzYwNDM4MjA5fQ.QHWrpR8K0gH05odl-e08nmJPxamhygZTKwckrSWRhMs
 
 
-### ========================================
-### PERMISSION-BASED ROUTES
-### ========================================
-
-### 25. Workouts (Permission: view_own_workouts)
-GET {{apiUrl}}/workouts
-Authorization: Bearer {{athleteToken}}
-Content-Type: application/json
-
-### 26. Statistics (Role: gym or higher)
-GET {{apiUrl}}/statistics
-Authorization: Bearer {{gymToken}}
-Content-Type: application/json
-Content-Type: application/json
 
 ### ========================================
 ### USER MANAGEMENT
 ### ========================================
 
-### 27. Create User (Public)
+###  Create User (Public)
 POST {{apiUrl}}/users
 Content-Type: application/json
 
@@ -162,12 +135,12 @@ Content-Type: application/json
   "password": "TestPass123!",
   "gender": "female"
 }
-### 28. Get User by ID (Owner or Admin/Coach/Gym)
+###  Get User by ID (Owner or Admin/Coach/Gym)
 GET {{apiUrl}}/users/68e24511c4466502e7ec59a2
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
-### 29. Update User (Owner or Admin)
+###  Update User (Owner or Admin)
 PUT {{apiUrl}}/users/68e3a1041801326ac6145879
 Authorization: Bearer {{adminToken}}  
 Content-Type: application/json
@@ -184,7 +157,7 @@ Content-Type: application/json
     }
 }
 
-### 30. Delete User (Admin Only)
+###  Delete User (Admin Only)
 DELETE {{apiUrl}}/users/68e396f085fe274c0a52e621
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
@@ -193,32 +166,32 @@ Content-Type: application/json
 ### ROLE MANAGEMENT (ADMIN ONLY)
 ### =======================================
 
-### 31. Get Users by Athlete Role 
+###  Get Users by Athlete Role 
 GET {{apiUrl}}/roles/athlete/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
-### 32. Get Users by Coach Role
+###  Get Users by Coach Role
 GET {{apiUrl}}/roles/coach/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
-### 33. Get Users by Gym Role
+###  Get Users by Gym Role
 GET {{apiUrl}}/roles/gym/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
-### 34. Get Users by Admin Role
+###  Get Users by Admin Role
 GET {{apiUrl}}/roles/admin/users
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
-### 35. Get Role Statistics
+### Get Role Statistics
 GET {{apiUrl}}/roles/statistics
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
-### 36. Update User Role
+###  Update User Role
 PUT {{apiUrl}}/users/68e63d464aa3385bfd0c7456/role
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
@@ -227,7 +200,7 @@ Content-Type: application/json
   "newRole": "admin"
 }
 
-### 37. Approve User
+###  Approve User
 PUT {{apiUrl}}/users/68e63d564aa3385bfd0c7459/approve
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
@@ -236,20 +209,16 @@ Content-Type: application/json
   "is_Approved": true
 }
 
-### 38. Toggle User Status
+###  Toggle User Status
 PUT {{apiUrl}}/users/68e63cfb2b198091eec4cd73/status
 Authorization: Bearer {{adminToken}}  
 Content-Type: application/json
 
 ### ========================================
-### PERMISSION CHECKING
-### ========================================
-
-### ========================================
 ### COACH ROUTES
 ### ========================================
 
-### 40. Create Coach
+###  Create Coach
 POST {{apiUrl}}/coaches
 Content-Type: application/json
 
@@ -262,15 +231,15 @@ Content-Type: application/json
   "years_of_experience": 3
 }
 
-### 41. Get All Coaches
+###  Get All Coaches
 GET {{apiUrl}}/coaches
 Content-Type: application/json
 
-### 42. Get Coach by ID
+###  Get Coach by ID
 GET {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
 Content-Type: application/json
 
-### 43. Update Coach
+###  Update Coach
 PATCH {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
 Content-Type: application/json
 
@@ -279,7 +248,7 @@ Content-Type: application/json
   "years_of_experience": 2
 }
 
-### 44. Delete Coach
+###  Delete Coach
 DELETE {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
 Content-Type: application/json
 
@@ -287,7 +256,7 @@ Content-Type: application/json
 ### GYM ROUTES
 ### ========================================
 
-### 45. Create Gym
+###  Create Gym
 POST {{apiUrl}}/gyms
 Content-Type: application/json
 
@@ -298,15 +267,15 @@ Content-Type: application/json
   "gender": "male"
 }
 
-### 46. Get All Gyms
+###  Get All Gyms
 GET {{apiUrl}}/gyms
 Content-Type: application/json
 
-### 47. Get Gym by ID
+###  Get Gym by ID
 GET {{apiUrl}}/gyms/GYM_ID_HERE
 Content-Type: application/json
 
-### 48. Update Gym
+### Update Gym
 PATCH {{apiUrl}}/gyms/GYM_ID_HERE
 Content-Type: application/json
 
@@ -314,7 +283,7 @@ Content-Type: application/json
   "name": "Updated Gym Name"
 }
 
-### 49. Delete Gym
+###  Delete Gym
 DELETE {{apiUrl}}/gyms/GYM_ID_HERE
 Content-Type: application/json
 
@@ -322,55 +291,16 @@ Content-Type: application/json
 ### ADMIN ROUTES
 ### ========================================
 
-### 50. Get All Users (Admin)
+###  Get All Users (Admin)
 GET {{apiUrl}}/admin/users
 Authorization: Bearer {{adminToken}}
-Content-Type: application/json
-
-### 51. Activate User
-PATCH {{apiUrl}}/admin/users/68dfa65751d4286f87e1d956/activate
-Authorization: Bearer {{adminToken}}
-
-Content-Type: application/json
-
-### 52. Deactivate User
-PATCH {{apiUrl}}/admin/users/68dfa65751d4286f87e1d956/deactivate
-Authorization: Bearer {{adminToken}}
-Content-Type: application/json
-
-### 53. Delete User (Admin)
-DELETE {{apiUrl}}/admin/users/68dfa65751d4286f87e1d956
-Authorization: Bearer {{adminToken}}
-Content-Type: application/json
-
-### 54. Get Admin Stats
-GET {{apiUrl}}/admin/stats
-Content-Type: application/json
-
-### 55. Get All Programs (Admin)
-GET {{apiUrl}}/admin/programs
-Content-Type: application/json
-
-### 56. Approve Program
-PUT {{apiUrl}}/admin/programs/68e5334711d5e93ef6d311fb/approve
-Authorization: Bearer {{adminToken}}
-Content-Type: application/json
-
-### 57. Reject Program
-PATCH {{apiUrl}}/admin/programs/68e5334711d5e93ef6d311fb/reject
-Authorization: Bearer {{adminToken}}
-Content-Type: application/json
-
-### 58. Get Program Stats
-GET {{apiUrl}}/admin/programs/stats
-Authorization: Bearer {{adminToken}}
-Content-Type: application/json
+Content-Type: application/
 
 ### ========================================
 ### SERVER HEALTH CHECK
 ### ========================================
 
-### 65. Server Health Check
+###  Server Health Check
 GET {{baseUrl}}/
 Content-Type: application/json
 
