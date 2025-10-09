@@ -223,12 +223,23 @@ POST {{apiUrl}}/coaches
 Content-Type: application/json
 
 {
-  "name": "New Coach",
-  "email": "soufianecoach@test.com",
-  "password": "CoachPass123!",
+  "name": "Karim Karimi",
+  "email": "karim.karimi@example.com",
+  "password": "myPass123",
   "gender": "male",
-  "cin": "87654321",
-  "years_of_experience": 3
+  "cin": "KY789012",
+  "years_of_experience": 4,
+  "profile": {
+    "avatar": "https://example.com/karim.jpg",
+    "bio": "Coach spécialisé en préparation physique."
+  },
+  "certificats": [
+    {
+      "title": "Personal Trainer Certification",
+      "assigned_by": "Fitness Academy",
+      "issued_at": "2020-08-10"
+    }
+  ]
 }
 
 ###  Get All Coaches
@@ -236,11 +247,11 @@ GET {{apiUrl}}/coaches
 Content-Type: application/json
 
 ###  Get Coach by ID
-GET {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
+GET {{apiUrl}}/coaches/68dfa65751d4286f87e1d936
 Content-Type: application/json
 
 ###  Update Coach
-PATCH {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
+PATCH {{apiUrl}}/coaches/68dfa65751d4286f87e1d936
 Content-Type: application/json
 
 {
@@ -249,7 +260,7 @@ Content-Type: application/json
 }
 
 ###  Delete Coach
-DELETE {{apiUrl}}/coaches/68e24511c4466502e7ec59a2
+DELETE {{apiUrl}}/coaches/68dfa65751d4286f87e1d936
 Content-Type: application/json
 
 ### ========================================
@@ -261,10 +272,13 @@ POST {{apiUrl}}/gyms
 Content-Type: application/json
 
 {
-  "name": "New Gym",
-  "email": "newgym@test.com",
-  "password": "GymPass123!",
-  "gender": "male"
+  "name": "FitClub Lyon",
+  "location": "10 Rue de Lyon",
+  "schedule": "Lun-Sam: 07:00-22:00",
+  "pricing": 39.99,
+  "activities": ["musculation", "cardio"],
+  "equipements": ["660a1b2c3d4e5f6a7b8c9d0e"],
+  "owner": "660000000000000000000002"
 }
 
 ###  Get All Gyms
@@ -272,11 +286,11 @@ GET {{apiUrl}}/gyms
 Content-Type: application/json
 
 ###  Get Gym by ID
-GET {{apiUrl}}/gyms/GYM_ID_HERE
+GET {{apiUrl}}/gyms/68e768c97d8e8605b37eb119
 Content-Type: application/json
 
 ### Update Gym
-PATCH {{apiUrl}}/gyms/GYM_ID_HERE
+PATCH {{apiUrl}}/gyms/68e768c97d8e8605b37eb119
 Content-Type: application/json
 
 {
@@ -284,7 +298,43 @@ Content-Type: application/json
 }
 
 ###  Delete Gym
-DELETE {{apiUrl}}/gyms/GYM_ID_HERE
+DELETE {{apiUrl}}/gyms/68e768c97d8e8605b37eb119
+Content-Type: application/json
+
+### ========================================
+### Association Coach ↔ Gym
+### ========================================
+
+###  Attach a coach to a gym
+PATCH {{apiUrl}}/coaches/68e4f52f556a398af4724113/gym
+Content-Type: application/json
+
+{
+  "gymId": "68dfa673f9ab81b206322aff"
+}
+
+###  Detach a coach from a gym
+PATCH {{apiUrl}}/coaches/68e4f52f556a398af4724113/gym/remove
+Content-Type: application/json
+
+{
+  "gymId": "68dfa673f9ab81b206322aff"
+}
+
+###  Get all coaches of a specific gym
+GET {{apiUrl}}/gyms/68dfa673f9ab81b206322aff/coaches
+Content-Type: application/json
+
+### ========================================
+### Endpoints consultation
+### ========================================
+
+### Get all gyms for an athlete
+GET {{apiUrl}}/athletes/68dfa65751d4286f87e1d956/gyms
+Content-Type: application/json
+
+### Get all coaches for an athlete
+GET {{apiUrl}}/athletes/68dfa65751d4286f87e1d956/coaches
 Content-Type: application/json
 
 ### ========================================

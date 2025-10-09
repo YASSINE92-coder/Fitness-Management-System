@@ -8,15 +8,18 @@ import {
   updateGym,
   deleteGym
 } from '../controllers/gyms.controller.js';
+import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
 
 const router = Router();
 
-router.get('/gyms', getAllGyms);          // inclut les filtres !
-router.get('/gyms/:id', getGymById);
+router.get('/', getAllGyms);          // inclut les filtres !
+router.get('/:id', getGymById);
 
-router.post('/gyms', createGym);
-router.patch('/gyms/:id', updateGym);
-router.delete('/gyms/:id', deleteGym);
+router.post('/', createGym);
+router.patch('/:id', updateGym);
+router.delete('/:id', deleteGym);
+router.get('/:id/coaches', getCoachesOfGym);
+
 // ========================= GYM ROUTES =========================
 router.get("/gym/events", protect, authRole("gym"), (req, res) => {
   res.json({ 
