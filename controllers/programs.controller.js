@@ -19,6 +19,17 @@ const programController = {
     res.json(data);
   },
 
+  show: async (req, res) => {
+    const { id } = req.params;
+    if (id.length !== 24) throw new AppError("invalid program id");
+    const program = await Program.findById(id).populate({
+      path: "bought_by",
+      select: "-password",
+    });
+    if (!program) throw new AppError("program does not exist", 404);
+    res.json(program);
+  },
+
   store: async (req, res) => {
     const data = validate(req);
     const userId = req.user.id || null;
@@ -58,7 +69,7 @@ const programController = {
     if (program.bought_by.length !== 0) {
       throw new AppError("program is already bought by some users", 400);
     }
-     await Program.findByIdAndDelete(programId);
+    await Program.findByIdAndDelete(programId);
 
     return res.sendStatus(204);
   },

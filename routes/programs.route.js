@@ -15,8 +15,10 @@ programRouter.delete(
   authRole("admin", "coach"),
   programController.delete
 );
+
 // Coach middleware
 programRouter.use(authRole("coach"));
+programRouter.get("/:id", programController.show)
 programRouter.post("/", createProgramValidator, programController.store);
 programRouter.put("/:id", updateProgramValidator, programController.update);
 programRouter.patch("/:id", updateProgramValidator, programController.update);

@@ -1,6 +1,6 @@
 ### test
 @baseUrl = http://localhost:3000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTUzMzBjMTFkNWU5M2VmNmQzMTFmNiIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc1OTg1MTMxNSwiZXhwIjoxNzU5ODUyMjE1fQ.silD2QC4X9IaHYrFw6j6Faz93U1yEJTOd25QfkguazU
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTNmMWU3ZmI1YmM2YTU3ZGIxYzM1OSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc2MDAwMTM2NywiZXhwIjoxNzYwMDAyMjY3fQ.87pfnc0uzEVb8wMKxey2a5fKAsYdNeBsd5iBSen0S2E
 
 GET {{ baseUrl }}
 Content-Type: application/json
@@ -46,6 +46,10 @@ GET {{baseUrl}}/api/programs?page=2&limit=2&price[gte]=40&creator=1&blabla=2&sea
 Content-Type: application/json
 
 
+### program show
+GET {{baseUrl}}/api/programs/68e77dceabf27716320ab8c6
+Content-Type: application/json
+Authorization: {{auth}}
 
 ### program create 
 POST {{baseUrl}}/api/programs
