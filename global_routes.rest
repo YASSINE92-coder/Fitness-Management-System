@@ -377,6 +377,79 @@ Content-Type: application/json
 Authorization: {{auth}}
 
 ### ========================================
+### PROGRAM ROUTES
+### ========================================
+### program paginate
+GET {{baseUrl}}/api/programs?page=2&limit=2&price[gte]=40&creator=1&blabla=2&search=youssef
+Content-Type: application/json
+
+
+### program show
+GET {{baseUrl}}/api/programs/68e77dceabf27716320ab8c6
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### program create 
+POST {{baseUrl}}/api/programs
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "title for program",
+  "program_goals": [
+    "strenght",
+    "lwiza",
+    "lhmss"
+  ],
+  "price": "44",
+  "period": 50,
+  "status": "pending"
+}
+
+
+### program update 
+PUT {{baseUrl}}/api/programs/68e531c711d5e93ef6d311da
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "title": "title for program (updated)",
+  "program_goals": [
+    "strenght",
+    "lwiza",
+    "lhmss"
+  ],
+  "price": "44",
+  "period": 50,
+  "status": "pending"
+}
+
+
+### program update  (toggle active state)
+PUT {{baseUrl}}/api/programs/68e531c711d5e93ef6d311da
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "active": false
+}
+
+### delete program 
+DELETE {{baseUrl}}/api/programs/68e531c711d5e93ef6d311da
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+### ========================================
+### PAYMENT ROUTES
+### ========================================
+
+### payment checkout (test this in the browser for redirection)
+GET {{baseUrl}}/api/payments/programs/68e5334711d5e93ef6d311fb/checkout
+Content-Type: application/json
+
+
+### ========================================
 ### SERVER HEALTH CHECK
 ### ========================================
 
