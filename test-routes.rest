@@ -78,17 +78,6 @@ Content-Type: application/json
   "gender": "male"
 }
 
-### 9. Register Admin
-POST {{apiUrl}}/auth/signup
-Content-Type: application/json
-
-{
-  "name": "Admin User",
-  "email": "adminnyjjjjjousef@test.com",
-  "password": "AdminPass123!",
-  "role": "admin",
-  "gender": "female"
-}
 
 ### 10. Login as Athlete
 POST {{apiUrl}}/auth/login
