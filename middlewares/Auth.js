@@ -11,7 +11,6 @@ export const authenticate = async (req, res, next) => {
     }
 
     const token = authHeader.split(" ")[1];
-    console.log(process.env.JWT_SECRET);
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     // Chercher l’utilisateur
     const user = await User.findById(decoded.id);
@@ -21,7 +20,7 @@ export const authenticate = async (req, res, next) => {
 
     // Attacher l’utilisateur à la requête pour l’utiliser après
     req.user = user;
-    next();
+     next();
   } catch (error) {
     return res.status(401).json({ message: error.message });
   }

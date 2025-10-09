@@ -1,6 +1,6 @@
 ### test
-@baseUrl = http://localhost:5000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTY0Zjg0YzE3YTk3MjY1ZTFlZWY1ZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTkyNDEwMCwiZXhwIjoxNzU5OTI1MDAwfQ.YuxGEJ2iNMgC2GSKz6oyBE_m1C0N3w-j3B9iNNcYUIw
+@baseUrl = http://localhost:3000
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlNDczMjM1NGM1Y2ZlMzA0MmQzYSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTgzMTIwMSwiZXhwIjoxNzU5ODMyMTAxfQ.gX8hEgWjZOUwQycHMlzFV2Vb0_s8sCErnEjJ-XEzsEw
 
 GET {{ baseUrl }}/api/admin/programs
 Content-Type: application/json

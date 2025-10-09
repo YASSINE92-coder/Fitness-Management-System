@@ -58,7 +58,6 @@ app.get("/", (req, res) => {
 app.use("/api/admin", adminRoutes);
 
 // Payment routes
-app.use("/api", paymentRouter);
 
 // Auth routes 
 app.use("/api/auth", authRoutes);
@@ -66,11 +65,10 @@ app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
 app.use("/api", roleRoutes);
 app.use("/api", athleteRoutes);
-app.use("/api", coachRoutes);
-app.use("/api", gymRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use('/api/coaches', coachRoutes);
 app.use('/api/admin/programs', adminProgramRoutes);
+app.use("/api/payments", paymentRouter);
 
 // program routes
 app.use("/api/programs", programRouter);

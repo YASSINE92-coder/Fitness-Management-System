@@ -49,6 +49,7 @@ const programController = {
   delete: async (req, res) => {
     const programId = req.params?.id || null;
     const program = await Program.findById(programId);
+    if (!program) throw new AppError("program doesn't exist");
 
     if (req.user.role !== "admin" && req.user.id !== program.creator) {
       throw new AppError("this action not allowed", 400);
@@ -57,9 +58,9 @@ const programController = {
     if (program.bought_by.length !== 0) {
       throw new AppError("program is already bought by some users", 400);
     }
-    Program.findByIdAndDelete(programId);
+     await Program.findByIdAndDelete(programId);
 
-    return res.status(204);
+    return res.sendStatus(204);
   },
 };
 
