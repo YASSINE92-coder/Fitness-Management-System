@@ -6,4 +6,31 @@ GET {{ baseUrl }}/api/admin/programs
 Content-Type: application/json
 Authorization: {{auth}}
 
+###
+PUT {{baseUrl}}/api/admin/:id/status
+Content-Type: application/json
+Authorization: {{auth}}
 
+###get users
+GET {{baseUrl}}/api/admin/users
+Content-Type: application/json
+Authorization: {{auth}}
+
+###activate user
+PATCH {{baseUrl }}/api/admin/users/68e4ec06a14e061216b1dbf2/activate
+Content-Type: application/json
+Authorization: {{auth}}
+
+###deactivate account
+PATCH {{baseUrl }}/api/admin/users/68e4ec06a14e061216b1dbf2/deactivate
+Content-Type: application/json
+Authorization: {{auth}}
+
+###delete user
+DELETE  {{baseUrl}}/api/admin/users/68e4ec06a14e061216b1dbf2
+Authorization: {{auth}}
+
+###statistiques des users/activeUsers/inactiveUsers/coaches/gyms
+GET {{baseUrl}}/api/admin/stats
+Content-Type: application/json
+Authorization: {{auth}}

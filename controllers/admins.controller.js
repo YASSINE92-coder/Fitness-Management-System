@@ -76,14 +76,14 @@ export const getStats = async (req, res) => {
     const activeUsers = await User.countDocuments({ isActive: true });
     const inactiveUsers = await User.countDocuments({ isActive: false });
     const totalCoaches = await User.countDocuments({ role: "coach" });
-    const totalAdmins = await User.countDocuments({ role: "admin" });
+    const totalGyms = await User.countDocuments({ role: "gym" });
 
     res.json({
       totalUsers,
       activeUsers,
       inactiveUsers,
       totalCoaches,
-      totalAdmins,
+      totalGyms,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
