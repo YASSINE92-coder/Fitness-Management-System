@@ -24,10 +24,11 @@ Content-Type: application/json
 
 {
   "name": "yassine chaanoune",
-  "email": "yassineuser2@test.com",
+  "email": "yassineuser232@test.com",
   "password": "BACC2023!a",
   "role": "athlete",
   "gender": "male"
+  
 }
 
 ###  Register Coach  
