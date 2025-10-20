@@ -10,7 +10,7 @@ export const handleValidation = (req, res, next) => {
 
 // Common sanitizers against basic XSS vectors and trimming
 const commonSanitizers = () => [
-  body(["name", "email", "gender", "role", "cin"]).trim().escape(),
+  body(["name", "email", "role"]).trim().escape(),
 ];
 
 // Strong password policy
@@ -31,10 +31,7 @@ export const validateSignup = [
   body("name").exists({ checkFalsy: true }).isLength({ min: 2, max: 80 }).withMessage("Name must be 2-80 chars"),
   body("email").exists({ checkFalsy: true }).isEmail().withMessage("Valid email is required").normalizeEmail(),
   strongPasswordRule,
-  body("gender").exists({ checkFalsy: true }).isIn(["male", "female"]).withMessage("Gender must be male or female"),
   body("role").optional().isIn(["athlete", "coach", "admin" , "gym"]).withMessage("Invalid role"),
-  body("cin").if(body("role").equals("coach")).exists({ checkFalsy: true }).isLength({ min: 5, max: 30 }).withMessage("CIN required for coaches"),
-  body("years_of_experience").if(body("role").equals("coach")).isInt({ min: 0, max: 80 }).withMessage("Experience must be 0-80"),
   handleValidation,
 ];
 
