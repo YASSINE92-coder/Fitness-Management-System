@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import { signup, login, logout,forgotPassword, resetPassword, verifyCode, resendCode } from "../controllers/auths.controller.js";
 import { validateSignup, validateLogin } from "../middlewares/validation.js";
 /* 
-import { protect } from "../middlewares/auth.js";
+import { protect } from "../middlewares/Auth.js";
 import { authRole } from "../middlewares/authRole.js"; */
 import { refreshAccessToken } from "../middlewares/refresh.js";
 

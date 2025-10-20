@@ -5,7 +5,7 @@ import {
 
 } from "../controllers/adminProgram.controller.js";
 
-import { authenticate, isAllowed } from "../middlewares/auth.js";
+import { authenticate, isAllowed } from "../middlewares/Auth.js";
 
 const router = express.Router();
 
