@@ -14,6 +14,20 @@ const createProgramValidator = checkSchema({
       errorMessage: "Title must be at least 3 characters long",
     },
   },
+  program:{
+    in: ["body"],
+    exists: {
+      errorMessage: "Program file is required",
+    },
+    custom: {
+      options: (value, { req }) => {
+        if (!req.file) {
+          throw new Error("Program file is required");
+        }
+        return true;
+      },
+    },
+  },
 
   program_goals: {
     in: ["body"],

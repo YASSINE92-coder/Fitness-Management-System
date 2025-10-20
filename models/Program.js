@@ -6,6 +6,10 @@ const programSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    path: {
+        type: String,
+        required: true
+    },
     creator: {
         type: mongoose.Schema.Types.ObjectId,    
         ref: 'User',
