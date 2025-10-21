@@ -31,14 +31,17 @@ const programController = {
   },
 
   store: async (req, res) => {
-    const data = validate(req);
-    const userId = req.user.id || null;
-    data.creator = userId;
-    const program = await Program.insertOne(data);
-    const user = await User.findById(userId);
-    user.programs.push(program._id);
-    await user.save();
-    return res.status(201).json(program);
+    console.log(req.file);
+    // const data = validate(req);
+    // const userId = req.user.id || null;
+    // data.creator = userId;
+    // data.path = req.file;
+    // const program = await Program.insertOne(data);
+    // const user = await User.findById(userId);
+    // user.programs.push(program._id);
+    // await user.save();
+
+    // return res.status(201).json(program);
   },
 
   update: async (req, res) => {
