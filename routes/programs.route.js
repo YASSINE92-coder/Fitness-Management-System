@@ -5,7 +5,7 @@ import programController from "../controllers/programs.controller.js";
 import { authRole } from "../middlewares/authRole.js";
 import getProgramValidator from "../validators/program/getProgram.validator.js";
 import { authenticate } from "../middlewares/Auth.js";
-import upload from "../utils/fileUpload.js";
+import upload, { programUpload } from "../utils/fileUpload.js";
 const programRouter = express.Router();
 
 programRouter.get("/", getProgramValidator, programController.index);
@@ -22,7 +22,10 @@ programRouter.use(authRole("coach"));
 programRouter.get("/:id", programController.show);
 programRouter.post(
   "/",
-  upload.single("program"),
+  programUpload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "program", maxCount: 1 },
+  ]),
   createProgramValidator,
   programController.store
 );

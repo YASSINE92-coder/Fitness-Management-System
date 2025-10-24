@@ -1,3 +1,4 @@
+import { body } from "express-validator";
 import AppError from "../errors/AppError.js";
 import Program from "../models/Program.js";
 import User from "../models/User.js";
@@ -31,17 +32,18 @@ const programController = {
   },
 
   store: async (req, res) => {
-    console.log(req.file);
-    // const data = validate(req);
-    // const userId = req.user.id || null;
-    // data.creator = userId;
-    // data.path = req.file;
-    // const program = await Program.insertOne(data);
-    // const user = await User.findById(userId);
-    // user.programs.push(program._id);
-    // await user.save();
+    const data = validate(req);
+    console.log(data);
+    const userId = req.user.id;
+    data.program_goals = data.goals.split(",").map((goal) => goal.trim());
+    data.creator = userId;
+    data.path = req.file.path;
+    const program = await Program.insertOne(data);
+    const user = await User.findById(userId);
+    user.programs.push(program._id);
+    await user.save();
 
-    // return res.status(201).json(program);
+    return res.status(201).json(program);
   },
 
   update: async (req, res) => {

@@ -9,7 +9,6 @@ import dotenv from "dotenv";
 import passport from "passport";
 import setupPassport from "./config/passport.js";
 
-
 //importing files
 import connectDB from "./config/db.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
@@ -49,6 +48,7 @@ app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 //allow access-control-allow-origin from all origins and allow headers like Content-Type, Authorization etc (JWT)
 app.use(helmet());
 app.use(express.json());
+app.use('/uploads/programs/images', express.static('uploads'));
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(globalTryCatch);
