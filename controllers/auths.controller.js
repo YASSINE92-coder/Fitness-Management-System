@@ -49,7 +49,6 @@ export const signup = async (req, res) => {
     if (existing) {
       return res.status(400).json({ message: "Email already exists" });
     }
-
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -223,6 +222,7 @@ export const login = async (req, res) => {
         email: user.email,
         role: user.role,
         gender: user.gender,
+        isActive: user.isActive
       },
     });
   } catch (err) {
@@ -261,7 +261,6 @@ export const logout = async (req, res) => {
   if (refreshToken) {
     try {
       const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
-
       const user = await User.findById(decoded.id);
 
       if (user) {

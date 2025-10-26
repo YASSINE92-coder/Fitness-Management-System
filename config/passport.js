@@ -1,15 +1,15 @@
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import User from "../models/User.js";
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import crypto from "crypto";
+import User from "../models/User.js";
 
 const setupPassport = () => {
-  const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-  const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-  const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
 
   if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_CALLBACK_URL) {
-    console.warn("Google OAuth environment variables are not fully configured");
+    console.warn("⚠️ Google OAuth environment variables are missing");
     return;
   }
 
@@ -22,58 +22,82 @@ const setupPassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          const email = profile.emails && profile.emails[0] && profile.emails[0].value && profile.emails[0].value.toLowerCase();
-          const name = profile.displayName || (profile.name && `${profile.name.givenName} ${profile.name.familyName}`) || "Google User";
-          const avatar = profile.photos && profile.photos[0] && profile.photos[0].value;
+          // Normalize email; if Google doesn't return one (rare), create a fallback so
+          // Mongoose required validators don't fail when creating the user.
+          let email = profile.emails?.[0]?.value;
+          if (email) email = String(email).toLowerCase();
+          else email = `${profile.id}@google-noemail.local`;
+          const name = profile.displayName || `${profile.name?.givenName || ""} ${profile.name?.familyName || ""}`.trim() || "Google User";
+          const avatar = profile.photos?.[0]?.value;
 
-          // Find existing user by googleId or email
-          let user = null;
-          if (profile.id) user = await User.findOne({ googleId: profile.id });
-          if (!user && email) user = await User.findOne({ email });
+          let user = await User.findOne({ googleId: profile.id }) || (email && await User.findOne({ email }));
 
           if (user) {
-            // ensure googleId/avatar are set
             user.googleId = user.googleId || profile.id;
             user.avatar = user.avatar || avatar;
-            user.isVerified = true; // mark verified by Google
-            await user.save();
-            return done(null, user);
+            user.isVerified = true;
+          } else {
+            // Ensure password is a non-empty hashed string to satisfy schema `required: true`.
+            const randomPwd = crypto.randomBytes(16).toString('hex');
+            const hashed = await bcrypt.hash(randomPwd, 10);
+            user = new User({
+              name,
+              email,
+              password: hashed,
+              role: "athlete",
+              googleId: profile.id,
+              avatar,
+              isVerified: true,
+            });
           }
 
-          // Create new user
-          const newUser = new User({
-            name,
-            email,
-            password: "", // no local password
-            role: "athlete",
-            googleId: profile.id,
-            avatar,
-            isVerified: true,
-          });
+          // Use the same env names used across the app. Fall back to legacy names if present.
+          const accessSecret = process.env.JWT_SECRET || process.env.JWT_ACCESS_SECRET;
+          const refreshSecret = process.env.JWT_REFRESH_SECRET || process.env.JWT_REFRESH_SECRET;
 
-          await newUser.save();
-          return done(null, newUser);
+          if (!accessSecret) {
+            console.warn("⚠️ JWT access secret (JWT_SECRET) is not set. Google OAuth will still proceed but tokens may be insecure in dev.");
+          }
+
+          const accessTokenJWT = jwt.sign(
+            { id: user._id, role: user.role, email: user.email },
+            accessSecret || "dev_access_secret",
+            { expiresIn: process.env.JWT_EXPIRES_IN || "15m" }
+          );
+
+          const refreshTokenJWT = jwt.sign(
+            { id: user._id, role: user.role, email: user.email },
+            refreshSecret || process.env.JWT_REFRESH_SECRET || "dev_refresh_secret",
+            { expiresIn: process.env.JWT_REFRESH_EXPIRES_IN || "7d" }
+          );
+
+          if (!Array.isArray(user.refreshTokens)) user.refreshTokens = [];
+          user.refreshTokens.push(refreshTokenJWT);
+          // If an existing user lacks a password (edge case), ensure it is hashed before saving
+          if (!user.password) {
+            const randomPwd2 = crypto.randomBytes(16).toString('hex');
+            user.password = await bcrypt.hash(randomPwd2, 10);
+          }
+          await user.save();
+
+          done(null, { 
+            user: {
+              id: user._id,
+              name: user.name,
+              email: user.email,
+              avatar: user.avatar,
+              role: user.role
+            },
+            accessToken: accessTokenJWT,
+            refreshToken: refreshTokenJWT
+          });
         } catch (err) {
           console.error("GoogleStrategy error:", err);
-          return done(err, null);
+          done(err, null);
         }
       }
     )
   );
-
-  // Passport serialization (not used for JWT flow but required)
-  passport.serializeUser((user, done) => {
-    done(null, user._id);
-  });
-
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await User.findById(id);
-      done(null, user);
-    } catch (err) {
-      done(err, null);
-    }
-  });
 };
 
 export default setupPassport;
