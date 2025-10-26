@@ -5,21 +5,33 @@ import programController from "../controllers/programs.controller.js";
 import { authRole } from "../middlewares/authRole.js";
 import getProgramValidator from "../validators/program/getProgram.validator.js";
 import { authenticate } from "../middlewares/Auth.js";
-const programRouter = express.Router();
+import uploadMiddleware from "../utils/multer.js";
 
+const programRouter = express.Router();
+const programUpload = uploadMiddleware(
+  { file: "programs", image: "programs/images" },
+  5
+);
+
+// List programs - public access
 programRouter.get("/", getProgramValidator, programController.index);
 
 programRouter.use(authenticate);
+// Delete program - admin and coach only
 programRouter.delete(
   "/:id",
   authRole("admin", "coach"),
   programController.delete
 );
-
-// Coach middleware
+// Routes below are for coach only
 programRouter.use(authRole("coach"));
-programRouter.get("/:id", programController.show)
-programRouter.post("/", createProgramValidator, programController.store);
+programRouter.get("/:id", programController.show);
+programRouter.post(
+  "/",
+  programUpload.fields([{ name: "file" }, { name: "image" }]),
+  createProgramValidator,
+  programController.store
+);
 programRouter.put("/:id", updateProgramValidator, programController.update);
 programRouter.patch("/:id", updateProgramValidator, programController.update);
 
