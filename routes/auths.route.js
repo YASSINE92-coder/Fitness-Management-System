@@ -38,10 +38,16 @@ router.get(
       const accessTokenFromPassport = wrapper.accessToken;
       const refreshTokenFromPassport = wrapper.refreshToken;
 
+	 //  If account is soft-deactivated
+      if ( payloadUser && !payloadUser.isActive) {
+        return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/error`);
+      }
+
       if (!payloadUser || (!payloadUser.id && !payloadUser._id && !payloadUser.email)) {
         console.error('Google callback: invalid user payload', payloadUser);
         return res.redirect(`${process.env.FRONTEND_URL || "http://localhost:3000"}/login-success?error=Authentication+failed`);
       }
+
 
       // Ensure we pass an object user with _id and email to the token helper
       const userForJwt = {
