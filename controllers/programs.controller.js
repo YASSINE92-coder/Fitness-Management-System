@@ -33,12 +33,23 @@ const programController = {
 
   store: async (req, res) => {
     const data = validate(req);
-    console.log(data);
     const userId = req.user.id;
-    data.program_goals = data.goals.split(",").map((goal) => goal.trim());
+    data.goals = data.goals.split(",").map((goal) => goal.trim());
     data.creator = userId;
-    data.path = req.file.path;
-    const program = await Program.insertOne(data);
+    if (!req.files || !req.files.file || !req.files.image) {
+      throw new AppError(
+        "file and image are required",
+        400,
+        null,
+        "file upload error"
+      );
+    }
+
+    data.file = req.files.file[0].path;
+    data.image = req.files.image[0].path;
+    console.log(data);
+    const program = await Program.create(data);
+    program.file = undefined;
     const user = await User.findById(userId);
     user.programs.push(program._id);
     await user.save();

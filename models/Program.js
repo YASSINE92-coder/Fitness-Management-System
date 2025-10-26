@@ -11,7 +11,7 @@ const programSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    path: {
+    file: {
       type: String,
       required: true,
     },
@@ -26,7 +26,7 @@ const programSchema = new mongoose.Schema(
         ref: "User",
       },
     ],
-    program_goals: [
+    goals: [
       {
         type: String,
       },
