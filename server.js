@@ -13,12 +13,12 @@ import connectDB from "./config/db.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import paymentRouter from "./routes/payments.route.js";
 import adminProgramRoutes from "./routes/adminProgram.route.js"
-
 import adminRoutes from "./routes/admins.route.js";
 import programRouter from "./routes/programs.route.js";
 import authRoutes from "./routes/auths.route.js";
 import protectedRoutes from "./routes/access.route.js";
 import userRoutes from "./routes/users.route.js";
+import profileRoutes from "./routes/profiles.route.js";
 import roleRoutes from "./routes/roles.route.js";
 import athleteRoutes from "./routes/athletes.route.js";
 import coachRoutes from "./routes/coaches.route.js";
@@ -70,6 +70,8 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api", protectedRoutes);
 app.use("/api", userRoutes);
+// Mount simple profile routes (GET/PUT /api/user/profile)
+app.use("/api", profileRoutes);
 app.use("/api", roleRoutes);
 app.use("/api", athleteRoutes);
 app.use("/api/gyms", gymRoutes);  
