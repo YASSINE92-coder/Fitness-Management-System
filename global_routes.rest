@@ -3,7 +3,7 @@
 ### ========================================
 ### Base URL Configuration
 
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:5000
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
 
@@ -274,29 +274,29 @@ POST {{apiUrl}}/gyms
 Content-Type: application/json
 
 {
-  "name": "FitClub Lyon",
-  "location": "10 Rue de Lyon",
+  "name": "FitClub Casablanca",
+  "location": "10 Rue de Ghandi",
   "schedule": "Lun-Sam: 07:00-22:00",
   "pricing": 39.99,
   "activities": ["musculation", "cardio"],
   "equipements": ["660a1b2c3d4e5f6a7b8c9d0e"],
-  "owner": "660000000000000000000002"
+  "owner": "68fb4bc7ceef7f0d5a7c26b1"
 }
 
 ###  Get All Gyms
-GET {{apiUrl}}/gyms
+GET {{apiUrl}}/gyms?owner=68fb4bc7ceef7f0d5a7c26b1
 Content-Type: application/json
 
 ###  Get Gym by ID
-GET {{apiUrl}}/gyms/68e768c97d8e8605b37eb119
+GET {{apiUrl}}/gyms/68fb4d14ceef7f0d5a7c26b3
 Content-Type: application/json
 
 ### Update Gym
-PATCH {{apiUrl}}/gyms/68e768c97d8e8605b37eb119
+PATCH {{apiUrl}}/gyms/68ff5239186354e33d34c93f
 Content-Type: application/json
 
 {
-  "name": "Updated Gym Name"
+  "name": "FitClub Casablanc"
 }
 
 ###  Delete Gym
@@ -308,11 +308,11 @@ Content-Type: application/json
 ### ========================================
 
 ###  Attach a coach to a gym
-PATCH {{apiUrl}}/coaches/68e4f52f556a398af4724113/gym
+PATCH {{apiUrl}}/coaches/68fb53964b256da6d94ef035/gym
 Content-Type: application/json
 
 {
-  "gymId": "68dfa673f9ab81b206322aff"
+  "gymId": "68fb4d14ceef7f0d5a7c26b3"
 }
 
 ###  Detach a coach from a gym
@@ -324,7 +324,7 @@ Content-Type: application/json
 }
 
 ###  Get all coaches of a specific gym
-GET {{apiUrl}}/gyms/68dfa673f9ab81b206322aff/coaches
+GET {{apiUrl}}/gyms/68fb4d14ceef7f0d5a7c26b3/coaches
 Content-Type: application/json
 
 ### ========================================
