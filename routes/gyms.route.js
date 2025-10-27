@@ -12,8 +12,8 @@ import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
 
 const router = Router();
 
-router.get('/gyms', getAllGyms);          // inclut les filtres !
-router.get('/gyms/:id', getGymById);
+router.get('/', getAllGyms);          // inclut les filtres !
+router.get('/:id', getGymById);
 
 router.post('/', createGym);
 router.patch('/:id', updateGym);

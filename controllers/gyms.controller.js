@@ -18,7 +18,7 @@ export const createGym = async (req, res) => {
 // @access  Public
 export const getAllGyms = async (req, res) => {
   try {
-    const { location, equipment, activities, 'price[min]': priceMin, 'price[max]': priceMax } = req.query;
+    const { location, equipment, activities, 'price[min]': priceMin, 'price[max]': priceMax, owner } = req.query;
 
     // Build filter object
     const filter = {};
@@ -36,6 +36,12 @@ export const getAllGyms = async (req, res) => {
     // Filter by equipment (ObjectId match)
     if (equipment) {
       filter.equipements = equipment; // Mongoose handle single ID in array field
+    }
+
+    // Filter by owner (ObjectId match)
+    if (owner){
+      const gyms = await Gym.find({ owner }); // assuming Mongoose
+      res.json(gyms);
     }
 
     // Filter by price range
