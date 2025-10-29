@@ -44,6 +44,7 @@
       cin: { type: String, sparse: true, unique: true },
       certificates: [certificateSchema],
       years_of_experience: { type: Number },
+      specialization: { type: String },
 
       // ===== SYSTEM FLAGS =====
       isActive: { type: Boolean, default: true },

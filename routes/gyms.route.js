@@ -9,6 +9,7 @@ import {
   deleteGym
 } from '../controllers/gyms.controller.js';
 import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
+import { getAthletesOfGym } from '../controllers/athleteGym.controller.js';
 
 const router = Router();
 
@@ -19,6 +20,7 @@ router.post('/', createGym);
 router.patch('/:id', updateGym);
 router.delete('/:id', deleteGym);
 router.get('/:id/coaches', getCoachesOfGym);
+router.get('/:id/athletes', getAthletesOfGym);
 
 // ========================= GYM ROUTES =========================
 router.get("/gym/events", protect, authRole("gym"), (req, res) => {

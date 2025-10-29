@@ -23,11 +23,11 @@ POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "name": "yassine chaanoune",
-  "email": "yassineuser232@test.com",
-  "password": "BACC2023!a",
+  "name": "youssra chaanoune",
+  "email": "youssrauser232@test.com",
+  "password": "BACC2023!a2",
   "role": "athlete",
-  "gender": "male"
+  "gender": "female"
   
 }
 
@@ -231,11 +231,12 @@ Content-Type: application/json
   "gender": "male",
   "cin": "KY789012",
   "years_of_experience": 4,
+  "specialization": "Cardio",
   "profile": {
     "avatar": "https://example.com/karim.jpg",
     "bio": "Coach spécialisé en préparation physique."
   },
-  "certificats": [
+  "certificates": [
     {
       "title": "Personal Trainer Certification",
       "assigned_by": "Fitness Academy",
@@ -249,16 +250,26 @@ GET {{apiUrl}}/coaches
 Content-Type: application/json
 
 ###  Get Coach by ID
-GET {{apiUrl}}/coaches/68dfa65751d4286f87e1d936
+GET {{apiUrl}}/coaches/68fb53964b256da6d94ef035
 Content-Type: application/json
 
 ###  Update Coach
-PATCH {{apiUrl}}/coaches/68dfa65751d4286f87e1d936
+PATCH {{apiUrl}}/coaches/68fb53964b256da6d94ef035
 Content-Type: application/json
 
 {
-  "name": "amine heddad",
-  "years_of_experience": 2
+  "certificates": [
+    {
+      "title": "Musculation Trainer Certification",
+      "assigned_by": "Fitness Academy",
+      "issued_at": "2020-08-10"
+    },
+    {
+      "title": "Advanced Nutrition Certification",
+      "assigned_by": "Health Institute",
+      "issued_at": "2022-03-15"
+    }
+  ]
 }
 
 ###  Delete Coach
@@ -288,15 +299,17 @@ GET {{apiUrl}}/gyms?owner=68fb4bc7ceef7f0d5a7c26b1
 Content-Type: application/json
 
 ###  Get Gym by ID
-GET {{apiUrl}}/gyms/68fb4d14ceef7f0d5a7c26b3
+GET {{apiUrl}}/gyms/68ff5239186354e33d34c93f
 Content-Type: application/json
 
 ### Update Gym
-PATCH {{apiUrl}}/gyms/68ff5239186354e33d34c93f
+PATCH {{apiUrl}}/gyms/6901e06419cd1ad9ef4981d0
 Content-Type: application/json
 
 {
-  "name": "FitClub Casablanc"
+  "coaches": [
+    "68fb53964b256da6d94ef035"
+    ]
 }
 
 ###  Delete Gym
@@ -308,11 +321,11 @@ Content-Type: application/json
 ### ========================================
 
 ###  Attach a coach to a gym
-PATCH {{apiUrl}}/coaches/68fb53964b256da6d94ef035/gym
+PATCH {{apiUrl}}/coaches/6900a3a1d0fdb287eccab13a/gym
 Content-Type: application/json
 
 {
-  "gymId": "68fb4d14ceef7f0d5a7c26b3"
+  "gymId": "68ff5239186354e33d34c93f"
 }
 
 ###  Detach a coach from a gym
@@ -324,7 +337,7 @@ Content-Type: application/json
 }
 
 ###  Get all coaches of a specific gym
-GET {{apiUrl}}/gyms/68fb4d14ceef7f0d5a7c26b3/coaches
+GET {{apiUrl}}/gyms/68ff5239186354e33d34c93f/coaches
 Content-Type: application/json
 
 ### ========================================
