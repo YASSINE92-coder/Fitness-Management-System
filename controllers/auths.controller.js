@@ -2,8 +2,8 @@ import User from "../models/User.js";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import {sendEmail} from "../utils/sendEmail.js";
-
+import { sendEmail } from "../utils/sendEmail.js";
+import express from "express";
 
 // Helper to generate 6-digit code
 const generate6DigitCode = () => {
@@ -113,14 +113,17 @@ export const signup = async (req, res) => {
 export const verifyCode = async (req, res) => {
   try {
     const { email, code } = req.body;
-    if (!email || !code) return res.status(400).json({ message: "Email and code are required" });
+    if (!email || !code)
+      return res.status(400).json({ message: "Email and code are required" });
 
     const normalizedEmail = String(email).toLowerCase().trim();
     const user = await User.findOne({ email: normalizedEmail });
     if (!user) return res.status(404).json({ message: "User not found" });
 
     if (!user.verificationCode || !user.verificationCodeExpires) {
-      return res.status(400).json({ message: "No verification code found. Request a new one." });
+      return res
+        .status(400)
+        .json({ message: "No verification code found. Request a new one." });
     }
 
     if (String(user.verificationCode) !== String(code)) {
@@ -195,7 +198,9 @@ export const login = async (req, res) => {
 
     // Prevent login if email not verified
     if (!user.isVerified) {
-      return res.status(403).json({ message: "Please verify your email first" });
+      return res
+        .status(403)
+        .json({ message: "Please verify your email first" });
     }
 
     const accessToken = generateAccessToken(user);
@@ -206,11 +211,11 @@ export const login = async (req, res) => {
     await user.save();
 
     // Set refresh token cookie (for browsers/front-end)
-    res.cookie('refreshToken', refreshToken, {
+    res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     // Return access token in JSON (for REST clients)
@@ -222,7 +227,7 @@ export const login = async (req, res) => {
         email: user.email,
         role: user.role,
         gender: user.gender,
-        isActive: user.isActive
+        isActive: user.isActive,
       },
     });
   } catch (err) {
@@ -231,17 +236,17 @@ export const login = async (req, res) => {
   }
 };
 
-
 // ========================= REFRESH TOKEN =========================
 export const refresh = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
-  if (!refreshToken) return res.status(401).json({ message: "No refresh token provided" });
+  if (!refreshToken)
+    return res.status(401).json({ message: "No refresh token provided" });
 
   try {
     const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
 
     const user = await User.findById(decoded.id);
-    
+
     if (!user || !user.refreshTokens.includes(refreshToken)) {
       return res.status(403).json({ message: "Invalid refresh token" });
     }
@@ -257,14 +262,16 @@ export const refresh = async (req, res) => {
 // ========================= LOGOUT =========================
 export const logout = async (req, res) => {
   const refreshToken = req.cookies.refreshToken;
-  
+
   if (refreshToken) {
     try {
       const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
       const user = await User.findById(decoded.id);
 
       if (user) {
-        user.refreshTokens = user.refreshTokens.filter((t) => t !== refreshToken);
+        user.refreshTokens = user.refreshTokens.filter(
+          (t) => t !== refreshToken
+        );
         await user.save();
       }
     } catch (err) {
@@ -273,10 +280,10 @@ export const logout = async (req, res) => {
   }
 
   // Clear the refresh token cookie
-  res.clearCookie('refreshToken', {
+  res.clearCookie("refreshToken", {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
   });
 
   res.json({ message: "Logged out successfully" });
@@ -290,15 +297,15 @@ export const forgotPassword = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-  const resetToken = crypto.randomBytes(32).toString("hex");
-  const resetTokenExpires = Date.now() + 60 * 60 * 1000; // 1h
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetTokenExpires = Date.now() + 60 * 60 * 1000; // 1h
 
-  // Use the schema fields: resetPasswordToken and resetPasswordExpire
-  user.resetPasswordToken = resetToken;
-  user.resetPasswordExpire = new Date(resetTokenExpires);
+    // Use the schema fields: resetPasswordToken and resetPasswordExpire
+    user.resetPasswordToken = resetToken;
+    user.resetPasswordExpire = new Date(resetTokenExpires);
     await user.save();
 
-  const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}&id=${user._id}`;
+    const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${resetToken}&id=${user._id}`;
 
     await sendEmail(
       user.email,
@@ -323,12 +330,25 @@ export const resetPassword = async (req, res) => {
     const id = req.body.id || req.query.id;
     const newPassword = req.body.newPassword;
 
-    if (!token) return res.status(400).json({ message: "Reset token is required (params, body or query)" });
-    if (!id) return res.status(400).json({ message: "User id is required (body or query)" });
-    if (!newPassword) return res.status(400).json({ message: "newPassword is required in request body" });
+    if (!token)
+      return res
+        .status(400)
+        .json({ message: "Reset token is required (params, body or query)" });
+    if (!id)
+      return res
+        .status(400)
+        .json({ message: "User id is required (body or query)" });
+    if (!newPassword)
+      return res
+        .status(400)
+        .json({ message: "newPassword is required in request body" });
 
     // decode in case frontend encoded the token
-  try { token = decodeURIComponent(String(token)); } catch (decodeErr) { console.debug('token decode error', decodeErr); }
+    try {
+      token = decodeURIComponent(String(token));
+    } catch (decodeErr) {
+      console.debug("token decode error", decodeErr);
+    }
     token = String(token).trim();
 
     // Find user by id first so we can provide better diagnostics
@@ -339,10 +359,18 @@ export const resetPassword = async (req, res) => {
     const storedExpire = user.resetPasswordExpire || user.passwordResetExpires;
 
     // Debug logs to help identify mismatches (safe: logs lengths and existence only)
-    console.debug(`resetPassword attempt for id=${id} tokenLen=${token.length} storedTokenExists=${!!storedToken} storedExpire=${storedExpire}`);
+    console.debug(
+      `resetPassword attempt for id=${id} tokenLen=${
+        token.length
+      } storedTokenExists=${!!storedToken} storedExpire=${storedExpire}`
+    );
 
-    if (!storedToken) return res.status(401).json({ message: "No reset token stored for this user" });
-    if (storedToken !== token) return res.status(401).json({ message: "Invalid reset token" });
+    if (!storedToken)
+      return res
+        .status(401)
+        .json({ message: "No reset token stored for this user" });
+    if (storedToken !== token)
+      return res.status(401).json({ message: "Invalid reset token" });
 
     if (storedExpire && new Date(storedExpire).getTime() < Date.now()) {
       return res.status(401).json({ message: "Reset token has expired" });
@@ -359,9 +387,15 @@ export const resetPassword = async (req, res) => {
 
     await user.save();
 
-    return res.status(200).json({ message: "Password reset successful. You can now log in." });
+    return res
+      .status(200)
+      .json({ message: "Password reset successful. You can now log in." });
   } catch (error) {
     console.error("Error in resetPassword:", error);
     return res.status(500).json({ message: "Server error" });
   }
+};
+
+export const me = async (req, res) => {
+  res.json(req.user);
 };
