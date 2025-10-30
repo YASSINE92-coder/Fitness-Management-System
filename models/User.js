@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     role: {
       type: String,
-      enum: ["athlete", "coach", "gym", "admin"],
+      enum: ["athlete", "coach", "gymOwner", "admin"],
       default: "athlete",
     },
     gender: { type: String, enum: ["male", "female"], required: true },

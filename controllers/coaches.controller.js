@@ -39,7 +39,7 @@ export const createCoach = async (req, res) => {
     const coach = new User(coachData);
     await coach.save();
 
-    const { password: _, ...coachResponse } = coach.toObject();
+    const {  ...coachResponse } = coach.toObject();
     res.status(201).json(coachResponse);
   } catch (error) {
     if (error.code === 11000) {
@@ -57,8 +57,8 @@ export const createCoach = async (req, res) => {
 export const getAllCoaches = async (req, res) => {
   try {
     // Exclure les champs d'athlète + mot de passe
-    const coaches = await User.find({ role: 'coach' })
-      .select('-password -height -weight -fitness_level -allergies -activity_frequency -goals -bought_programs');
+    const coaches = await User.find({ role: 'coach' }).select("-password -refreshTokens");
+     
     res.json(coaches);
   } catch (error) {
     res.status(500).json({ message: error.message });

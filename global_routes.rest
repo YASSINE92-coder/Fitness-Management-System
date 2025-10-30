@@ -3,7 +3,7 @@
 ### ========================================
 ### Base URL Configuration
 
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:5000
 @apiUrl = {{baseUrl}}/api
 ### Token Variables (to be set after login)
 

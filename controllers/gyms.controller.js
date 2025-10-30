@@ -103,3 +103,55 @@ export const deleteGym = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+// @desc    Approve a gym (admin only)
+// @route   PUT /gyms/:id/approve
+// @access  Private (admin only)
+export const approveGym = async (req, res) => {
+  try {
+    const gym = await Gym.findById(req.params.id);
+
+    if (!gym) {
+      return res.status(404).json({ message: 'Gym not found' });
+    }
+
+    // Mettez à jour le statut d'approbation
+    gym.isApproved = true;
+    gym.approvedAt = new Date();
+    gym.approvedBy = req.user.id; // L'admin qui approuve
+
+    await gym.save();
+
+    res.json({ 
+      message: 'Gym approved successfully',
+      gym 
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// @desc    Reject a gym (admin only)
+// @route   PUT /gyms/:id/reject
+// @access  Private (admin only)
+export const rejectGym = async (req, res) => {
+  try {
+    const gym = await Gym.findById(req.params.id);
+
+    if (!gym) {
+      return res.status(404).json({ message: 'Gym not found' });
+    }
+
+    gym.isApproved = false;
+    gym.rejectedAt = new Date();
+    gym.rejectedBy = req.user.id;
+
+    await gym.save();
+
+    res.json({ 
+      message: 'Gym rejected successfully',
+      gym 
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
