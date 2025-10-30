@@ -23,8 +23,6 @@ Security: invalid inputs, unauthorized access, invalid JWT.
 @adminToken =eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTY0MGU0NGFhMzM4NWJmZDBjNzQ3MyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTkyMTM4NSwiZXhwIjoxNzU5OTIyMjg1fQ.-pb10TQDCUARxkNxmmu78QzW_4Ck3PrMi1SCSVx06Ko
 
 
-
-
 ### ========================================
 ### USER REGISTRATION (SIGNUP)
 ### ========================================

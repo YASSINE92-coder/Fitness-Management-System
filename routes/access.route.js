@@ -2,7 +2,7 @@ import express from "express";
 import { authPermission, authRoleOrHigher } from "../middlewares/authRole.js";
 
 const router = express.Router();
-import { protect } from "../middlewares/auth.js";
+import { protect } from "../middlewares/Auth.js";
 // ========================= PERMISSION-BASED ROUTES =========================
 // Routes that require specific permissions regardless of role
 router.get("/workouts", protect, authPermission("view_own_workouts"), (req, res) => {

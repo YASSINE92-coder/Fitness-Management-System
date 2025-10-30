@@ -15,7 +15,8 @@ export const createCoach = async (req, res) => {
       gender,
       cin,
       years_of_experience,
-      certificats = [],
+      certificates = [],
+      specialization,
       profile = {},
       is_approved = false,
       programs = []
@@ -29,7 +30,8 @@ export const createCoach = async (req, res) => {
       gender,
       cin,
       years_of_experience,
-      certificats,
+      certificates,
+      specialization,
       profile,
       is_approved,
       programs,
@@ -99,9 +101,10 @@ export const updateCoach = async (req, res) => {
       gender,
       cin,
       years_of_experience,
-      certificats,
+      certificates,
       profile,
-      is_approved,
+      is_Approved,
+      specialization,
       programs
     } = req.body;
 
@@ -112,9 +115,10 @@ export const updateCoach = async (req, res) => {
     if (gender !== undefined) updateData.gender = gender;
     if (cin !== undefined) updateData.cin = cin;
     if (years_of_experience !== undefined) updateData.years_of_experience = years_of_experience;
-    if (certificats !== undefined) updateData.certificats = certificats;
+    if (certificates !== undefined) updateData.certificates = certificates;
+    if (specialization !== undefined) updateData.specialization = specialization;
     if (profile !== undefined) updateData.profile = profile;
-    if (is_approved !== undefined) updateData.is_approved = is_approved;
+    if (is_Approved !== undefined) updateData.is_Approved = is_Approved;
     if (programs !== undefined) updateData.programs = programs;
 
     const coach = await User.findOneAndUpdate(

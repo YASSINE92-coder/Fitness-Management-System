@@ -1,5 +1,5 @@
 ### test
-@baseUrl = http://localhost:3000
+@baseUrl = http://localhost:4000
 @auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTNmMWU3ZmI1YmM2YTU3ZGIxYzM1OSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc2MDAwMTM2NywiZXhwIjoxNzYwMDAyMjY3fQ.87pfnc0uzEVb8wMKxey2a5fKAsYdNeBsd5iBSen0S2E
 
 GET {{ baseUrl }}
@@ -13,7 +13,7 @@ Content-Type: application/json
 
 {
   "name": "John Doe",
-  "email": "john.doe@example.com",
+  "email": "jfohn.doe@example.com",
   "password": "SecurePass123!",
   "role": "coach",
   "gender": "male",

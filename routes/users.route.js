@@ -1,5 +1,5 @@
 import express from "express";
-import { protect } from "../middlewares/auth.js";
+import { protect } from "../middlewares/Auth.js";
 import { authRole } from "../middlewares/authRole.js";
 import { authorizeSelfOrRoles } from "../middlewares/authorize.js";
 import { createUser, getUserById, updateUserById, deleteUserById } from "../controllers/users.controller.js";

@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { protect } from "../middlewares/auth.js";
+import { protect } from "../middlewares/Auth.js";
 import { authRole } from "../middlewares/authRole.js";
 import {
   createGym,
@@ -11,6 +11,7 @@ import {
   rejectGym   
 } from '../controllers/gyms.controller.js';
 import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
+import { getAthletesOfGym } from '../controllers/athleteGym.controller.js';
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.post('/', createGym);
 router.patch('/:id', updateGym);
 router.delete('/:id', deleteGym);
 router.get('/:id/coaches', getCoachesOfGym);
+router.get('/:id/athletes', getAthletesOfGym);
 
 router.put('/:id/approve', protect, authRole('admin'), approveGym);
 router.put('/:id/reject', protect, authRole('admin'), rejectGym);

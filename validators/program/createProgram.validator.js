@@ -15,19 +15,10 @@ const createProgramValidator = checkSchema({
     },
   },
 
-  program_goals: {
+  goals: {
     in: ["body"],
-    optional: true,
-    isArray: {
-      errorMessage: "program_goals must be an array",
-    },
-  },
-
-  "program_goals.*": {
-    in: ["body"],
-    optional: true,
     isString: {
-      errorMessage: "Each program goal must be a string",
+      errorMessage: "goals must be a string",
     },
   },
 

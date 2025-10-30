@@ -10,13 +10,14 @@ export const handleValidation = (req, res, next) => {
 
 // Common sanitizers against basic XSS vectors and trimming
 const commonSanitizers = () => [
-  body(["name", "email", "gender", "role", "cin"]).trim().escape(),
+  body(["name", "email", "role"]).trim().escape(),
 ];
 
 // Strong password policy
 // At least 8 chars, one uppercase, one lowercase, one number, one special
 const strongPasswordRule = body("password")
-  .exists({ checkFalsy: true }).withMessage("Password is required")
+  .exists({ checkFalsy: true })
+  .withMessage("Password is required")
   .isStrongPassword({
     minLength: 8,
     minLowercase: 1,
@@ -24,24 +25,35 @@ const strongPasswordRule = body("password")
     minNumbers: 1,
     minSymbols: 1,
   })
-  .withMessage("Password must be strong (8+ chars, upper, lower, number, symbol)");
+  .withMessage(
+    "Password must be strong (8+ chars, upper, lower, number, symbol)"
+  );
 
 export const validateSignup = [
   ...commonSanitizers(),
-  body("name").exists({ checkFalsy: true }).isLength({ min: 2, max: 80 }).withMessage("Name must be 2-80 chars"),
-  body("email").exists({ checkFalsy: true }).isEmail().withMessage("Valid email is required").normalizeEmail(),
+  body("name")
+    .exists({ checkFalsy: true })
+    .isLength({ min: 2, max: 80 })
+    .withMessage("Name must be 2-80 chars"),
+  body("email")
+    .exists({ checkFalsy: true })
+    .isEmail()
+    .withMessage("Valid email is required")
+    .normalizeEmail(),
   strongPasswordRule,
-  body("gender").exists({ checkFalsy: true }).isIn(["male", "female"]).withMessage("Gender must be male or female"),
-  body("role").optional().isIn(["athlete", "coach", "admin" , "gym"]).withMessage("Invalid role"),
-  body("cin").if(body("role").equals("coach")).exists({ checkFalsy: true }).isLength({ min: 5, max: 30 }).withMessage("CIN required for coaches"),
-  body("years_of_experience").if(body("role").equals("coach")).isInt({ min: 0, max: 80 }).withMessage("Experience must be 0-80"),
+  body("role")
+    .optional()
+    .isIn(["athlete", "coach", "admin", "gym"])
+    .withMessage("Invalid role"),
   handleValidation,
 ];
 
 export const validateLogin = [
-  body("email").exists({ checkFalsy: true }).isEmail().withMessage("Valid email is required").normalizeEmail(),
+  body("email")
+    .exists({ checkFalsy: true })
+    .isEmail()
+    .withMessage("Valid email is required")
+    .normalizeEmail(),
   strongPasswordRule,
   handleValidation,
 ];
-
-
