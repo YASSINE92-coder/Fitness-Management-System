@@ -5,6 +5,7 @@ export const refreshAccessToken = async (req, res) => {
   try {
     const token = req.cookies.refreshToken;
     if (!token) {
+      res.clearCookie('refreshToken');
       return res.status(401).json({ message: "No refresh token found" });
     }
 
@@ -13,6 +14,7 @@ export const refreshAccessToken = async (req, res) => {
 
     const user = await User.findById(decoded.id);
     if (!user) {
+      res.clearCookie('refreshToken');
       return res.status(401).json({ message: "User not found" });
     }
 
@@ -29,6 +31,7 @@ export const refreshAccessToken = async (req, res) => {
     });
   } catch (err) {
     console.error("Refresh error:", err);
+    res.clearCookie('refreshToken');
     return res.status(403).json({ message: "Invalid or expired refresh token" });
   }
 };
