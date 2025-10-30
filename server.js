@@ -26,7 +26,6 @@ import coachRoutes from "./routes/coaches.route.js";
 import gymRoutes from "./routes/gyms.route.js";
 import globalErrorHandler from "./errors/globalErrorHandler.js";
 import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
-
 //  Added missing import from your branch
 
 // Load environment variables
@@ -52,7 +51,7 @@ app.use(express.json());
 app.use('/uploads/programs/images', express.static('uploads'));
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(globalTryCatch);
+app.use(globalTryCatch);  
 app.use(limiter);
 // Initialize passport for OAuth routes
 setupPassport();
@@ -79,6 +78,7 @@ app.use("/api", athleteRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use("/api/coaches", coachRoutes);
 app.use("/api/admin/programs", adminProgramRoutes);
+app.use("/api/payments", paymentRouter);
 app.use("/api/payments", paymentRouter);
 
 // program routes

@@ -18,13 +18,13 @@ const gymSchema = new mongoose.Schema({
   // Horaires
   schedule: {
     type: String,
-    required: true
+    // required: true
   },
 
   // Tarification
   pricing: {
     type: Number,
-    required: true,
+    // required: true,
     min: 0
   },
 
@@ -80,7 +80,7 @@ const gymSchema = new mongoose.Schema({
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true
+    // required: true
   },
 
   // ✅ Association avec les coachs
@@ -92,7 +92,7 @@ const gymSchema = new mongoose.Schema({
   athletes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 
   // ✅ Statut d’approbation par un admin
-  is_approved: {
+  isApproved: {
     type: Boolean,
     default: false
   }
