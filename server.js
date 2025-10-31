@@ -1,7 +1,7 @@
 //express libraries :
 import express from "express";
 import cors from "cors";
-import rateLimit from "express-rate-limit";
+//import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import helmet from "helmet";
@@ -37,22 +37,26 @@ connectDB();
 const app = express();
 // eslint-disable-next-line no-undef
 const PORT = process.env.PORT;
-const limiter = rateLimit({
+// Disable ETag so dynamic JSON endpoints (e.g., /api/auth/me) don't return 304
+app.set("etag", false);
+/* const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-});
+  max: 1000, // limit each IP to 100 requests per windowMs
+}); */
 // Middlewares
 // Allow only the configured frontend origin and allow credentials (cookies)
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 //allow access-control-allow-origin from all origins and allow headers like Content-Type, Authorization etc (JWT)
 app.use(helmet());
-app.use(express.json());
+// Increase body limits to allow small base64 images in JSON (avatars)
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use('/uploads/programs/images', express.static('uploads'));
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(globalTryCatch);  
-app.use(limiter);
+app.use(globalTryCatch);
+//app.use(limiter);
 // Initialize passport for OAuth routes
 setupPassport();
 app.use(passport.initialize());
