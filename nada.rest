@@ -1,13 +1,13 @@
 ### test
-@baseUrl = http://localhost:3000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTRlNDczMjM1NGM1Y2ZlMzA0MmQzYSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc1OTgzMTIwMSwiZXhwIjoxNzU5ODMyMTAxfQ.gX8hEgWjZOUwQycHMlzFV2Vb0_s8sCErnEjJ-XEzsEw
+@baseUrl = http://localhost:5000
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4Zjc5YTlmYTMzZmUwZWQ2OWIyNzYyNSIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MTA1OTUwMSwiZXhwIjoxNzYyMzU1NTAxfQ.EupOYOLfQHaQ4wr65EFYvpjUwC9xjE5yW5TYz4JLqGU
 
 GET {{ baseUrl }}/api/admin/programs
 Content-Type: application/json
 Authorization: {{auth}}
 
 ###
-PUT {{baseUrl}}/api/admin/:id/status
+PUT {{baseUrl}}/api/admin/programs/6672a1b8c5d8e34f8c952a13/status?status=approved
 Content-Type: application/json
 Authorization: {{auth}}
 
@@ -31,6 +31,6 @@ DELETE  {{baseUrl}}/api/admin/users/68e4ec06a14e061216b1dbf2
 Authorization: {{auth}}
 
 ###statistiques des users/activeUsers/inactiveUsers/coaches/gyms
-GET {{baseUrl}}/api/admin/stats
+GET {{baseUrl}}/api/admin/transactions
 Content-Type: application/json
 Authorization: {{auth}}
