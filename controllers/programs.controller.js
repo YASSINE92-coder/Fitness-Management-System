@@ -5,6 +5,7 @@ import User from "../models/User.js";
 import filterQuery, { ObjectId } from "../utils/filter.js";
 import paginate from "../utils/paginate.js";
 import validate from "../utils/validate.js";
+import { handleUpload } from "../utils/cloudinary.js";
 const programController = {
   index: async (req, res) => {
     const allowedFields = {
@@ -32,8 +33,14 @@ const programController = {
   },
 
   store: async (req, res) => {
+    handleUpload(req.files.file.buffer);
+    handleUpload(req.files.image.buffer);
+
+    console.log(req.files);
+    return res.json({ message: "hello" });
     const data = validate(req);
     const userId = req.user.id;
+    console.log("here");
     data.goals = data.goals.split(",").map((goal) => goal.trim());
     data.creator = userId;
     if (!req.files || !req.files.file || !req.files.image) {
