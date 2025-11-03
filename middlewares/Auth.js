@@ -12,20 +12,21 @@ export const authenticate = async (req, res, next) => {
 
     const token = authHeader.split(" ")[1];
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    // Chercher l’utilisateur
+    // Chercher l'utilisateur
     const user = await User.findById(decoded.id);
     if (!user) {
       return res.status(401).json({ message: "Utilisateur non trouvé." });
     }
 
-    // Attacher l’utilisateur à la requête pour l’utiliser après
+    // Attacher l'utilisateur à la requête pour l'utiliser après
     req.user = user;
-     next();
+    next();
   } catch (error) {
     return res.status(401).json({ message: error.message });
   }
 };
-//MIDDLEWARE D'AUTORISATION ADMIN
+
+// MIDDLEWARE D'AUTORISATION ADMIN
 export const isAllowed = (req, res, next) => {
   if (req.user.role !== "admin") {
     return res
@@ -34,8 +35,11 @@ export const isAllowed = (req, res, next) => {
   }
   next();
 };
+
 export const protect = async (req, res, next) => {
   let token;
+  console.log('dd');
+  
 
   if (
     req.headers.authorization &&
@@ -43,6 +47,8 @@ export const protect = async (req, res, next) => {
   ) {
     try {
       token = req.headers.authorization.split(" ")[1];
+      console.log(token);
+      
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       req.user = await User.findById(decoded.id).select("-password");

@@ -38,6 +38,17 @@ Content-Type: application/json
   "role": "athlete",
   "gender": "male"
 }
+### 6. Register Athlete
+POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+
+{
+  "name": "yassine",
+  "email": "admintest@test.com",
+  "password": "BACC2023!a",
+  "role": "admin",
+  "gender": "male"
+}
 
 ### 7. Register Coach  
 POST {{apiUrl}}/auth/signup
@@ -141,8 +152,8 @@ POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "saadhamdi@admin.com",
-  "password": "CoachPass123!"
+  "email": "admintest@test.com",
+  "password": "BACC2023!a"
 }
 
 # After you run the request above, uncomment the following line to capture the token from the response:

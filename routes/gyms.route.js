@@ -6,7 +6,9 @@ import {
   getAllGyms,
   getGymById,
   updateGym,
-  deleteGym
+  deleteGym,
+   approveGym,     
+  rejectGym   
 } from '../controllers/gyms.controller.js';
 import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
 import { getAthletesOfGym } from '../controllers/athleteGym.controller.js';
@@ -21,6 +23,9 @@ router.patch('/:id', updateGym);
 router.delete('/:id', deleteGym);
 router.get('/:id/coaches', getCoachesOfGym);
 router.get('/:id/athletes', getAthletesOfGym);
+
+router.put('/:id/approve', protect, authRole('admin'), approveGym);
+router.put('/:id/reject', protect, authRole('admin'), rejectGym);
 
 // ========================= GYM ROUTES =========================
 router.get("/gym/events", protect, authRole("gym"), (req, res) => {

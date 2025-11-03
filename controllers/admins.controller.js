@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import Program from "../models/Program.js";
-//import { Admin } from "mongodb";
+import Gym from "../models/Gym.js";
+
 // Lister tous les utilisateurs avec pagination
 export const getAllUsers = async (req, res) => {
   try {
@@ -8,8 +9,8 @@ export const getAllUsers = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const users = await User.find().skip(skip).limit(limit);
-    const totalUsers = await User.countDocuments();
+    const users = await User.find({ role: "athlete" }).skip(skip).limit(limit);
+    const totalUsers = await User.countDocuments({ role: "athlete" }); 
 
     res.json({
       page,
@@ -69,43 +70,47 @@ export const deleteUser = async (req, res) => {
   }
 };
 
-// Statistiques pour dashboard
-export const getStats = async (req, res) => {
-  try {
-    const totalUsers = await User.countDocuments();
-    const activeUsers = await User.countDocuments({ isActive: true });
-    const inactiveUsers = await User.countDocuments({ isActive: false });
-    const totalCoaches = await User.countDocuments({ role: "coach" });
-    const totalGyms = await User.countDocuments({ role: "gym" });
-
-    res.json({
-      totalUsers,
-      activeUsers,
-      inactiveUsers,
-      totalCoaches,
-      totalGyms,
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-export const getProgramStats = async (req, res) => {
+// Fonction utilitaire pour les stats programmes
+const getProgramStatsData = async () => {
   try {
     const totalPrograms = await Program.countDocuments();
     const pendingPrograms = await Program.countDocuments({ status: "pending" });
-    const approvedPrograms = await Program.countDocuments({
-      status: "approved",
-    });
-    const rejectedPrograms = await Program.countDocuments({
-      status: "rejected",
-    });
+    const approvedPrograms = await Program.countDocuments({ status: "approved" });
+    const rejectedPrograms = await Program.countDocuments({ status: "rejected" });
 
-    res.json({
+    return {
       totalPrograms,
       pendingPrograms,
       approvedPrograms,
       rejectedPrograms,
+    };
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+// Statistiques pour dashboard
+export const getStats = async (req, res) => {
+  try {
+    const totalAthletes = await User.countDocuments({role:"athlete"});
+    const activeAthletes = await User.countDocuments({ role: "athlete", isActive: true });
+    const inactiveAthletes = await User.countDocuments({ role: "athlete", isActive: false });
+    const totalCoaches = await User.countDocuments({ role: "coach" });
+    const totalGyms = await Gym.countDocuments();
+    
+    // Utilisez la fonction utilitaire pour les stats programmes
+    const programStats = await getProgramStatsData();
+
+    res.json({
+      totalAthletes,
+      activeAthletes,
+      inactiveAthletes,
+      totalCoaches,
+      totalGyms,
+      totalPrograms: programStats.totalPrograms,
+      pendingPrograms: programStats.pendingPrograms,
+      approvedPrograms: programStats.approvedPrograms,
+      rejectedPrograms: programStats.rejectedPrograms,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -119,13 +124,11 @@ export const getAllPrograms = async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    // Récupère seulement les programmes de la page demandée
     const programs = await Program.find()
-      .populate("creator", "username email") // ramène aussi l'info du coach
+      .populate("creator", "username email")
       .skip(skip)
       .limit(limit);
 
-    // Nombre total de programmes
     const totalPrograms = await Program.countDocuments();
 
     res.json({
@@ -139,6 +142,7 @@ export const getAllPrograms = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
 // Valider un programme
 export const approveProgram = async (req, res) => {
   try {
@@ -155,7 +159,7 @@ export const approveProgram = async (req, res) => {
   }
 };
 
-//  Rejeter un programme
+// Rejeter un programme
 export const rejectProgram = async (req, res) => {
   try {
     const program = await Program.findById(req.params.id);
