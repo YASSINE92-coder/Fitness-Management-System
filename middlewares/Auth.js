@@ -38,7 +38,6 @@ export const isAllowed = (req, res, next) => {
 
 export const protect = async (req, res, next) => {
   let token;
-  console.log('dd');
   
 
   if (

@@ -13,7 +13,7 @@ import setupPassport from "./config/passport.js";
 import connectDB from "./config/db.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import paymentRouter from "./routes/payments.route.js";
-import adminProgramRoutes from "./routes/adminProgram.route.js"
+import adminProgramRoutes from "./routes/adminProgram.route.js";
 import adminRoutes from "./routes/admins.route.js";
 import programRouter from "./routes/programs.route.js";
 import authRoutes from "./routes/auths.route.js";
@@ -43,15 +43,15 @@ const limiter = rateLimit({
 });
 // Middlewares
 // Allow only the configured frontend origin and allow credentials (cookies)
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const FRONTEND_URL = process.env.CLIENT_URL || "http://localhost:3000";
 app.use(cors({ origin: FRONTEND_URL, credentials: true }));
 //allow access-control-allow-origin from all origins and allow headers like Content-Type, Authorization etc (JWT)
 app.use(helmet());
 app.use(express.json());
-app.use('/uploads/programs/images', express.static('uploads'));
+app.use("/uploads/programs/images", express.static("uploads"));
 app.use(cookieParser());
 app.use(morgan("dev"));
-app.use(globalTryCatch);  
+app.use(globalTryCatch);
 app.use(limiter);
 // Initialize passport for OAuth routes
 setupPassport();
@@ -65,7 +65,6 @@ app.get("/", (req, res) => {
 // Admin routes
 app.use("/api/admin", adminRoutes);
 
-// Payment routes
 
 // Auth routes
 app.use("/api/auth", authRoutes);

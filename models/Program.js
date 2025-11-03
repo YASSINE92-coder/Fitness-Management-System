@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import { stringify } from "qs";
 
 const programSchema = new mongoose.Schema(
   {

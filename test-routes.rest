@@ -55,11 +55,11 @@ POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "name": "saad hamdi",
-  "email": "saadhamdi@test.com",
-  "password": "CoachPass123!",
-  "role": "coach",
-  "gender": "male",
+  "name": "nada",
+  "email": "nada@gmail.com",
+  "password": "Nada@2003",
+  "role": "admin",
+  "gender": "female",
   "cin": "BB229924",
   "years_of_experience": 10
 }
@@ -120,8 +120,8 @@ POST {{apiUrl}}/auth/login
 Content-Type: application/json
 
 {
-  "email": "admintest@test.com",
-  "password": "BACC2023!a"
+  "email": "test.test@mail.com",
+  "password": "Password123."
 }
 
 # After you run the request above, uncomment the following line to capture the token from the response:
