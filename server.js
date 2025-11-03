@@ -26,6 +26,7 @@ import coachRoutes from "./routes/coaches.route.js";
 import gymRoutes from "./routes/gyms.route.js";
 import globalErrorHandler from "./errors/globalErrorHandler.js";
 import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
+import commentsRoutes from "./routes/comments.route.js";
 
 //  Added missing import from your branch
 
@@ -89,6 +90,8 @@ app.use("/api/payments", paymentRouter);
 app.use("/api/programs", programRouter);
 //  Athlete consultation routes (kept from your branch)
 app.use("/api/athletes", athleteConsultationRoutes);
+// Comments routes
+app.use("/api/comments", commentsRoutes);
 
 // Handle 404 for undefined routes
 app.use((req, res) => {

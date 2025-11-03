@@ -53,16 +53,48 @@ Content-Type: application/json
   "years_of_experience": 10
 }
 
-### 7. Register Coach  
+### 7. Register Admin  
 POST {{apiUrl}}/auth/signup
+Content-Type: application/json
+{
+  "name": "amine haddad",
+  "email": "aminehaddade659@gmail.com",
+  "password": "BACC2023!a3",
+  "role": "admin"
+}
+### 7.b Verify Code (Admin Email Verification)
+POST {{apiUrl}}/auth/verify-code
 Content-Type: application/json
 
 {
-  "name": "saad hamdi",
-  "email": "saadhamdi@admin.com",
-  "password": "CoachPass123!",
-  "role": "admin",
-  "gender": "male"
+  "email": "yassinechaanoune039@gmail.com",
+  "code": "123456"
+}
+### 7. Register Admin  
+POST {{apiUrl}}/auth/signup
+  Content-Type: application/json
+{
+  "name": "youssra chaanoune",
+  "email": "yassinechaanoune039@gmail.com",
+  "password": "BACC2023!a2",
+  "role": "admin"
+}
+
+### 7.b Verify Code (Admin Email Verification)
+POST {{apiUrl}}/auth/verify-code
+Content-Type: application/json
+
+{
+  "email": "yassinechaanoune039@gmail.com",
+  "code": "337151"
+}
+
+### 7.c Resend Verification Code (Admin)
+POST {{apiUrl}}/auth/resend-code
+Content-Type: application/json
+
+{
+  "email": "yassinechaanoune039@gmail.com"
 }
 ### 8. Register Gym
 POST {{apiUrl}}/auth/signup
