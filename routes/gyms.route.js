@@ -12,14 +12,16 @@ import {
 } from '../controllers/gyms.controller.js';
 import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
 import { getAthletesOfGym } from '../controllers/athleteGym.controller.js';
+import uploadMiddleware from '../utils/multer.js';
 
 const router = Router();
 
 router.get('/', getAllGyms);          // inclut les filtres !
 router.get('/:id', getGymById);
 
-router.post('/', createGym);
-router.patch('/:id', updateGym);
+const uploadGymPhotos = uploadMiddleware('gyms', 5);
+router.post('/', uploadGymPhotos.array('photos', 10), createGym); // max 10 photos per gym
+router.patch('/:id', uploadGymPhotos.array('photos', 10), updateGym);
 router.delete('/:id', deleteGym);
 router.get('/:id/coaches', getCoachesOfGym);
 router.get('/:id/athletes', getAthletesOfGym);
