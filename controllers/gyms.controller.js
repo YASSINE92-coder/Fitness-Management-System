@@ -136,7 +136,11 @@ export const updateGym = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { name, location, schedule, pricing, activities, mix, equipements } = req.body;
+    const { name, location, schedule } = req.body;
+    const pricingRaw = req.body?.pricing;
+    const activitiesRaw = req.body?.activities;
+    const mixRaw = req.body?.mix;
+    const equipementsRaw = req.body?.equipements;
 
     // Get existing gym to merge photos
     const existingGym = await Gym.findById(id);
@@ -159,18 +163,50 @@ export const updateGym = async (req, res) => {
 
     console.log("Final updatedPhotos array:", updatedPhotos); // Log the final array before update
 
+    // Safe parsers
+    const parsePricing = (val) => {
+      if (val === undefined || val === null || val === "") return existingGym.pricing;
+      const n = parseFloat(val);
+      return Number.isFinite(n) ? n : existingGym.pricing;
+    };
+    const parseActivities = (val) => {
+      if (!val) return existingGym.activities;
+      if (Array.isArray(val)) return val.filter(Boolean).map((a) => String(a).trim());
+      return String(val)
+        .split(',')
+        .map((a) => a.trim())
+        .filter(Boolean);
+    };
+    const parseMix = (val) => {
+      if (val === undefined || val === null || val === "") return existingGym.mix;
+      if (typeof val === 'boolean') return val;
+      const s = String(val).toLowerCase();
+      if (s === 'true' || s === '1' || s === 'yes') return true;
+      if (s === 'false' || s === '0' || s === 'no') return false;
+      return existingGym.mix;
+    };
+    const parseEquipements = (val) => {
+      if (!val) return existingGym.equipements;
+      if (typeof val === 'object' && !Array.isArray(val)) return val;
+      if (typeof val === 'string') {
+        try {
+          const parsed = JSON.parse(val);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+        } catch (_) {
+          // ignore JSON error and keep existing
+        }
+      }
+      return existingGym.equipements;
+    };
+
     const updateData = {
-      name,
-      location,
-      schedule,
-      pricing: pricing ? parseFloat(pricing) : existingGym.pricing,
-      activities: activities
-        ? activities.split(',').map(a => a.trim()).filter(Boolean)
-        : existingGym.activities,
-      mix: mix !== undefined ? (mix === 'true') : existingGym.mix,
-      equipements: typeof equipements === 'string'
-        ? JSON.parse(equipements)
-        : equipements || existingGym.equipements,
+      name: name !== undefined ? name : existingGym.name,
+      location: location !== undefined ? location : existingGym.location,
+      schedule: schedule !== undefined ? schedule : existingGym.schedule,
+      pricing: parsePricing(pricingRaw),
+      activities: parseActivities(activitiesRaw),
+      mix: parseMix(mixRaw),
+      equipements: parseEquipements(equipementsRaw),
       photos: updatedPhotos // Use the filtered/combined array
     };
 
