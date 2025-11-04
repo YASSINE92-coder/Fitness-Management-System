@@ -136,7 +136,11 @@ export const updateGym = async (req, res) => {
 
   try {
     const { id } = req.params;
-    const { name, location, schedule, pricing, activities, mix, equipements } = req.body;
+    const { name, location, schedule } = req.body;
+    const pricingRaw = req.body?.pricing;
+    const activitiesRaw = req.body?.activities;
+    const mixRaw = req.body?.mix;
+    const equipementsRaw = req.body?.equipements;
 
     // Get existing gym to merge photos
     const existingGym = await Gym.findById(id);
@@ -144,34 +148,84 @@ export const updateGym = async (req, res) => {
       return res.status(404).json({ message: 'Gym not found' });
     }
 
+    // --- PHOTO MANAGEMENT LOGIC ---
     // New photos from upload - use 'path' instead of 'secure_url' and add safety filter
     const newPhotoUrls = (req.files || []) // Handle case where no files are uploaded
       .map(file => file.path) // Use 'path' which contains the Cloudinary URL
       .filter(Boolean); // Remove any null/undefined paths
 
-    console.log("Existing photos (before filtering nulls):", existingGym.photos);
-    const existingFiltered = existingGym.photos.filter(Boolean); // Filter existing as well
-    console.log("Existing photos (after filtering nulls):", existingFiltered);
-    console.log("New photoUrls:", newPhotoUrls);
+    // Attempt to get the final list of photos to keep from the request body.
+    // The frontend should send this as a JSON string via formData.append('finalPhotos', JSON.stringify(photoList))
+    let finalPhotoUrls = [...existingGym.photos.filter(Boolean)]; // Default: keep existing, filtered
+    if (req.body.finalPhotos) {
+      try {
+        // Attempt to parse finalPhotos if sent as a string from FormData
+        const parsedFinalPhotos = JSON.parse(req.body.finalPhotos);
+        if (Array.isArray(parsedFinalPhotos)) {
+          // Filter to ensure only valid, non-empty strings are included
+          finalPhotoUrls = parsedFinalPhotos.filter(url => url && typeof url === 'string');
+          console.log("Using finalPhotos from body:", finalPhotoUrls);
+        } else {
+          console.warn("finalPhotos from body is not an array, using default existing photos.");
+        }
+      } catch (e) {
+        console.warn("Could not parse finalPhotos from body, using default existing photos.", e);
+      }
+    } else {
+       console.log("No finalPhotos found in body, using default existing photos.");
+    }
 
-    // Combine with existing photos
-    const updatedPhotos = [...existingFiltered, ...newPhotoUrls];
+    // Append newly uploaded photos to the final list determined above
+    const updatedPhotos = [...finalPhotoUrls, ...newPhotoUrls];
 
-    console.log("Final updatedPhotos array:", updatedPhotos); // Log the final array before update
+    console.log("Calculated updatedPhotos array (kept existing + new):", updatedPhotos); // Log the final array before update
+    // --- END PHOTO MANAGEMENT LOGIC ---
+
+    // Safe parsers
+    const parsePricing = (val) => {
+      if (val === undefined || val === null || val === "") return existingGym.pricing;
+      const n = parseFloat(val);
+      return Number.isFinite(n) ? n : existingGym.pricing;
+    };
+    const parseActivities = (val) => {
+      if (!val) return existingGym.activities;
+      if (Array.isArray(val)) return val.filter(Boolean).map((a) => String(a).trim());
+      return String(val)
+        .split(',')
+        .map((a) => a.trim())
+        .filter(Boolean);
+    };
+    const parseMix = (val) => {
+      if (val === undefined || val === null || val === "") return existingGym.mix;
+      if (typeof val === 'boolean') return val;
+      const s = String(val).toLowerCase();
+      if (s === 'true' || s === '1' || s === 'yes') return true;
+      if (s === 'false' || s === '0' || s === 'no') return false;
+      return existingGym.mix;
+    };
+    const parseEquipements = (val) => {
+      if (!val) return existingGym.equipements;
+      if (typeof val === 'object' && !Array.isArray(val)) return val;
+      if (typeof val === 'string') {
+        try {
+          const parsed = JSON.parse(val);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+        } catch (_) {
+          // ignore JSON error and keep existing
+        }
+      }
+      return existingGym.equipements;
+    };
 
     const updateData = {
-      name,
-      location,
-      schedule,
-      pricing: pricing ? parseFloat(pricing) : existingGym.pricing,
-      activities: activities
-        ? activities.split(',').map(a => a.trim()).filter(Boolean)
-        : existingGym.activities,
-      mix: mix !== undefined ? (mix === 'true') : existingGym.mix,
-      equipements: typeof equipements === 'string'
-        ? JSON.parse(equipements)
-        : equipements || existingGym.equipements,
-      photos: updatedPhotos // Use the filtered/combined array
+      name: name !== undefined ? name : existingGym.name,
+      location: location !== undefined ? location : existingGym.location,
+      schedule: schedule !== undefined ? schedule : existingGym.schedule,
+      pricing: parsePricing(pricingRaw),
+      activities: parseActivities(activitiesRaw),
+      mix: parseMix(mixRaw),
+      equipements: parseEquipements(equipementsRaw),
+      photos: updatedPhotos // Use the calculated final array
     };
 
     console.log("Final updateData being saved:", updateData); // Log the final data before saving
@@ -180,6 +234,11 @@ export const updateGym = async (req, res) => {
       new: true, // Return the updated document
       runValidators: true
     });
+
+    if (!gym) {
+        // This should ideally not happen if findById succeeded earlier, but good to check
+        return res.status(404).json({ message: 'Gym not found after update attempt' });
+    }
 
     res.json(gym);
   } catch (error) {
