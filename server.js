@@ -13,7 +13,7 @@ import setupPassport from "./config/passport.js";
 import connectDB from "./config/db.js";
 import globalTryCatch from "./errors/globalTryCatch.js";
 import paymentRouter from "./routes/payments.route.js";
-import adminProgramRoutes from "./routes/adminProgram.route.js"
+import adminProgramRoutes from "./routes/adminProgram.route.js";
 import adminRoutes from "./routes/admins.route.js";
 import programRouter from "./routes/programs.route.js";
 import authRoutes from "./routes/auths.route.js";
@@ -26,6 +26,7 @@ import coachRoutes from "./routes/coaches.route.js";
 import gymRoutes from "./routes/gyms.route.js";
 import globalErrorHandler from "./errors/globalErrorHandler.js";
 import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
+import { cloudinarConnection } from "./utils/cloudinary.js";
 import commentsRoutes from "./routes/comments.route.js";
 
 //  Added missing import from your branch
@@ -34,7 +35,6 @@ import commentsRoutes from "./routes/comments.route.js";
 dotenv.config();
 
 // Connect to MongoDB
-connectDB();
 
 const app = express();
 // eslint-disable-next-line no-undef
@@ -101,7 +101,9 @@ app.use((req, res) => {
 
 // Global error handling middleware
 app.use(globalErrorHandler);
-// Start server
+
+await connectDB();
+await cloudinarConnection();
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });
