@@ -1,6 +1,5 @@
 // controllers/gyms.controller.js
 import Gym from '../models/Gym.js';
-
 // @desc    Create a new gym
 // @route   POST /gyms
 // @access  Private (gym owner or admin)
@@ -215,6 +214,18 @@ export const updateGym = async (req, res) => {
     };
     // --- UPDATED EQUIPEMENTS PARSER ---
     const parseEquipements = (val) => {
+      if (!val) return existingGym.equipements;
+      if (typeof val === 'object' && !Array.isArray(val)) return val;
+      if (typeof val === 'string') {
+        try {
+          const parsed = JSON.parse(val);
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
+        } catch (_) {
+          // ignore JSON error and keep existing
+        }
+      }
+      return existingGym.equipements;
+    };
         // Default: keep existing equipment list
         let result = existingGym.equipements;
         if (val) {
