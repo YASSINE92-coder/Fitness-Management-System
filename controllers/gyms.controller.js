@@ -1,6 +1,5 @@
 // controllers/gyms.controller.js
 import Gym from '../models/Gym.js';
-
 // @desc    Create a new gym
 // @route   POST /gyms
 // @access  Private (gym owner or admin)
@@ -180,42 +179,6 @@ export const updateGym = async (req, res) => {
 
     console.log("Calculated updatedPhotos array (kept existing + new):", updatedPhotos); // Log the final array before update
     // --- END PHOTO MANAGEMENT LOGIC ---
-
-    // Safe parsers
-    const parsePricing = (val) => {
-      if (val === undefined || val === null || val === "") return existingGym.pricing;
-      const n = parseFloat(val);
-      return Number.isFinite(n) ? n : existingGym.pricing;
-    };
-    const parseActivities = (val) => {
-      if (!val) return existingGym.activities;
-      if (Array.isArray(val)) return val.filter(Boolean).map((a) => String(a).trim());
-      return String(val)
-        .split(',')
-        .map((a) => a.trim())
-        .filter(Boolean);
-    };
-    const parseMix = (val) => {
-      if (val === undefined || val === null || val === "") return existingGym.mix;
-      if (typeof val === 'boolean') return val;
-      const s = String(val).toLowerCase();
-      if (s === 'true' || s === '1' || s === 'yes') return true;
-      if (s === 'false' || s === '0' || s === 'no') return false;
-      return existingGym.mix;
-    };
-    const parseEquipements = (val) => {
-      if (!val) return existingGym.equipements;
-      if (typeof val === 'object' && !Array.isArray(val)) return val;
-      if (typeof val === 'string') {
-        try {
-          const parsed = JSON.parse(val);
-          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) return parsed;
-        } catch (_) {
-          // ignore JSON error and keep existing
-        }
-      }
-      return existingGym.equipements;
-    };
 
     // Safe parsers
     const parsePricing = (val) => {

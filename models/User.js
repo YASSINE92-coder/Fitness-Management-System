@@ -21,30 +21,31 @@
       },
 
       // ===== OPTIONAL FIELDS =====
-      gender: { type: String, enum: ["male", "female"] },
-      height: { type: Number },
-      weight: { type: Number },
+      gender: { type: String, enum: ["male", "female"], default: null },
+      height: { type: Number, default: null },
+      weight: { type: Number, default: null },
       fitness_level: {
         type: String,
         enum: ["beginner", "intermediate", "advanced"],
       },
-      allergies: [{ type: String }],
+      allergies: { type: [String], default: null },
       activity_frequency: {
         type: String,
         enum: ["active", "moderate", "sedentary"],
       },
-      profile: profileDataSchema,
+      profile: { type: profileDataSchema, default: null },
       goals: {
         type: String,
         enum: ["weight_loss", "muscle_gain", "endurance", "general"],
+        default: null,
       },
-      bought_programs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Program" }],
+      bought_programs: { type: [mongoose.Schema.Types.ObjectId], ref: "Program", default: null },
 
       // ===== COACH-SPECIFIC FIELDS =====
-      cin: { type: String, sparse: true, unique: true },
-      certificates: [certificateSchema],
-      years_of_experience: { type: Number },
-      speciality: { type: String },
+      cin: { type: String, sparse: true, unique: true, default: null },
+      certificates: { type: [certificateSchema], default: null },
+      years_of_experience: { type: Number, default: null },
+      speciality: { type: String, default: null },
 
       // ===== SYSTEM FLAGS =====
       isActive: { type: Boolean, default: true },
