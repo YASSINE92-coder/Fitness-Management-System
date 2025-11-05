@@ -19,9 +19,9 @@ const router = Router();
 router.get('/', getAllGyms);          // inclut les filtres !
 router.get('/:id', getGymById);
 
-const uploadGymPhotos = uploadMiddleware('gyms', 5);
-router.post('/', uploadGymPhotos.array('photos', 10), createGym); // max 10 photos per gym
-router.patch('/:id', uploadGymPhotos.array('photos', 10), updateGym);
+// const uploadGymPhotos = uploadMiddleware('gyms', 5);
+// router.post('/', uploadGymPhotos.array('photos', 10), createGym); // max 10 photos per gym
+// router.patch('/:id', uploadGymPhotos.array('photos', 10), updateGym);
 router.delete('/:id', deleteGym);
 router.get('/:id/coaches', getCoachesOfGym);
 router.get('/:id/athletes', getAthletesOfGym);
