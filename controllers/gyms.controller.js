@@ -4,10 +4,6 @@ import Gym from '../models/Gym.js';
 // @route   POST /gyms
 // @access  Private (gym owner or admin)
 export const createGym = async (req, res) => {
-  // Debug logs for creation
-  console.log("--- CREATE GYM DEBUG START ---");
-  console.log("Raw req.body:", req.body);
-  console.log("Raw req.files:", req.files);
   if (req.files && req.files.length > 0) {
     console.log("First file object structure:", JSON.stringify(req.files[0], null, 2));
     console.log("First file path:", req.files[0]?.path);
@@ -27,7 +23,33 @@ export const createGym = async (req, res) => {
 
     console.log("Extracted photoUrls:", photoUrls); // Log the URLs we are about to save
 
-    // 3. Build gym object
+    // 3. Parse equipements if sent as a string (from FormData)
+    let parsedEquipements = [];
+    if (equipements) {
+      if (typeof equipements === 'string') {
+        try {
+          parsedEquipements = JSON.parse(equipements);
+          // Validate the parsed array structure if necessary
+          if (!Array.isArray(parsedEquipements)) {
+             console.warn("Parsed equipements is not an array, defaulting to empty array.");
+             parsedEquipements = [];
+          }
+        } catch (e) {
+          console.error("Error parsing equipements:", e);
+          return res.status(400).json({ message: "Invalid equipements format." });
+        }
+      } else if (Array.isArray(equipements)) {
+        parsedEquipements = equipements;
+      } else {
+        console.warn("Equipements is not a string or array, ignoring.");
+        // Default to empty array if invalid type
+        parsedEquipements = [];
+      }
+    }
+
+    console.log("Parsed equipment ", parsedEquipements);
+
+    // 4. Build gym object
     const gymData = {
       name,
       location,
@@ -35,9 +57,7 @@ export const createGym = async (req, res) => {
       pricing: parseFloat(pricing) || 0,
       activities: activities ? activities.split(',').map(a => a.trim()).filter(Boolean) : [],
       mix: mix === 'true',
-      equipements: typeof equipements === 'string'
-        ? JSON.parse(equipements)
-        : equipements || {},
+      equipements: parsedEquipements, // Use the parsed array
       owner,
       photos: photoUrls
     };
@@ -71,11 +91,6 @@ export const getAllGyms = async (req, res) => {
     // Filter by activities (exact match in array)
     if (activities) {
       filter.activities = { $in: [activities] };
-    }
-
-    // Filter by equipment (ObjectId match)
-    if (equipment) {
-      filter.equipements = equipment; // Mongoose handle single ID in array field
     }
 
     // Filter by owner (ObjectId match) - FIX: Add to main filter object
@@ -119,11 +134,6 @@ export const getGymById = async (req, res) => {
 // @route   PATCH /gyms/:id
 // @access  Private (gym owner or admin)
 export const updateGym = async (req, res) => {
-  // Your existing debug logs are preserved
-  console.log("--- UPDATE GYM DEBUG START ---");
-  console.log("Gym ID:", req.params.id);
-  console.log("Raw req.body:", req.body);
-  console.log("Raw req.files:", req.files);
   if (req.files && req.files.length > 0) {
     console.log("First file object structure:", JSON.stringify(req.files[0], null, 2)); // Log structure of first file
     console.log("First file path:", req.files[0]?.path); // Log path instead
@@ -202,6 +212,7 @@ export const updateGym = async (req, res) => {
       if (s === 'false' || s === '0' || s === 'no') return false;
       return existingGym.mix;
     };
+    // --- UPDATED EQUIPEMENTS PARSER ---
     const parseEquipements = (val) => {
       if (!val) return existingGym.equipements;
       if (typeof val === 'object' && !Array.isArray(val)) return val;
@@ -215,6 +226,32 @@ export const updateGym = async (req, res) => {
       }
       return existingGym.equipements;
     };
+        // Default: keep existing equipment list
+        let result = existingGym.equipements;
+        if (val) {
+          if (typeof val === 'string') {
+            try {
+              const parsed = JSON.parse(val);
+              if (Array.isArray(parsed)) {
+                  result = parsed;
+              } else {
+                  console.warn("Parsed equipements is not an array, keeping existing.");
+              }
+            } catch (e) {
+              console.error("Error parsing equipements:", e);
+              // Keep existing if parsing fails
+            }
+          } else if (Array.isArray(val)) {
+              result = val;
+          } else {
+              console.warn("Equipements is not a string or array, keeping existing.");
+          }
+        }
+        // Validate equipment objects (optional but recommended)
+        // Example: ensure each has a 'title' and 'picture'
+        return result.filter(eq => eq && typeof eq === 'object' && eq.title && eq.picture);
+    };
+    // --- END UPDATED EQUIPEMENTS PARSER ---
 
     const updateData = {
       name: name !== undefined ? name : existingGym.name,
@@ -223,7 +260,7 @@ export const updateGym = async (req, res) => {
       pricing: parsePricing(pricingRaw),
       activities: parseActivities(activitiesRaw),
       mix: parseMix(mixRaw),
-      equipements: parseEquipements(equipementsRaw),
+      equipements: parseEquipements(equipementsRaw), // Use the updated parser
       photos: updatedPhotos // Use the calculated final array
     };
 
