@@ -17,10 +17,11 @@ const createProgramValidator = checkSchema({
 
   goals: {
     in: ["body"],
-    isString: {
-      errorMessage: "goals must be a string",
+    isArray: {
+      errorMessage: "goals must be a some text",
     },
   },
+  
 
   price: {
     in: ["body"],
