@@ -3,7 +3,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { sendEmail } from "../utils/sendEmail.js";
-import express from "express";
+//import express from "express";
 
 // Helper to generate 6-digit code
 const generate6DigitCode = () => {
@@ -56,15 +56,90 @@ export const signup = async (req, res) => {
     const verificationCode = generate6DigitCode();
     const verificationCodeExpires = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Create user
+    // ============================================
+    // DEFAULT VALUES FOR OPTIONAL FIELDS
+    // ============================================
+    const defaultValues = {
+      // Basic info defaults
+      gender: null,
+      height: null,
+      weight: null,
+      fitness_level: null,
+      allergies: [],
+      activity_frequency: null,
+      goals: null,
+      avatar: null,
+      
+      // Profile defaults (nested object)
+      profile: {
+        bio: '',
+        phone: '',
+        address: '',
+        social_links: {
+          instagram: '',
+          linkedin: '',
+          facebook: '',
+          twitter: '',
+        },
+      },
+      
+      // Arrays defaults
+      bought_programs: [],
+      programs: [],
+      
+      // Coach-specific defaults
+      cin: null,
+      certificates: [],
+      years_of_experience: null,
+      speciality: null,
+    };
+
+    // Build optional fields dynamically from schema while excluding sensitive/system fields
+    const schemaPaths = Object.keys(User.schema.paths);
+    const denyList = new Set([
+      "_id",
+      "__v",
+      "createdAt",
+      "updatedAt",
+      // auth/security fields that must not be set from client
+      "password",
+      "email",
+      "refreshTokens",
+      "resetPasswordToken",
+      "resetPasswordExpire",
+      "verificationCode",
+      "verificationCodeExpires",
+      "googleId",
+      // system flags managed by backend
+      "isVerified",
+      "isActive",
+      "is_Approved",
+    ]);
+
+    const optionalData = {};
+    for (const path of schemaPaths) {
+      if (denyList.has(path)) continue;
+      if (path === "role") continue; // handled explicitly
+      if (path === "name") continue; // required handled explicitly
+      
+      // If field is provided in request body, use it; otherwise use default
+      if (req.body[path] !== undefined) {
+        optionalData[path] = req.body[path];
+      } else if (defaultValues[path] !== undefined) {
+        optionalData[path] = defaultValues[path];
+      }
+    }
+
+    // Create user with required fields + optional provided/default fields
     const user = new User({
       name,
       email: normalizedEmail,
       password: hashedPassword,
-      role,
+      role: role || "athlete",
       isVerified: false,
       verificationCode,
       verificationCodeExpires,
+      ...optionalData,
     });
 
     // Generate refresh token & save
@@ -108,7 +183,6 @@ export const signup = async (req, res) => {
     return res.status(500).json({ message: "Server error" });
   }
 };
-
 // ========================= VERIFY CODE =========================
 export const verifyCode = async (req, res) => {
   try {
@@ -396,6 +470,13 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-export const me = async (req, res) => {
-  res.json(req.user);
+  export const me = async (req, res) => {
+  // Prevent caching so clients don't receive 304 Not Modified with empty bodies
+  res.set({
+    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    Pragma: "no-cache",
+    Expires: "0",
+    "Surrogate-Control": "no-store",
+  });
+  res.status(200).json(req.user);
 };
