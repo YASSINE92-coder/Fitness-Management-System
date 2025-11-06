@@ -1,22 +1,24 @@
-import { body } from "express-validator";
 import AppError from "../errors/AppError.js";
 import Program from "../models/Program.js";
 import User from "../models/User.js";
 import filterQuery, { ObjectId } from "../utils/filter.js";
 import paginate from "../utils/paginate.js";
 import validate from "../utils/validate.js";
+import { handleUpload } from "../utils/cloudinary.js";
 const programController = {
   index: async (req, res) => {
     const allowedFields = {
-      title: Number,
       price: Number,
       period: Number,
       creator: ObjectId,
+      active: (value) => (value == "true" ? true : false),
     };
     const searchableFields = ["title"];
     const filters = filterQuery(req, allowedFields, searchableFields);
+    console.log(filters);
     const { page = 1, limit = 10 } = req.query || {};
     const data = await paginate(Program, page, limit, filters);
+
     res.json(data);
   },
 
@@ -34,22 +36,24 @@ const programController = {
   store: async (req, res) => {
     const data = validate(req);
     const userId = req.user.id;
-    data.goals = data.goals.split(",").map((goal) => goal.trim());
-    data.creator = userId;
-    if (!req.files || !req.files.file || !req.files.image) {
-      throw new AppError(
-        "file and image are required",
-        400,
-        null,
-        "file upload error"
-      );
-    }
+    const file = req.files?.["file"]?.[0];
+    const image = req.files?.["image"]?.[0];
 
-    data.file = req.files.file[0].path;
-    data.image = req.files.image[0].path;
-    console.log(data);
+    if (!file && !image)
+      throw AppError("you need to upload program file and image", 401);
+
+    // Uploading files to cloudinary
+    const { url: fileUrl } = await handleUpload(file.buffer);
+    const { url: imageUrl } = await handleUpload(image.buffer);
+
+    // Prepare data object
+    data.file = fileUrl;
+    data.image = imageUrl;
+    data.goals = data.goals.map((goal) => goal.trim());
+    data.creator = userId;
+
+    // Program creation2
     const program = await Program.create(data);
-    program.file = undefined;
     const user = await User.findById(userId);
     user.programs.push(program._id);
     await user.save();
@@ -78,7 +82,7 @@ const programController = {
     const program = await Program.findById(programId);
     if (!program) throw new AppError("program doesn't exist");
 
-    if (req.user.role !== "admin" && req.user.id !== program.creator) {
+    if (req.user.role !== "admin" && req.user.id !== program.creator.toString()) {
       throw new AppError("this action not allowed", 400);
     }
 
