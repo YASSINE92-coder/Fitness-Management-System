@@ -7,7 +7,7 @@ import {
   getGymById,
   updateGym,
   deleteGym,
-   approveGym,     
+  approveGym,     
   rejectGym   
 } from '../controllers/gyms.controller.js';
 import { getCoachesOfGym } from '../controllers/coachGym.controller.js';
