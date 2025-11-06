@@ -52,13 +52,14 @@ export const refreshAccessToken = async (req, res) => {
     user.refreshTokens.push(newRefreshToken);
     await user.save();
 
-    // Send the new refresh token as HttpOnly cookie
+   // middlewares/refresh.js (when setting the new refresh token)
     res.cookie("refreshToken", newRefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production" ? true : false, // dev can be false
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax", // or "none" in dev if needed
+    path: "/", // ensure available to the refresh endpoint
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });  
 
     return res.status(200).json({
       success: true,
