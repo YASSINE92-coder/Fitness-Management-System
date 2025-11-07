@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
+import * as transactionsController from '../controllers/transactions.controller';
+import { protect } from '../middlewares/Auth';
+import { authorizeAdmin } from '../middlewares/authRole';
+
 const router = express.Router();
-const transactionsController = require('../controllers/transactions.controller');
-const { protect } = require('../middlewares/Auth');
-const { authorizeAdmin } = require('../middlewares/authRole');
 
 router.get('/stats', protect, authorizeAdmin, transactionsController.getTransactionsStats);
 
-module.exports = router;
+export default router;

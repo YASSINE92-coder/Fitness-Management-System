@@ -1,13 +1,12 @@
 import express from "express";
 import { authRole } from "../middlewares/authRole.js";
-import { protect ,authenticate, isAllowed  } from "../middlewares/Auth.js";
+import { protect  } from "../middlewares/Auth.js";
 
 import {
   getAllUsers,
   activateUser,
   deactivateUser,
   deleteUser,
-  getStats,
 } from "../controllers/admins.controller.js";
 import {
   getDashboardStats,
@@ -15,9 +14,11 @@ import {
   getRoleDistribution,
   getLastTransactions,
   getBestPrograms,
-  getRevenueStats
+  getRevenueStats,
+  getTransactionStats
 } from "../controllers/adminStats.controller.js";
 import getRecentTransactions from "../controllers/transaction.controller.js"
+import { approveCoach, rejectCoach } from "../controllers/coaches.controller.js";
 const router = express.Router();
 
 // ========================= ADMIN ROUTES =========================
@@ -33,14 +34,18 @@ router.get("/dashboard", protect, authRole("admin"), (req, res) => {
 router.get("/users", protect, authRole("admin"), getAllUsers);
 router.patch("/users/:id/activate", protect, authRole("admin"), activateUser);
 router.patch("/users/:id/deactivate", protect, authRole("admin"), deactivateUser);
+router.put("/:id/approve",protect,authRole("admin"), approveCoach)
+router.put("/:id/reject",protect,authRole("admin"), rejectCoach                                                                                                                                                                                            );
 router.delete("/users/:id", protect, authRole("admin"), deleteUser);
-router.get("/stats", protect, authRole("admin"), getStats);
+// Route pour les stats du dashboard avec totalRevenue
 router.get("/stats", getDashboardStats);
 router.get("/revenue-chart", getRevenueChartData);
 router.get("/role-distribution", getRoleDistribution);
 router.get("/last-transactions", getLastTransactions);
 router.get("/best-programs", getBestPrograms);
 router.get("/revenue-stats", getRevenueStats);
-router.get('/transactions',protect, authRole("admin"),getRecentTransactions);
+// Route pour les statistiques des transactions avec données réelles de la DB
+router.get('/transaction-stats', getTransactionStats);
+router.get('/transactions', getRecentTransactions);
 
 export default router;

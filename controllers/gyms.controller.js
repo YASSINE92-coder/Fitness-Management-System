@@ -317,25 +317,23 @@ export const deleteGym = async (req, res) => {
 // @access  Private (admin only)
 export const approveGym = async (req, res) => {
   try {
-    const gym = await Gym.findById(req.params.id);
+    const gym = await Gym.findByIdAndUpdate(
+      req.params.id,
+      { 
+        isApproved: true, 
+        approvedAt: new Date(),
+        rejectedAt: null 
+      },
+      { new: true }
+    );
 
     if (!gym) {
       return res.status(404).json({ message: 'Gym not found' });
     }
 
-    // Mettez à jour le statut d'approbation
-    gym.isApproved = true;
-    gym.approvedAt = new Date();
-    gym.approvedBy = req.user.id; // L'admin qui approuve
-
-    await gym.save();
-
-    res.json({
-      message: 'Gym approved successfully',
-      gym
-    });
+    res.status(200).json(gym);
   } catch (error) {
-    console.error('Approve gym error:', error); // Log the specific error
+    console.error('Approve gym error:', error);
     res.status(500).json({ message: error.message });
   }
 };
@@ -345,24 +343,23 @@ export const approveGym = async (req, res) => {
 // @access  Private (admin only)
 export const rejectGym = async (req, res) => {
   try {
-    const gym = await Gym.findById(req.params.id);
+    const gym = await Gym.findByIdAndUpdate(
+      req.params.id,
+      { 
+        isApproved: false, 
+        rejectedAt: new Date(),
+        approvedAt: null 
+      },
+      { new: true }
+    );
 
     if (!gym) {
       return res.status(404).json({ message: 'Gym not found' });
     }
 
-    gym.isApproved = false;
-    gym.rejectedAt = new Date();
-    gym.rejectedBy = req.user.id;
-
-    await gym.save();
-
-    res.json({
-      message: 'Gym rejected successfully',
-      gym
-    });
+    res.status(200).json(gym);
   } catch (error) {
-    console.error('Reject gym error:', error); // Log the specific error
+    console.error('Reject gym error:', error);
     res.status(500).json({ message: error.message });
   }
 };

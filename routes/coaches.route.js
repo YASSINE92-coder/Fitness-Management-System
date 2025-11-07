@@ -7,6 +7,8 @@ import {
   getAllCoaches,
   getCoachById,
   updateCoach,
+  approveCoach,
+  rejectCoach,
   deleteCoach
 } from '../controllers/coaches.controller.js';
 import { attachCoachToGym, detachCoachFromGym } from '../controllers/coachGym.controller.js';
@@ -17,6 +19,8 @@ const router = Router();
 router.post('/', createCoach);
 router.get('/', getAllCoaches);
 router.get('/:id', getCoachById);
+router.put("/:id/approve", approveCoach)
+router.put("/:id/reject", rejectCoach);
 router.patch('/:id', updateCoach);
 router.delete('/:id', deleteCoach);
 router.patch('/:id/gym', attachCoachToGym);

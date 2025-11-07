@@ -8,6 +8,7 @@
     "dev": "nodemon server.js",
     "seed": "node seeds/seed.js",
     "seed:gyms": "node seeds/seedGyms.js",
+    "seed:transactions": "node scripts/seedTransactions.js",
     "test": "node test/automated-tests.js",
     "test:setup": "node test/setup-test-data.js",
     "test:cleanup": "node test/setup-test-data.js cleanup"

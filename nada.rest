@@ -1,7 +1,6 @@
 ### test
 @baseUrl = http://localhost:5000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDRjYmQzOTNhNDZhNzUyMjZkZDI3MCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MjE2OTE3MywiZXhwIjoxNzYyMTY5MjMzfQ.NwOctL3n9zp4xDQImvO6CzM-R9IxZyBFzzK3bUQ89LQ
-
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MDRjYmQzOTNhNDZhNzUyMjZkZDI3MCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc2MjUxMTg4OSwiZXhwIjoxNzYyNTExOTQ5fQ.r6nH_tzzaVGdsHDu10jTsDdSUxzsXL7Cm2znW8IvP6I
 GET {{ baseUrl }}/api/admin/programs
 Content-Type: application/json
 Authorization: {{auth}}

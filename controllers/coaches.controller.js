@@ -177,6 +177,53 @@ export const updateCoach = async (req, res) => {
  * @route   DELETE /coaches/:id
  * @access  Public (for MVP)
  */
+export const approveCoach = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const coach = await User.findOneAndUpdate(
+      { _id: id, role: 'coach' },
+      { is_Approved: true, rejectedAt: null, approvedAt: new Date() },
+      { new: true }
+    ).select('-password -refreshTokens');
+
+    if (!coach) {
+      return res.status(404).json({ message: "Coach not found" });
+    }
+
+    res.status(200).json(coach);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+// Rejeter un coach
+export const rejectCoach = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const coach = await User.findOneAndUpdate(
+      { _id: id, role: 'coach' },
+      { is_Approved: false, approvedAt: null, rejectedAt: new Date() },
+      { new: true }
+    ).select('-password -refreshTokens');
+
+    if (!coach) {
+      return res.status(404).json({ message: "Coach not found" });
+    }
+
+    res.status(200).json(coach);
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+
+
+
+
+
+
 export const deleteCoach = async (req, res) => {
   try {
     const coach = await User.findOneAndDelete({ 

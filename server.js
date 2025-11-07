@@ -4,14 +4,12 @@ import cors from "cors";
 //import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
-import helmet from "helmet";
 import dotenv from "dotenv";
 import passport from "passport";
 import setupPassport from "./config/passport.js";
 
 //importing files
 import connectDB from "./config/db.js";
-import globalTryCatch from "./errors/globalTryCatch.js";
 import paymentRouter from "./routes/payments.route.js";
 import adminProgramRoutes from "./routes/adminProgram.route.js";
 import adminRoutes from "./routes/admins.route.js";

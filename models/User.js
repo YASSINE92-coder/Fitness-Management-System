@@ -51,7 +51,8 @@
       isActive: { type: Boolean, default: true },
       is_Approved: { type: Boolean, default: false },
       isVerified: { type: Boolean, default: false },
-
+  approvedAt: { type: Date, default: null },
+  rejectedAt: { type: Date, default: null },
       // ===== RELATIONS =====
       programs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Program" }],
 

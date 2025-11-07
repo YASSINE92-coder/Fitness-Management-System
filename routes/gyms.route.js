@@ -29,8 +29,9 @@ router.delete('/:id', deleteGym);
 router.get('/:id/coaches', getCoachesOfGym);
 router.get('/:id/athletes', getAthletesOfGym);
 
-router.put('/:id/approve', protect, authRole('admin'), approveGym);
-router.put('/:id/reject', protect, authRole('admin'), rejectGym);
+// Temporairement sans auth pour le développement (à sécuriser en production)
+router.put('/:id/approve', approveGym);
+router.put('/:id/reject', rejectGym);
 
 // ========================= GYM ROUTES =========================
 router.get("/gym/events", protect, authRole("gym"), (req, res) => {

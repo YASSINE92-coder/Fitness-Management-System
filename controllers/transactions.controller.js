@@ -1,7 +1,7 @@
-const Transaction = require('../models/Transaction');
-const catchAsync = require('../errors/globalTryCatch');
+import Transaction from '../models/Transaction.js';
+import catchAsync from '../errors/globalTryCatch.js';
 
-exports.getTransactionsStats = catchAsync(async (req, res) => {
+export const getTransactionsStats = catchAsync(async (req, res) => {
   // Récupérer les transactions des derniers 90 jours pour le graphique
   const ninetyDaysAgo = new Date();
   ninetyDaysAgo.setDate(ninetyDaysAgo.getDate() - 90);
