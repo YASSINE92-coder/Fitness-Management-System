@@ -58,11 +58,44 @@ export const createCoach = async (req, res) => {
  */
 export const getAllCoaches = async (req, res) => {
   try {
-    // Exclure les champs d'athlète + mot de passe
-    const coaches = await User.find({ role: 'coach' }).select("-password -refreshTokens");
-     
-    res.json(coaches);
+    const { page = 1, limit = 12, q = "", specialty } = req.query;
+
+    const query = { role: "coach" };
+
+    // --- SEARCH by name or speciality ---
+    if (q) {
+      query.$or = [
+        { name: { $regex: q, $options: "i" } },
+        { speciality: { $regex: q, $options: "i" } },
+      ];
+    }
+
+    // --- FILTER by specialty ---
+    if (specialty && specialty !== "all") {
+      query.speciality = { $regex: specialty, $options: "i" };
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // --- Execute Query ---
+    const [coaches, total] = await Promise.all([
+      User.find(query)
+        .select("-password -refreshTokens")
+        .skip(skip)
+        .limit(parseInt(limit))
+        .sort({ createdAt: -1 }),
+      User.countDocuments(query),
+    ]);
+
+    res.json({
+      success: true,
+      total,
+      page: parseInt(page),
+      limit: parseInt(limit),
+      coaches,
+    });
   } catch (error) {
+    console.error("Error fetching coaches:", error);
     res.status(500).json({ message: error.message });
   }
 };

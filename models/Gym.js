@@ -1,4 +1,6 @@
+// src/models/Gym.js
 import mongoose from 'mongoose';
+import equipmentSchema from './equipmentSchema.js'; // Import the schema
 
 const gymSchema = new mongoose.Schema({
   // Nom de la salle
@@ -28,36 +30,8 @@ const gymSchema = new mongoose.Schema({
     min: 0
   },
 
-  // Équipements disponibles
-  equipements: {
-    // Cardio
-    treadmill: { type: Boolean, default: false },
-    elliptical: { type: Boolean, default: false },
-    stationary_bike: { type: Boolean, default: false },
-    rowing_machine: { type: Boolean, default: false },
-    
-    // Free Weights
-    dumbbells: { type: Boolean, default: false },
-    barbells: { type: Boolean, default: false },
-    kettlebells: { type: Boolean, default: false },
-    squat_rack: { type: Boolean, default: false },
-    bench_press: { type: Boolean, default: false },
-    pull_up_bar: { type: Boolean, default: false },
-    
-    // Machines
-    cable_machine: { type: Boolean, default: false },
-    lat_pulldown: { type: Boolean, default: false },
-    leg_press: { type: Boolean, default: false },
-    pec_deck: { type: Boolean, default: false },
-    shoulder_press_machine: { type: Boolean, default: false },
-    
-    // Functional
-    resistance_bands: { type: Boolean, default: false },
-    medicine_balls: { type: Boolean, default: false },
-    stability_ball: { type: Boolean, default: false },
-    battle_ropes: { type: Boolean, default: false },
-    yoga_mats: { type: Boolean, default: false }
-  },
+  // Équipements disponibles - CHANGED: Now an array of embedded documents
+  equipements: [equipmentSchema], // Use the imported schema as the type for array elements
 
   // Activités proposées
   activities: [{

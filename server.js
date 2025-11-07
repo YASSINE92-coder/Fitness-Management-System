@@ -26,6 +26,7 @@ import coachRoutes from "./routes/coaches.route.js";
 import gymRoutes from "./routes/gyms.route.js";
 import globalErrorHandler from "./errors/globalErrorHandler.js";
 import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
+import { cloudinarConnection } from "./utils/cloudinary.js";
 import commentsRoutes from "./routes/comments.route.js";
 
 //  Added missing import from your branch
@@ -34,7 +35,6 @@ import commentsRoutes from "./routes/comments.route.js";
 dotenv.config();
 
 // Connect to MongoDB
-connectDB();
 
 const app = express();
 // eslint-disable-next-line no-undef
@@ -46,9 +46,21 @@ app.set("etag", false);
   max: 1000, // limit each IP to 100 requests per windowMs
 }); */
 // Middlewares
-// Allow only the configured frontend origin and allow credentials (cookies)
-const FRONTEND_URL = process.env.CLIENT_URL || "http://localhost:3000";
-app.use(cors({ origin: FRONTEND_URL, credentials: true }));
+// Allow configured frontend origin(s) and allow credentials (cookies)
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:3000";
+const allowedOrigins = [FRONTEND_URL, "http://localhost:5173", "http://localhost:3000"];
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      // Allow non-browser tools (no origin) and allowed origins
+      if (!origin || allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+    credentials: true,
+  })
+);
 //allow access-control-allow-origin from all origins and allow headers like Content-Type, Authorization etc (JWT)
 /* app.use(helmet());
 app.use(express.json());
@@ -106,7 +118,9 @@ app.use((req, res) => {
 
 // Global error handling middleware
 app.use(globalErrorHandler);
-// Start server
+
+await connectDB();
+await cloudinarConnection();
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);
 });

@@ -23,12 +23,10 @@ POST {{apiUrl}}/auth/signup
 Content-Type: application/json
 
 {
-  "name": "youssra chaanoune",
-  "email": "youssrauser232@test.com",
+  "name": "saad chaanoune",
+  "email": "youssrauserq232@test.com",
   "password": "BACC2023!a2",
-  "role": "athlete",
-  "gender": "female"
-  
+  "role": "athlete"  
 }
 
 ###  Register Coach  
@@ -138,7 +136,7 @@ Content-Type: application/json
   "gender": "female"
 }
 ###  Get User by ID (Owner or Admin/Coach/Gym)
-GET {{apiUrl}}/users/68e24511c4466502e7ec59a2
+GET {{apiUrl}}/users/6909e844b86e601c6bbdceaf
 Authorization: Bearer {{adminToken}}
 Content-Type: application/json
 
