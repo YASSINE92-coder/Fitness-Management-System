@@ -35,7 +35,8 @@ export const createGym = async (req, res) => {
     console.log("Uploaded photo URLs:", photoUrls); // Log the URLs we are about to save
     // --- END FILE UPLOAD LOGIC ---
 
-    // 3. Parse equipements if sent as a string (from FormData)
+    // --- EQUIPMENT LOGIC ---
+    // Parse equipements if sent as a string (from FormData)
     let parsedEquipements = [];
     if (equipements) {
       if (typeof equipements === 'string') {
@@ -60,6 +61,7 @@ export const createGym = async (req, res) => {
     }
 
     console.log("Parsed equipment ", parsedEquipements);
+    // --- END EQUIPMENT LOGIC ---
 
     // 4. Build gym object
     const gymData = {
@@ -213,6 +215,34 @@ export const updateGym = async (req, res) => {
     console.log("Calculated updatedPhotos array (kept existing + new):", updatedPhotos); // Log the final array before update
     // --- END PHOTO MANAGEMENT LOGIC ---
 
+    // --- EQUIPMENT LOGIC ---
+    // Parse equipements if sent as a string (from FormData)
+    let parsedEquipements = existingGym.equipements; // Default to existing
+    if (equipementsRaw) {
+      if (typeof equipementsRaw === 'string') {
+        try {
+          const parsedFromRequest = JSON.parse(equipementsRaw);
+          if (Array.isArray(parsedFromRequest)) {
+            parsedEquipements = parsedFromRequest;
+          } else {
+            console.warn("Parsed equipements from request is not an array, keeping existing.");
+          }
+        } catch (e) {
+          console.error("Error parsing equipements from request:", e);
+          // Keep existing if parsing fails
+        }
+      } else if (Array.isArray(equipementsRaw)) {
+        parsedEquipements = equipementsRaw;
+      } else {
+        console.warn("Equipements from request is not a string or array, keeping existing.");
+      }
+    }
+
+    // Validate equipment objects (optional but recommended)
+    // Example: ensure each has a 'title' and 'picture'
+    const validatedEquipements = parsedEquipements.filter(eq => eq && typeof eq === 'object' && eq.title && eq.picture);
+    // --- END EQUIPMENT LOGIC ---
+
     // Safe parsers
     const parsePricing = (val) => {
       if (val === undefined || val === null || val === "") return existingGym.pricing;
@@ -235,64 +265,6 @@ export const updateGym = async (req, res) => {
       if (s === 'false' || s === '0' || s === 'no') return false;
       return existingGym.mix;
     };
-    // --- UPDATED EQUIPEMENTS PARSER ---
-    // This function now handles both the old boolean object format (sent by old frontend)
-    // and the new array of equipment objects format (sent by new frontend).
-    const parseEquipements = (val) => {
-        // Default: keep existing equipment list
-        let result = existingGym.equipements;
-
-        if (val) {
-            if (typeof val === 'string') {
-                try {
-                    const parsed = JSON.parse(val);
-                    // Check if the parsed value is an array (new format)
-                    if (Array.isArray(parsed)) {
-                        result = parsed;
-                    } else if (parsed && typeof parsed === 'object') {
-                        // Check if the parsed value is an object (old format)
-                        // If it's the old boolean object, we can't directly convert it here
-                        // without knowing the full catalog. For now, log a warning and keep existing.
-                        // In a future update, the frontend should send the new format.
-                        console.warn("Received old equipment format object, keeping existing array.", parsed);
-                        // Optional: Convert old boolean object to new format if catalog is available
-                        // This requires the EQUIPMENT_CATALOG or similar mapping.
-                        // For now, keep as is.
-                        // result = convertOldFormatToObject(parsed); // Implement if needed
-                    } else {
-                        console.warn("Parsed equipements is neither an array nor an object, keeping existing.");
-                    }
-                } catch (e) {
-                    console.error("Error parsing equipements:", e);
-                    // Keep existing if parsing fails
-                }
-            } else if (Array.isArray(val)) {
-                // If it's already an array (new format from frontend), use it
-                result = val;
-            } else if (val && typeof val === 'object') {
-                // If it's an object (old format from frontend via FormData, unlikely but possible if key is not stringified),
-                // log a warning and keep existing.
-                 console.warn("Received old equipment format object directly (not stringified), keeping existing array.", val);
-                 // Optional: Convert old boolean object to new format if catalog is available
-                 // result = convertOldFormatToObject(val); // Implement if needed
-            } else {
-                console.warn("Equipements is not a string, array, or object, keeping existing.");
-            }
-        }
-
-        // Validate equipment objects (only applies to the new array format)
-        // Ensure each object in the array has 'title' and 'picture' properties.
-        if (Array.isArray(result)) {
-            return result.filter(eq => eq && typeof eq === 'object' && eq.title && eq.picture);
-        } else {
-            // If result is not an array (e.g., kept old format), return it as is or an empty array
-            // Returning an empty array might be safer if the expectation is always an array.
-            // For now, keep the old value to avoid data loss if it was somehow an object/array previously.
-            console.warn("Final equipment result is not an array, returning as is.", result);
-            return result; // Or return [] if you strictly want an array
-        }
-    };
-    // --- END UPDATED EQUIPEMENTS PARSER ---
 
     const updateData = {
       name: name !== undefined ? name : existingGym.name,
@@ -301,7 +273,7 @@ export const updateGym = async (req, res) => {
       pricing: parsePricing(pricingRaw),
       activities: parseActivities(activitiesRaw),
       mix: parseMix(mixRaw),
-      equipements: parseEquipements(equipementsRaw), // Use the updated parser
+      equipements: validatedEquipements, // Use the validated array
       photos: updatedPhotos // Use the calculated final array
     };
 
