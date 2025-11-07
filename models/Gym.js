@@ -76,6 +76,13 @@ const gymSchema = new mongoose.Schema({
     type: String
   }],
 
+  // Informations de contact
+  contact: {
+    phone: { type: String, trim: true },
+    website: { type: String, trim: true },
+  },
+   
+
   // Propriétaire du gym
   owner: {
     type: mongoose.Schema.Types.ObjectId,

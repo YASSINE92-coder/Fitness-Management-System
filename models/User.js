@@ -16,7 +16,7 @@
       password: { type: String, required: true },
       role: {
         type: String,
-        enum: ["athlete", "coach", "gym", "admin"],
+        enum: ["athlete", "coach", "gymOwner", "admin"],
         default: "athlete",
       },
 

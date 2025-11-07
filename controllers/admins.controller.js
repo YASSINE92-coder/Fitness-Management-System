@@ -114,7 +114,7 @@ export const getStats = async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
-  }
+  }  
 };
 
 // Lister tous les programmes

@@ -3,7 +3,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { sendEmail } from "../utils/sendEmail.js";
-import express from "express";
+//import express from "express";
 
 // Helper to generate 6-digit code
 const generate6DigitCode = () => {
@@ -396,6 +396,13 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-export const me = async (req, res) => {
-  res.json(req.user);
+  export const me = async (req, res) => {
+  // Prevent caching so clients don't receive 304 Not Modified with empty bodies
+  res.set({
+    "Cache-Control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    Pragma: "no-cache",
+    Expires: "0",
+    "Surrogate-Control": "no-store",
+  });
+  res.status(200).json(req.user);
 };
