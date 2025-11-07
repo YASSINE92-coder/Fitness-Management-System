@@ -7,6 +7,20 @@ const profileDataSchema = new mongoose.Schema({
   bio: {
     type: String,
   },
+  phone: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  social_links: {
+    instagram: {
+      type: String,
+    },
+    linkedin: {
+      type: String,
+    },
+  },
 });
 
 export default profileDataSchema;
