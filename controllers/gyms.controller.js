@@ -1,5 +1,6 @@
 // controllers/gyms.controller.js
 import Gym from '../models/Gym.js';
+import { handleUpload } from '../utils/cloudinary.js'; // Import the new upload handler
 
 // @desc    Create a new gym
 // @route   POST /gyms
@@ -7,8 +8,8 @@ import Gym from '../models/Gym.js';
 export const createGym = async (req, res) => {
   if (req.files && req.files.length > 0) {
     console.log("First file object structure:", JSON.stringify(req.files[0], null, 2));
-    console.log("First file path:", req.files[0]?.path);
-    console.log("First file secure_url:", req.files[0]?.secure_url); // This should be undefined now
+    console.log("First file buffer length:", req.files[0]?.buffer?.length); // Log buffer length
+    console.log("First file original name:", req.files[0]?.originalname);
   } else {
     console.log("No files uploaded.");
   }
@@ -17,12 +18,22 @@ export const createGym = async (req, res) => {
   try {
     const { name, location, schedule, pricing, activities, mix, equipements, owner } = req.body;
 
-    // 2. Extract Cloudinary URLs from uploaded files using 'path'
-    const photoUrls = (req.files || []) // Handle case where no files are uploaded
-      .map(file => file.path) // Use 'path' which contains the Cloudinary URL
-      .filter(Boolean); // Remove any null/undefined paths
+    // --- FILE UPLOAD LOGIC ---
+    // Process files uploaded via multer.memoryStorage
+    const photoUploadPromises = (req.files || [])
+      .map(file => handleUpload(file.buffer)); // Pass the buffer to handleUpload
 
-    console.log("Extracted photoUrls:", photoUrls); // Log the URLs we are about to save
+    // Wait for all uploads to complete
+    const uploadResults = await Promise.allSettled(photoUploadPromises);
+
+    // Extract URLs from successful uploads
+    const photoUrls = uploadResults
+      .filter(result => result.status === 'fulfilled') // Only successful uploads
+      .map(result => result.value?.secure_url) // Get the secure_url from the result
+      .filter(url => url); // Remove any undefined/empty URLs
+
+    console.log("Uploaded photo URLs:", photoUrls); // Log the URLs we are about to save
+    // --- END FILE UPLOAD LOGIC ---
 
     // 3. Parse equipements if sent as a string (from FormData)
     let parsedEquipements = [];
@@ -60,7 +71,7 @@ export const createGym = async (req, res) => {
       mix: mix === 'true',
       equipements: parsedEquipements, // Use the parsed array
       owner,
-      photos: photoUrls
+      photos: photoUrls // Use the URLs from handleUpload
     };
 
     console.log("Final gymData being saved:", gymData); // Log the final data before saving
@@ -137,8 +148,8 @@ export const getGymById = async (req, res) => {
 export const updateGym = async (req, res) => {
   if (req.files && req.files.length > 0) {
     console.log("First file object structure:", JSON.stringify(req.files[0], null, 2)); // Log structure of first file
-    console.log("First file path:", req.files[0]?.path); // Log path instead
-    console.log("First file secure_url:", req.files[0]?.secure_url); // This should be undefined now
+    console.log("First file buffer length:", req.files[0]?.buffer?.length); // Log buffer length
+    console.log("First file original name:", req.files[0]?.originalname);
   } else {
     console.log("No new files uploaded.");
   }
@@ -160,9 +171,20 @@ export const updateGym = async (req, res) => {
 
     // --- PHOTO MANAGEMENT LOGIC ---
     // New photos from upload - use 'path' instead of 'secure_url' and add safety filter
-    const newPhotoUrls = (req.files || []) // Handle case where no files are uploaded
-      .map(file => file.path) // Use 'path' which contains the Cloudinary URL
-      .filter(Boolean); // Remove any null/undefined paths
+    // Process files uploaded via multer.memoryStorage
+    const photoUploadPromises = (req.files || [])
+      .map(file => handleUpload(file.buffer)); // Pass the buffer to handleUpload
+
+    // Wait for all uploads to complete
+    const uploadResults = await Promise.allSettled(photoUploadPromises);
+
+    // Extract URLs from successful uploads
+    const newPhotoUrls = uploadResults
+      .filter(result => result.status === 'fulfilled') // Only successful uploads
+      .map(result => result.value?.secure_url) // Get the secure_url from the result
+      .filter(url => url); // Remove any undefined/empty URLs
+
+    console.log("Uploaded new photo URLs:", newPhotoUrls);
 
     // Attempt to get the final list of photos to keep from the request body.
     // The frontend should send this as a JSON string via formData.append('finalPhotos', JSON.stringify(photoList))
@@ -214,31 +236,61 @@ export const updateGym = async (req, res) => {
       return existingGym.mix;
     };
     // --- UPDATED EQUIPEMENTS PARSER ---
+    // This function now handles both the old boolean object format (sent by old frontend)
+    // and the new array of equipment objects format (sent by new frontend).
     const parseEquipements = (val) => {
         // Default: keep existing equipment list
         let result = existingGym.equipements;
+
         if (val) {
-          if (typeof val === 'string') {
-            try {
-              const parsed = JSON.parse(val);
-              if (Array.isArray(parsed)) {
-                  result = parsed;
-              } else {
-                  console.warn("Parsed equipements is not an array, keeping existing.");
-              }
-            } catch (e) {
-              console.error("Error parsing equipements:", e);
-              // Keep existing if parsing fails
+            if (typeof val === 'string') {
+                try {
+                    const parsed = JSON.parse(val);
+                    // Check if the parsed value is an array (new format)
+                    if (Array.isArray(parsed)) {
+                        result = parsed;
+                    } else if (parsed && typeof parsed === 'object') {
+                        // Check if the parsed value is an object (old format)
+                        // If it's the old boolean object, we can't directly convert it here
+                        // without knowing the full catalog. For now, log a warning and keep existing.
+                        // In a future update, the frontend should send the new format.
+                        console.warn("Received old equipment format object, keeping existing array.", parsed);
+                        // Optional: Convert old boolean object to new format if catalog is available
+                        // This requires the EQUIPMENT_CATALOG or similar mapping.
+                        // For now, keep as is.
+                        // result = convertOldFormatToObject(parsed); // Implement if needed
+                    } else {
+                        console.warn("Parsed equipements is neither an array nor an object, keeping existing.");
+                    }
+                } catch (e) {
+                    console.error("Error parsing equipements:", e);
+                    // Keep existing if parsing fails
+                }
+            } else if (Array.isArray(val)) {
+                // If it's already an array (new format from frontend), use it
+                result = val;
+            } else if (val && typeof val === 'object') {
+                // If it's an object (old format from frontend via FormData, unlikely but possible if key is not stringified),
+                // log a warning and keep existing.
+                 console.warn("Received old equipment format object directly (not stringified), keeping existing array.", val);
+                 // Optional: Convert old boolean object to new format if catalog is available
+                 // result = convertOldFormatToObject(val); // Implement if needed
+            } else {
+                console.warn("Equipements is not a string, array, or object, keeping existing.");
             }
-          } else if (Array.isArray(val)) {
-              result = val;
-          } else {
-              console.warn("Equipements is not a string or array, keeping existing.");
-          }
         }
-        // Validate equipment objects (optional but recommended)
-        // Example: ensure each has a 'title' and 'picture'
-        return result.filter(eq => eq && typeof eq === 'object' && eq.title && eq.picture);
+
+        // Validate equipment objects (only applies to the new array format)
+        // Ensure each object in the array has 'title' and 'picture' properties.
+        if (Array.isArray(result)) {
+            return result.filter(eq => eq && typeof eq === 'object' && eq.title && eq.picture);
+        } else {
+            // If result is not an array (e.g., kept old format), return it as is or an empty array
+            // Returning an empty array might be safer if the expectation is always an array.
+            // For now, keep the old value to avoid data loss if it was somehow an object/array previously.
+            console.warn("Final equipment result is not an array, returning as is.", result);
+            return result; // Or return [] if you strictly want an array
+        }
     };
     // --- END UPDATED EQUIPEMENTS PARSER ---
 
