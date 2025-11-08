@@ -6,7 +6,8 @@ import crypto from "crypto";
 import User from "../models/User.js";
 
 const setupPassport = () => {
-  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } = process.env;
+  const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_CALLBACK_URL } =
+    process.env;
 
   if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_CALLBACK_URL) {
     console.warn("⚠️ Google OAuth environment variables are missing");
@@ -22,11 +23,20 @@ const setupPassport = () => {
       },
       async (accessToken, refreshToken, profile, done) => {
         try {
-          let email = profile.emails?.[0]?.value?.toLowerCase() || `${profile.id}@google-noemail.local`;
-          const name = profile.displayName || `${profile.name?.givenName || ""} ${profile.name?.familyName || ""}`.trim() || "Google User";
+          let email =
+            profile.emails?.[0]?.value?.toLowerCase() ||
+            `${profile.id}@google-noemail.local`;
+          const name =
+            profile.displayName ||
+            `${profile.name?.givenName || ""} ${
+              profile.name?.familyName || ""
+            }`.trim() ||
+            "Google User";
           const avatar = profile.photos?.[0]?.value;
 
-          let user = await User.findOne({ googleId: profile.id }) || (email && await User.findOne({ email }));
+          let user =
+            (await User.findOne({ googleId: profile.id })) ||
+            (email && (await User.findOne({ email })));
 
           if (!user) {
             const randomPwd = crypto.randomBytes(16).toString("hex");
@@ -34,6 +44,7 @@ const setupPassport = () => {
             user = new User({
               name,
               email,
+              bought_programs: [],
               password: hashed,
               role: "athlete",
               googleId: profile.id,
@@ -50,7 +61,8 @@ const setupPassport = () => {
           await user.save();
 
           const accessSecret = process.env.JWT_SECRET || "dev_access_secret";
-          const refreshSecret = process.env.JWT_REFRESH_SECRET || "dev_refresh_secret";
+          const refreshSecret =
+            process.env.JWT_REFRESH_SECRET || "dev_refresh_secret";
 
           const accessTokenJWT = jwt.sign(
             { id: user._id, role: user.role, email: user.email },

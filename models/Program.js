@@ -19,12 +19,16 @@ const programSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    bought_by: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
+    bought_by: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+      ],
+      default: [],
+    },
+
     goals: [
       {
         type: String,
