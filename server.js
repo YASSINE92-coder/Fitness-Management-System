@@ -27,6 +27,10 @@ import athleteConsultationRoutes from "./routes/athleteConsultation.routes.js";
 import { cloudinarConnection } from "./utils/cloudinary.js";
 import commentsRoutes from "./routes/comments.route.js";
 
+// --- ADDED IMPORT FOR EQUIPMENT ROUTES ---
+import equipmentRoutes from "./routes/equipments.route.js"; // Adjust the path if your file is named differently (e.g., equipments.route.js)
+// --- END ADDED ---
+
 //  Added missing import from your branch
 
 // Load environment variables
@@ -108,6 +112,10 @@ app.use("/api/programs", programRouter);
 app.use("/api/athletes", athleteConsultationRoutes);
 // Comments routes
 app.use("/api/comments", commentsRoutes);
+
+// --- MOUNT EQUIPMENT ROUTES ---
+app.use("/api/equipment", equipmentRoutes); // Mount the equipment routes under /api/equipment
+// --- END MOUNT ---
 
 // Handle 404 for undefined routes
 app.use((req, res) => {
