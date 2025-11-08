@@ -82,12 +82,14 @@ app.use(morgan("dev"));
 // Initialize passport for OAuth routes
 setupPassport();
 app.use(passport.initialize());
+app.use("/api/payments", paymentRouter);
 
 // Test route
 app.get("/", (req, res) => {
   res.json({ message: "Welcome to my Express backend!" });
 });
 
+app.use("/api/programs", programRouter);
 // Admin routes
 app.use("/api/admin", adminRoutes);
 
@@ -103,11 +105,8 @@ app.use("/api", athleteRoutes);
 app.use("/api/gyms", gymRoutes);
 app.use("/api/coaches", coachRoutes);
 app.use("/api/admin/programs", adminProgramRoutes);
-app.use("/api/payments", paymentRouter);
-app.use("/api/payments", paymentRouter);
 
 // program routes
-app.use("/api/programs", programRouter);
 //  Athlete consultation routes (kept from your branch)
 app.use("/api/athletes", athleteConsultationRoutes);
 // Comments routes

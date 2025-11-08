@@ -1,6 +1,6 @@
 ### test
-@baseUrl = http://localhost:4000
-@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY4ZTNmMWU3ZmI1YmM2YTU3ZGIxYzM1OSIsInJvbGUiOiJjb2FjaCIsImlhdCI6MTc2MDAwMTM2NywiZXhwIjoxNzYwMDAyMjY3fQ.87pfnc0uzEVb8wMKxey2a5fKAsYdNeBsd5iBSen0S2E
+@baseUrl = http://localhost:5000
+@auth = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MGY2OTEzMmMwNTE0ZWY3NzE1OTkxMSIsInJvbGUiOiJhdGhsZXRlIiwiaWF0IjoxNzYyNjE3NzMwLCJleHAiOjE3NjI2MTg2MzB9.aU4K3_e64giClXZNCd2KlTT9JxlGhbQ8yHwxdcOPOUw
 
 GET {{ baseUrl }}
 Content-Type: application/json
@@ -15,7 +15,7 @@ Content-Type: application/json
   "name": "John Doe",
   "email": "jfohn.doe@example.com",
   "password": "SecurePass123!",
-  "role": "coach",
+  "role": "athlete",
   "gender": "male",
   "cin": "EE123456",
   "years_of_experience": 5
@@ -26,7 +26,7 @@ POST {{ baseUrl }}/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "john.doe@example.com",
+  "email": "jfohn.doe@example.com",
   "password": "SecurePass123!"
 }
 
@@ -35,9 +35,8 @@ Content-Type: application/json
 
 ##################################### Payment #####################################
 ### payment checkout
-GET {{baseUrl}}/api/payments/programs/68e5334711d5e93ef6d311fb/checkout
+GET {{baseUrl}}/api/payments/programs/68fa19ebaf91a5fd042f02ec/checkout
 Content-Type: application/json
-
 
 
 ##################################### Program ##################################

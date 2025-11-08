@@ -12,7 +12,7 @@ const programRouter = express.Router();
 // List programs - public access
 programRouter.get("/", getProgramValidator, programController.index);
 
-programRouter.use(authenticate);
+// programRouter.use(authenticate);
 // Delete program - admin and coach only
 programRouter.delete(
   "/:id",
