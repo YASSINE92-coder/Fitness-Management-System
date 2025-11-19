@@ -9,6 +9,7 @@
     "seed": "node seeds/seed.js",
     "seed:gyms": "node seeds/seedGyms.js",
     "seed:transactions": "node scripts/seedTransactions.js",
+    "admin:create": "node scripts/createAdmin.js",
     "test": "node test/automated-tests.js",
     "test:setup": "node test/setup-test-data.js",
     "test:cleanup": "node test/setup-test-data.js cleanup"
@@ -27,7 +28,7 @@
   "homepage": "https://github.com/YASSINE92-coder/Fitness-Management-System#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
-    "cloudinary": "^1.41.3",
+    "cloudinary": "^2.8.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
